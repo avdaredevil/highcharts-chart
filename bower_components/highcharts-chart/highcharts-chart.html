@@ -25,16 +25,17 @@
                 vsTime: {type: Boolean, value: false},
                 _chart: {type: Object, readOnly: true}},
             ready: function() {
-                switch (this.type) {
-                    case 'spline': Series = [{name: this.yLabel,data: this.data}];break
-                    case 'pie': Series = [{name: (this.yLabel||this.label),colorByPoint: true,data: this.data}];break
-                }
-                xAxis = this.vsTime?{type: 'datetime',tickPixelInterval: 150}:this.xAxis;
-                Tooltip = this.vsTime?{formatter: function () {
+                var Series = []
+                var xAxis = this.vsTime?{type: 'datetime',tickPixelInterval: 150}:this.xAxis;
+                var Tooltip = this.vsTime?{formatter: function () {
                         return '<b>' + this.series.name + '</b><br/>' +
                             Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
                             Highcharts.numberFormat(this.y, 2);
                     }}:{};
+                switch (this.type) {
+                    case 'spline': Series = [{name: this.yLabel,data: this.data}];break
+                    case 'pie': Series = [{name: (this.yLabel||this.label),colorByPoint: true,data: this.data}];break
+                }
                 this._set_chart(new Highcharts.Chart({
                     chart: {
                         renderTo: this.$.Chart,
@@ -76,7 +77,6 @@
                     case 'spline': this._chart.series[0].addPoint([x,y],true,true);break
                     case 'pie': this.setData(x);break
                 }
-                
             },
             _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})}
         });
