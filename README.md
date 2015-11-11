@@ -54,6 +54,7 @@ Attribute  | Options     | Default              | Description
 `label`    | *string*    | `Label`*`[for non numeric]`* | Alias for y-label
 `data`     | *array*     | `[]` | Data for chart
 `vsTime`   | *boolean*     | `false` | Set all options appropriate for a time chart
+`credits`  | *boolean*     | `false` | Wish to thank/credit HighCharts?
 
 ### Methods
 

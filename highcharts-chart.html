@@ -22,6 +22,7 @@
                 yLabel: {type: String, value: "Y-Axis"},
                 label: {type: String, value: "Label"},
                 data: {type: Array, value: [], observer:"setData"},
+                credits: {type: Boolean, value: false, reflectToAttribute:true},
                 vsTime: {type: Boolean, value: false},
                 _chart: {type: Object, readOnly: true}},
             ready: function() {
@@ -45,6 +46,7 @@
                     },
                     title: {text: this.title},
                     xAxis: xAxis,
+                    credits: this.credits,
                     plotOptions: {
                         pie: {
                             allowPointSelect: true,
