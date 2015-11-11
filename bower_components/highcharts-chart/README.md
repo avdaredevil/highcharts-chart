@@ -1,6 +1,6 @@
 # &lt;highcharts-chart&gt;
 
-> Web Component wrapper to the [Highcharts Graphing Library](www.highcharts.com/), to create a multitude of graphs (spline, pie, and more) using [Polymer 1.0](http://www.polymer-project.org/1.0/).
+> Web Component wrapper to the [Highcharts Graphing Library](http://www.highcharts.com/), to create a multitude of graphs (spline, pie, and more) using [Polymer 1.0](http://www.polymer-project.org/1.0/).
 
 ## Demo
 
@@ -14,7 +14,7 @@ Install the component using [Bower](http://bower.io/):
 $ bower install highcharts-chart --save
 ```
 
-Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/gh-pages.zip).
+Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/master.zip).
 
 ## Usage
 
@@ -54,6 +54,7 @@ Attribute  | Options     | Default              | Description
 `label`    | *string*    | `Label`*`[for non numeric]`* | Alias for y-label
 `data`     | *array*     | `[]` | Data for chart
 `vsTime`   | *boolean*     | `false` | Set all options appropriate for a time chart
+`credits`  | *boolean*     | `false` | Wish to thank/credit HighCharts?
 
 ### Methods
 
