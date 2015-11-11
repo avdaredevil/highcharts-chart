@@ -48,11 +48,11 @@ Attribute  | Options     | Default              | Description
 ---        | ---         | ---                  | ---
 `type`     | `spline`,`pie` | `false`           | Pick type of chart
 `showAxes` | *array*     | `['bottom','left']`  | Pick the axes to show.
-`xAxis`    | *object*    | `{}` OR *Time based* | Specifies the configuration for the X-Axis.
+`xAxis`    | *object*    | `{}` OR *`Time based`* | Specifies the configuration for the X-Axis.
 `legend`   | *boolean*   | `false`              | Display the legend
 `yLabel`   | *string*    | `Y-Axis`             | Label for Y-Axis
-`label`    | *string*    | `Label` [*for non numeric*] | Alias for y-label
-`data`     | *array*     | [] | Data for chart
+`label`    | *string*    | `Label [`*`for non numeric`*`]` | Alias for y-label
+`data`     | *array*     | `[]` | Data for chart
 `vsTime`   | *boolean*     | `false` | Set all options appropriate for a time chart
 
 ### Methods
