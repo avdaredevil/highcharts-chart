@@ -26,7 +26,7 @@
                 _chart: {type: Object, readOnly: true}},
             ready: function() {
                 switch (this.type) {
-                    case 'spline': Series = [{name: this.yLabel,data: [0,0,0,0,0,0,0,0,0]}];break
+                    case 'spline': Series = [{name: this.yLabel,data: this.data}];break
                     case 'pie': Series = [{name: (this.yLabel||this.label),colorByPoint: true,data: this.data}];break
                 }
                 xAxis = this.vsTime?{type: 'datetime',tickPixelInterval: 150}:this.xAxis;
