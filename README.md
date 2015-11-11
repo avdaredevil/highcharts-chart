@@ -14,7 +14,7 @@ Install the component using [Bower](http://bower.io/):
 $ bower install highcharts-chart --save
 ```
 
-Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/gh-pages.zip).
+Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/master.zip).
 
 ## Usage
 
