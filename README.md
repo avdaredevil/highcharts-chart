@@ -33,8 +33,8 @@ Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/gh-
 3. Start using it!
 
     ```html
-    <highcharts-chart type="spline"></voice-player>
-    <highcharts-chart type="pie"></voice-player>
+    <highcharts-chart type="spline"></highcharts-chart>
+    <highcharts-chart type="pie"></highcharts-chart>
     ```
 
 ## &lt;highcharts-chart&gt;
