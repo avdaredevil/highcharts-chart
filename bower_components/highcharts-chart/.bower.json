@@ -33,11 +33,11 @@
     "polymer": "Polymer/polymer#^1.2.0",
     "jquery": "~2.1.4"
   },
-  "_release": "89186400f6",
+  "_release": "cfeeb14ea5",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "89186400f6da970092c78200428760bc8f90012d"
+    "commit": "cfeeb14ea5c7ce1caa23fdcc49294985f7cb152c"
   },
   "_source": "git://github.com/avdaredevil/highcharts-chart.git",
   "_target": "*",
