@@ -1,6 +1,6 @@
 # &lt;highcharts-chart&gt;
 
-> Web Component wrapper to the [Highcharts Graphing Library](www.highcharts.com/), to create a multitude of graphs (spline, pie, and more) using [Polymer 1.0](http://www.polymer-project.org/1.0/).
+> Web Component wrapper to the [Highcharts Graphing Library](http://www.highcharts.com/), to create a multitude of graphs (spline, pie, and more) using [Polymer 1.0](http://www.polymer-project.org/1.0/).
 
 ## Demo
 
