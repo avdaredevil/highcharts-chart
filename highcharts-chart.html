@@ -1,0 +1,84 @@
+<link rel="import" href="../polymer/polymer.html">
+<script src="../jquery/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<dom-module id="highcharts-chart">
+    <template>
+        <style>:host {width: 100%;display: inline-block}</style>
+        <div id="Chart" width="100%"></div>
+    </template>
+    <script>
+        'use strict';
+        Highcharts.setOptions({global: {useUTC: false}});
+        Polymer({
+            is: "highcharts-chart",
+            properties: {
+                showAxes: {type: Array, value: ['bottom','left']},
+                xAxis: {type: Object, value: {}},
+                legend: {type: Boolean, value: false},
+                type: {type: String, value: 'spline'},
+                title: {type: String, value: "Highcharts Chart", observer: "_titleUpdate"},
+                yLabel: {type: String, value: "Y-Axis"},
+                label: {type: String, value: "Label"},
+                data: {type: Array, value: [], observer:"setData"},
+                vsTime: {type: Boolean, value: false},
+                _chart: {type: Object, readOnly: true}},
+            ready: function() {
+                switch (this.type) {
+                    case 'spline': Series = [{name: this.yLabel,data: [0,0,0,0,0,0,0,0,0]}];break
+                    case 'pie': Series = [{name: (this.yLabel||this.label),colorByPoint: true,data: this.data}];break
+                }
+                xAxis = this.vsTime?{type: 'datetime',tickPixelInterval: 150}:this.xAxis;
+                Tooltip = this.vsTime?{formatter: function () {
+                        return '<b>' + this.series.name + '</b><br/>' +
+                            Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                            Highcharts.numberFormat(this.y, 2);
+                    }}:{};
+                this._set_chart(new Highcharts.Chart({
+                    chart: {
+                        renderTo: this.$.Chart,
+                        defaultSeriesType: this.type,
+                        animation: Highcharts.svg, // don't animate in old IE
+                        marginRight: 10,
+                    },
+                    title: {text: this.title},
+                    xAxis: xAxis,
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                style: {color: (Highcharts.theme && Highcharts.theme.contrastTextColor)||'black'}
+                            }
+                        }
+                    },
+                    yAxis: {
+                        title: {text: this.yLabel},
+                        plotLines: [{
+                            value: 0,
+                            width: 1,
+                            color: '#808080'
+                        }]
+                    },
+                    tooltip: Tooltip,
+                    legend: {enabled: this.legend},
+                    exporting: {enabled: false},
+                    series: Series
+                }))
+                this.async(()=>{window.dispatchEvent(new Event('resize'))},50)
+            },
+            setData: function(x) {if(this._chart){this._chart.series[0].setData(x)}},
+            pushData: function(x,y) {
+                switch (this.type) {
+                    case 'spline': this._chart.series[0].addPoint([x,y],true,true);break
+                    case 'pie': this.setData(x);break
+                }
+                
+            },
+            _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})}
+        });
+    </script>
+</dom-module>
