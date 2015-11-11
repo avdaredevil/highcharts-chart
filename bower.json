@@ -1,0 +1,25 @@
+{
+  "name": "highcharts-chart [gh-pages]",
+  "homepage": "http://avdaredevil.github.io/highcharts-chart/",
+  "authors": [
+    "Apoorv Verma [AP] <avdaredevil@gmail.com>"
+  ],
+  "description": "Github Pages for the highcharts-chart library",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "paper-styles": "PolymerElements/paper-styles#~1.0.12",
+    "polymer": "Polymer/polymer#1.2.0",
+    "highcharts-chart": "*"
+  }
+}

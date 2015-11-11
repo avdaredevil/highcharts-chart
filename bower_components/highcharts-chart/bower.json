@@ -1,0 +1,37 @@
+{
+  "name": "highcharts-chart",
+  "version": "0.0.1",
+  "authors": [
+    "Apoorv Verma [AP] <avdaredevil@gmail.com>"
+  ],
+  "description": "Polymer Element wrapper for highcharts library. Seamlessly create various types of charts from one element.",
+  "main": "highcharts-chart.html",
+  "moduleType": [],
+  "keywords": [
+    "polymer",
+    "polymer-1.0",
+    "highcharts",
+    "graphing",
+    "pie",
+    "spline",
+    "web-components",
+    "charts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/avdaredevil/highcharts-chart.git"
+  },
+  "license": "MIT",
+  "homepage": "https://www.linkedin.com/in/apoorvverma",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "jquery": "~2.1.4"
+  }
+}
