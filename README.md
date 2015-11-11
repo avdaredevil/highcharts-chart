@@ -51,7 +51,7 @@ Attribute  | Options     | Default              | Description
 `xAxis`    | *object*    | `{}` OR *`Time based`* | Specifies the configuration for the X-Axis.
 `legend`   | *boolean*   | `false`              | Display the legend
 `yLabel`   | *string*    | `Y-Axis`             | Label for Y-Axis
-`label`    | *string*    | `Label [`*`for non numeric`*`]` | Alias for y-label
+`label`    | *string*    | `Label`*`[for non numeric]`* | Alias for y-label
 `data`     | *array*     | `[]` | Data for chart
 `vsTime`   | *boolean*     | `false` | Set all options appropriate for a time chart
 
