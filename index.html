@@ -7,17 +7,49 @@
         <title>Highcharts-Chart Element Demo - Apoorv Verma [AP]</title>
         <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
         <link rel="import" href="bower_components/highcharts-chart/highcharts-chart.html">
+        <link rel="import" href="bower_components/paper-input/paper-input.html">
         <link rel="import" href="bower_components/paper-styles/demo-pages.html">
+        <link rel="import" href="bower_components/paper-button/paper-button.html">
+        <link rel="import" href="bower_components/iron-media-query/iron-media-query.html">
+        <link rel="import" href="bower_components/iron-flex-layout/classes/iron-flex-layout.html">
         <style is="custom-style">
             body {padding: 40px;}
+            paper-button[colored] {background-color: #7070D8;color:white}
+            h2 {font-weight: 400;margin: 0 0 .5em;padding: 0 0 .5em;border-bottom: 1px solid rgba(0, 0, 0, 0.13);}
         </style>
     </head>
     <body unresolved>
-        <div class="vertical center-justified layout">
-            <h4>Spline Chart</h4>
-            <div class="vertical-section">
-                <highcharts-chart type="spline" data='[1,6,3,2.5,8]' y-axis="Throughput" title="Throughput Vs. Time" vs-time></paper-input>
+        <template is="dom-bind" id="app">
+            <div class="vertical center-justified layout">
+                <article class="vertical-section" thin$="[[thin]]">
+                    <h2>Spline Chart</h2>
+                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="Preparing your Graph" type="spline" label="Throughput" subtitle="[[splineSubtitle]]" title="Throughput Vs. Time" vs-time></highcharts-chart>
+                    <section class="layout around-justified">
+                        <paper-button colored raised on-tap="addSplineDp">Add Data Point</paper-button>
+                        <paper-button colored raised on-tap="toggleRealtime">Realtime: <span>[[ternary(realtime,"ON","OFF")]]</span></paper-button>
+                        <paper-button colored raised on-tap="toggleLoading">Loading: <span>[[ternary(splineLoading,"ON","OFF")]]</span></paper-button>
+                    </section>
+                    <paper-input value="{{splineSubtitle}}" label="Subtitle for Chart"></paper-input>
+                </article>
+                <article class="vertical-section" thin$="[[thin]]">
+                    <h2>Pie Chart</h2>
+                    <highcharts-chart type="pie" data='[36.3,60,13.6]' label="Work" title="Work Distribution"></highcharts-chart>
+                    <paper-button></paper-button>
+                </article>
             </div>
-        </div>
+            <iron-media-query query="(min-width: 600px)" query-matches="{{thin}}"></iron-media-query>
+        </template>
+        <script>
+            app = document.getElementById("app")
+            app.initTime = (new Date()).getTime()
+            app.realtime = false
+            app.ternary = function(s,a,b) {return s?a:b}
+            app.addSplineDp = function(shift) {this.$.splineChart[shift===true?"pushData":"addData"](app.initTime+=1000,Math.random()*15)}
+            app.toggleRealtime = function() {this.realtime=!this.realtime}
+            app.toggleLoading = function() {this.splineLoading=!this.splineLoading}
+            app._realtime = setInterval(()=>{app.realtime && app.addSplineDp(true)},1000)
+            app.async(()=>{dp=[];for(i=0;i<5;i++){dp.push([app.initTime+=1000,Math.random()*10])}app.$.splineChart.setData(dp)},250)
+            app.async(()=>{app.splineLoading=false},500)
+        </script>
     </body>
 </html>
