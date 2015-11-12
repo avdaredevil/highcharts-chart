@@ -1,0 +1,19 @@
+{
+    "Version":  "0.0.1",
+    "Name":  "highcharts-chart docs site",
+    "Authors":  [
+                    "Apoorv Verma [AP] \u003cavdaredevil@gmail.com\u003e"
+                ],
+    "Node-Agent":  "php",
+    "Config":  {
+                   "DB":  ".\\data",
+                   "Node-Path":  "-S localhost:3000",
+                   "DBName":  "test"
+               },
+    "DateUpdated":  {
+                        "value":  "\/Date(1447283807846)\/",
+                        "DisplayHint":  2,
+                        "DateTime":  "Wednesday, November 11, 2015 6:16:47 PM"
+                    },
+    "Port":  3000
+}
