@@ -23,7 +23,7 @@
             <div class="vertical center-justified layout">
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Spline Chart</h2>
-                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="Preparing your Graph" type="spline" label="Throughput" subtitle="[[splineSubtitle]]" title="Throughput Vs. Time" vs-time></highcharts-chart>
+                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="Preparing your Graph" type="spline" y-label="Throughput" subtitle="[[splineSubtitle]]" title="Throughput Vs. Time" vs-time></highcharts-chart>
                     <section class="layout around-justified">
                         <paper-button colored raised on-tap="addSplineDp">Add Data Point</paper-button>
                         <paper-button colored raised on-tap="toggleRealtime">Realtime: <span>[[ternary(realtime,"ON","OFF")]]</span></paper-button>

@@ -22,10 +22,10 @@
                 legend: {type: Boolean, value: false},
                 xAxis: {type: Object, value: {}},
                 yLabel: {type: String, value: "Y-Axis"},
-                label: {type: String, value: "Label"},
+                label: {type: String, value: ""},
                 data: {type: Array, value: [], observer:"setData"},
                 vsTime: {type: Boolean, value: false},
-                loading: {type: Boolean, value: true, observer: "_loadingUpdate", reflectToAttribute:true},
+                loading: {type: Boolean, value: false, observer: "_loadingUpdate", reflectToAttribute:true},
                 loadingMessage: {type: String, value: ""},
                 _chart: {type: Object, readOnly: true}},
             ready: function() {
@@ -38,7 +38,7 @@
                     }}:{};
                 switch (this.type) {
                     case 'spline': Series = [{name: this.yLabel,data: this.data}];break
-                    case 'pie': Series = [{name: (this.yLabel||this.label),colorByPoint: true,data: this.data}];break
+                    case 'pie': Series = [{name: (this.label||this.yLabel),colorByPoint: true,data: this.data}];break
                 }
                 this._set_chart(new Highcharts.Chart({
                     chart: {
@@ -63,7 +63,7 @@
                         }
                     },
                     yAxis: {
-                        title: {text: this.yLabel},
+                        title: {text: (this.label||this.yLabel)},
                         plotLines: [{
                             value: 0,
                             width: 1,
@@ -87,7 +87,7 @@
             },
             _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})},
             _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
-            _subtitleUpdate: function() {if(!this._chart){return};this._chart.setSubtitle({text: this.subtitle})}
+            _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})}
         });
     </script>
 </dom-module>
