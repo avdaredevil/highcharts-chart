@@ -41,7 +41,7 @@
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Pie Chart</h2>
                     <article rel>
-                        <highcharts-chart id="pieChart" type="pie" data='[["Mary", 36.3],["Davis", 60],["John", 13.6]]' label="Work" title="Work Distribution" selected="{{pieSelected}}" selectedPoints="{{piePoints}}"></highcharts-chart>
+                        <highcharts-chart id="pieChart" type="pie" data='[["Mary", 36.3],["Davis", 60],["John", 13.6]]' label="Work" title="[[_computePieTitle(pieSelected)]]" selected="{{pieSelected}}" selectedPoints="{{piePoints}}"></highcharts-chart>
                         <!--section id="PieHoverBox" hidden$="[[!pieSelected]]">
                             <template is="dom-repeat" items="[[piePoints]]" index-as="[[i]]">
                                 <article><span>[[i]]</span>. <span>[[item.name]]</span></article>
@@ -63,6 +63,7 @@
             app.toggleRealtime = function() {this.realtime=!this.realtime}
             app.toggleLoading = function() {this.splineLoading=!this.splineLoading}
             app.addPieData = function() {this.$.pieChart.addData("Random "+(this.person+=1),Math.random()*25)}
+            app._computePieTitle = function(s) {return "Work Distribution"+(s?" [Selected]":"")}
             app.changeAlert = function(d) {console.log("Recieved",d);return d}
             app.chartResize = function(t) {a=document.getElementsByTagName("highcharts-chart");for(i=0;i<a.length;i++){a[i].resizeChart()}}
             app._realtime = setInterval(()=>{app.realtime && app.addSplineDp(true)},1000)
