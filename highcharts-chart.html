@@ -6,7 +6,7 @@
 <dom-module id="highcharts-chart">
     <template>
         <style>:host {width: 100%;display: inline-block}</style>
-        <div id="Chart" width="100%"></div>
+        <div id="Chart" width="100%" on-click="_checkSelected"></div>
     </template>
     <script>
         'use strict';
@@ -14,16 +14,22 @@
         Polymer({
             is: "highcharts-chart",
             properties: {
-                showAxes: {type: Array, value: ['bottom','left']},
-                xAxis: {type: Object, value: {}},
-                legend: {type: Boolean, value: false},
                 type: {type: String, value: 'spline'},
                 title: {type: String, value: "Highcharts Chart", observer: "_titleUpdate"},
-                yLabel: {type: String, value: "Y-Axis"},
-                label: {type: String, value: "Label"},
-                data: {type: Array, value: [], observer:"setData"},
+                subtitle: {type: String, value: "", observer: "_subtitleUpdate"},
+                showAxes: {type: Array, value: ()=>{return ['bottom','left']}},
                 credits: {type: Boolean, value: false, reflectToAttribute:true},
+                legend: {type: Boolean, value: false},
+                xAxis: {type: Object, value: ()=>{return {}}},
+                yLabel: {type: String, value: "Y-Axis"},
+                label: {type: String, value: ""},
+                pieLabels: {type: Array, value: ()=>{return []}},
+                data: {type: Array, value: ()=>{return []}, observer:"setData"},
                 vsTime: {type: Boolean, value: false},
+                loading: {type: Boolean, value: false, observer: "_loadingUpdate", reflectToAttribute:true},
+                loadingMessage: {type: String, value: ""},
+                selected: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
+                selectedPoints: {type: Array, readOnly: true, notify: true},
                 _chart: {type: Object, readOnly: true}},
             ready: function() {
                 var Series = []
@@ -35,7 +41,7 @@
                     }}:{};
                 switch (this.type) {
                     case 'spline': Series = [{name: this.yLabel,data: this.data}];break
-                    case 'pie': Series = [{name: (this.yLabel||this.label),colorByPoint: true,data: this.data}];break
+                    case 'pie': Series = [{name: (this.label||this.yLabel),colorByPoint: true,data: this.data}];break
                 }
                 this._set_chart(new Highcharts.Chart({
                     chart: {
@@ -45,6 +51,7 @@
                         marginRight: 10,
                     },
                     title: {text: this.title},
+                    subtitle: {text: this.subtitle},
                     xAxis: xAxis,
                     credits: this.credits,
                     plotOptions: {
@@ -59,28 +66,25 @@
                         }
                     },
                     yAxis: {
-                        title: {text: this.yLabel},
-                        plotLines: [{
-                            value: 0,
-                            width: 1,
-                            color: '#808080'
-                        }]
+                        title: {text: (this.label||this.yLabel)},
+                        plotLines: [{value: 0,width: 1,color: '#808080'}]
                     },
                     tooltip: Tooltip,
                     legend: {enabled: this.legend},
                     exporting: {enabled: false},
                     series: Series
                 }))
-                this.async(()=>{window.dispatchEvent(new Event('resize'))},50)
+                this.async(()=>{this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
             },
             setData: function(x) {if(this._chart){this._chart.series[0].setData(x)}},
-            pushData: function(x,y) {
-                switch (this.type) {
-                    case 'spline': this._chart.series[0].addPoint([x,y],true,true);break
-                    case 'pie': this.setData(x);break
-                }
+            addData: function(x,y) {this.pushData(x,y,true)},
+            pushData: function(x,y,append) {
+                this._chart.series[0].addPoint([x,y],true,!append)
             },
-            _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})}
+            _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)},
+            _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})},
+            _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
+            _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})}
         });
     </script>
 </dom-module>
