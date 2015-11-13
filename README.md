@@ -66,9 +66,9 @@ Attribute  | Options     | Default              | Description
 
 Method       | Parameters           | Returns            | Description
 ---          | ---                  | ---                | ---
-`setData()`  | `Data Array [e,e,e]` | Nothing.           | Replaces graph data with this
-`addData()`  | `Data` [*x*,*y*]     | Nothing.           | Appends to data [*efficient*]
-`pushData()` | `Data` [*x*,*y*]     | Nothing.           | Shifts and adds to data [*efficient*]
+`setData()`  | `Data Array [e,e,e]` | Nothing.           | Replaces graph data with the passed array
+`addData()`  | `Data e` [*x*,*y*]   | Nothing.           | Appends to data [*efficient*]
+`pushData()` | `Data e` [*x*,*y*]   | Nothing.           | Shifts and adds to data [*efficient*]
 
 ### Events
 
