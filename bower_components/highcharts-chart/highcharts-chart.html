@@ -80,6 +80,7 @@
             pushData: function(x,y,append) {
                 this._chart.series[0].addPoint([x,y],true,!append)
             },
+            resizeChart: function() {this._chart.setSize(this.offsetWidth,this.offsetHeight)},
             _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)},
             _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})},
             _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},

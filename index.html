@@ -18,7 +18,11 @@
             paper-button[colored] {background-color: #7070D8;color:white}
             h2 {font-weight: 400;margin: 0 0 .5em;padding: 0 0 .5em;border-bottom: 1px solid rgba(0, 0, 0, 0.13);}
             #PieHoverBox {width: 30%;right: 0;top: 0;position: absolute}
-            @media screen and (max-width: 700px) {body {padding:20px 0}}
+            highcharts-chart {height: 400px}
+            @media screen and (max-width: 700px) {
+                body {padding:20px 0}
+                highcharts-chart {height: 20em}
+            }
         </style>
     </head>
     <body unresolved>
@@ -44,6 +48,7 @@
                             </template>
                         </section-- Doesn't seem to work -->
                     </article>
+                    <dummy-listener prop="[[chartResize(thin)]]">
                     <paper-button colored raised on-tap="addPieData">Add Member</paper-button>
                 </article>
             </div>
@@ -59,6 +64,7 @@
             app.toggleLoading = function() {this.splineLoading=!this.splineLoading}
             app.addPieData = function() {this.$.pieChart.addData("Random "+(this.person+=1),Math.random()*25)}
             app.changeAlert = function(d) {console.log("Recieved",d);return d}
+            app.chartResize = function(t) {a=document.getElementsByTagName("highcharts-chart");for(i=0;i<a.length;i++){a[i].resizeChart()}}
             app._realtime = setInterval(()=>{app.realtime && app.addSplineDp(true)},1000)
             app.async(()=>{dp=[];for(i=0;i<5;i++){dp.push([app.initTime+=1000,Math.random()*10])}app.$.splineChart.setData(dp)},250)
             app.async(()=>{app.splineLoading=false},500)
