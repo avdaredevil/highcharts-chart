@@ -23,7 +23,6 @@
                 xAxis: {type: Object, value: ()=>{return {}}},
                 yLabel: {type: String, value: "Y-Axis"},
                 label: {type: String, value: ""},
-                pieLabels: {type: Array, value: ()=>{return []}},
                 data: {type: Array, value: ()=>{return []}, observer:"setData"},
                 vsTime: {type: Boolean, value: false},
                 loading: {type: Boolean, value: false, observer: "_loadingUpdate", reflectToAttribute:true},
