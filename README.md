@@ -51,19 +51,24 @@ Attribute  | Options     | Default              | Description
 `subtitle` | *string*    | `""`                 | Subtitle of Chart
 `showAxes` | *array*     | `['bottom','left']`  | Pick the axes to show.
 `xAxis`    | *object*    | `{}` OR *`Time based`* | Specifies the configuration for the X-Axis.
-`legend`   | *boolean*   | `false`              | Display the legend
 `yLabel`   | *string*    | `Y-Axis`             | Label for Y-Axis
 `label`    | *string*    | `Label`*`[for non numeric]`* | Alias for y-label
 `data`     | *array*     | `[]` | Data for chart
+`loading`  | *boolean*     | `false` | Toggle loading overlay on chart
+`loadingMessage` | *string* | `Loading...` | Loading Text Display
+`selected` | *boolean*     | `false` | Is any element selected on graph
+`selectedPoints` | *array* | `[]` | Which elements are selected
 `vsTime`   | *boolean*     | `false` | Set all options appropriate for a time chart
+`legend`   | *boolean*   | `false`              | Display the legend
 `credits`  | *boolean*     | `false` | Wish to thank/credit HighCharts?
 
 ### Methods
 
 Method       | Parameters           | Returns            | Description
 ---          | ---                  | ---                | ---
-`setData()`  | `Data` [*array*]     | Nothing.           | Replaces graph data with this
-`pushData()` | `Data` [*primitive*] | Nothing.           | Appends to data [*efficient*]
+`setData()`  | `Data Array [e,e,e]` | Nothing.           | Replaces graph data with this
+`addData()`  | `Data` [*x*,*y*]     | Nothing.           | Appends to data [*efficient*]
+`pushData()` | `Data` [*x*,*y*]     | Nothing.           | Shifts and adds to data [*efficient*]
 
 ### Events
 
