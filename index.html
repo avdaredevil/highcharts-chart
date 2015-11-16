@@ -20,7 +20,9 @@
             h2 {font-weight: 400;margin: 0 0 .5em;padding: 0 0 .5em;border-bottom: 1px solid rgba(0, 0, 0, 0.13);}
             #PieHoverBox {width: 30%;right: 0;top: 0;position: absolute}
             highcharts-chart {height: 400px}
+            paper-input {width:49.5%;display:inline-block}
             @media screen and (max-width: 700px) {
+                paper-input {width:100%}
                 body {padding:20px 0}
                 highcharts-chart {height: 20em}
             }
@@ -31,12 +33,13 @@
             <div class="vertical center-justified layout">
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Spline Chart</h2>
-                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="Preparing your Graph" type="spline" y-label="Throughput" subtitle="[[splineSubtitle]]" title="Throughput Vs. Time" vs-time></highcharts-chart>
+                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="Throughput" subtitle="[[splineSubtitle]]" title="Throughput Vs. Time" vs-time></highcharts-chart>
                     <section class="layout around-justified">
                         <paper-button colored raised on-tap="addSplineDp">Add Data Point</paper-button>
                         <paper-button colored raised on-tap="toggleRealtime">Realtime: <span>[[ternary(realtime,"ON","OFF")]]</span></paper-button>
                         <paper-button colored raised on-tap="toggleLoading">Loading: <span>[[ternary(splineLoading,"ON","OFF")]]</span></paper-button>
                     </section>
+                    <paper-input value="{{splineLMsg}}" label="Loading Message" disabled="[[splineLoading]]"></paper-input>
                     <paper-input value="{{splineSubtitle}}" label="Subtitle for Chart"></paper-input>
                 </article>
                 <article class="vertical-section" thin$="[[thin]]">
@@ -54,9 +57,9 @@
                 </article>
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Bar/Column Chart</h2>
-                    <highcharts-chart id="barChart" type="column" color-by-point x-label='Animals' x-axis='{"type": "category"}' y-label="Count" subtitle="Drillable Bar Chart" title="Animals" on-chart-load="addInitData" on-drill-down="barDrill"></highcharts-chart>
+                    <highcharts-chart id="barChart" type="column" color-by-point x-label='Animals' x-axis='{"type": "category"}' y-label="Count" subtitle="Drillable Bar Chart" title="Animals" on-chart-load="addInitData" on-drill-down="barDrill" on-drill-up="unDrill"></highcharts-chart>
                     <section class="layout around-justified">
-                        <paper-button colored raised on-tap="addBarBird" disabled="[[birdAdded]]">Add Data Point</paper-button>
+                        <paper-button colored raised on-tap="addBarBird" disabled="[[or(birdAdded,inDrill)]]">Add Birds</paper-button>
                     </section>
                 </article>
             </div>
@@ -64,17 +67,20 @@
         </template>
         <script>
             app = document.getElementById("app")
-            app.person=0;app.initTime = (new Date()).getTime()
+            app.person=app.inDrill=0;app.initTime = (new Date()).getTime()
+            app.birdAdded=false
+            app.or = function(a,b){return !!(a||b)}
             app.addInitData = function(e){app.async(()=>{[["Insects",5],["Reptiles",3]].forEach((el)=>{$("#barChart")[0].addData(el[0],el[1],true)})},450)}
             app.addBarBird = function(){if(app.birdAdded){return}app.$.barChart.addData("Birds",10,true);app.birdAdded=1}
+            app.unDrill = function(){app.inDrill--}
             app.barDrill = function(e){
-                d=e.detail.e
+                d=e.detail.e;app.inDrill++
                 db = {"Insects": [["Ants",3],["Butterfly",4]],
                 "Birds": [["Doves",3],["Swans",2],["Eagles",4],["Crow",1]],
                 "Reptiles": [["Snakes",2],["Lizards",1]]}
                 app.$.barChart.addDrillSeries(d.point,db[d.point.name],d.point.name)
             }
-            app.realtime = false
+            app.realtime = false;app.splineLMsg="Preparing your Graph"
             app.ternary = function(s,a,b) {return s?a:b}
             app.addSplineDp = function(shift) {this.$.splineChart[shift===true?"pushData":"addData"](app.initTime+=1000,Math.random()*15)}
             app.toggleRealtime = function() {this.realtime=!this.realtime}
