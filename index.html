@@ -53,13 +53,12 @@
                     <paper-button colored raised on-tap="addPieData">Add Member</paper-button>
                 </article>
                 <article class="vertical-section" thin$="[[thin]]">
-                    <h2>Spline Chart</h2>
+                    <h2>Bar/Column Chart</h2>
                     <highcharts-chart id="barChart" type="column" color-by-point x-label='Animals' x-axis='{"type": "category"}' y-label="Count" subtitle="Drillable Bar Chart" title="Animals" on-chart-load="addInitData" on-drill-down="barDrill"></highcharts-chart>
                     <section class="layout around-justified">
                         <paper-button colored raised on-tap="addBarBird" disabled="[[birdAdded]]">Add Data Point</paper-button>
                     </section>
                 </article>
-
             </div>
             <iron-media-query query="(max-width: 700px)" query-matches="{{thin}}"></iron-media-query>
         </template>
