@@ -2,6 +2,7 @@
 <script src="../jquery/dist/jquery.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/drilldown.js"></script>
 
 <dom-module id="highcharts-chart">
     <template>
@@ -19,13 +20,16 @@
                 subtitle: {type: String, value: "", observer: "_subtitleUpdate"},
                 showAxes: {type: Array, value: ()=>{return ['bottom','left']}},
                 credits: {type: Boolean, value: false, reflectToAttribute:true},
-                legend: {type: Boolean, value: false},
+                colorByPoint: {type: Boolean, value: false, reflectToAttribute:true},
+                legend: {type: Boolean, value: false, reflectToAttribute:true},
                 chartOptions: {type: Object, value: ()=>{return {}}, observer: "_xAxisUpdate"},
                 xAxis: {type: Object, value: ()=>{return {}}, observer: "_xAxisUpdate"},
+                xLabel: {type: String, value: "X-Axis"},
                 yLabel: {type: String, value: "Y-Axis"},
                 label: {type: String, value: ""},
                 data: {type: Array, value: ()=>{return []}, observer:"setData"},
                 vsTime: {type: Boolean, value: false},
+                categorical: {type: Boolean, value: false, reflectToAttribute:true},
                 loading: {type: Boolean, value: false, observer: "_loadingUpdate", reflectToAttribute:true},
                 loadingMessage: {type: String, value: ""},
                 selected: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
@@ -41,34 +45,32 @@
                 _chart: {type: Object, readOnly: true}},
             ready: function() {
                 var xAxis = $.extend(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis);
-                var Series = []
-                switch (this.type) {
-                    case 'spline': Series = [{name: this.yLabel,data: this.data}];break
-                    case 'pie': Series = [{name: (this.label||this.yLabel),colorByPoint: true,data: this.data}];break
-                };app = this
+                var Series = [{name: this.xLabel,colorByPoint: this.colorByPoint, data: this.data}]
+                var __app = this
                 this._set_chart(new Highcharts.Chart({
                     chart: {
                         renderTo: this.$.Chart,
                         defaultSeriesType: this.type,
                         animation: Highcharts.svg, // don't animate in old IE
                         marginRight: 10,
-                    },
-                    events: {
-                        click: function(e){app.fire("chart-click",{chart: this})},
-                        beforePrint: function(e){app.fire("before-print",{e: e,chart: this})},
-                        afterPrint: function(e){app.fire("after-print",{e: e,chart: this})},
-                        addSeries: function(e){app.fire("series-added",{e: e,chart: this})},
-                        drilldown: function(e){app.fire("drill-down",{e: e, chart: this})},
-                        drillup: function(e){app.fire("drill-up",{e: e,chart: this})},
-                        selection: function(e){app.fire("drill-up",{e: e,chart: this})},
+                        events: {
+                            click: function(e){__app.fire("chart-click",{e: e,chart: this})},
+                            load: function(e){__app.fire("chart-load",{e: e,chart: this})},
+                            beforePrint: function(e){__app.fire("before-print",{e: e,chart: this})},
+                            afterPrint: function(e){__app.fire("after-print",{e: e,chart: this})},
+                            addSeries: function(e){__app.fire("series-added",{e: e,chart: this})},
+                            drilldown: function(e){__app.fire("drill-down",{e: e,chart: this})},
+                            drillup: function(e){__app.fire("drill-up",{e: e,chart: this})},
+                            selection: function(e){__app.fire("selection",{e: e,chart: this})},
+                        }
                     },
                     //Properties
                     title: {text: this.title},
                     subtitle: {text: this.subtitle},
                     xAxis: xAxis,
                     credits: this.credits,
-                    plotOptions: {
-                        pie: $.extend({
+                    plotOptions: $.extend({
+                        pie: {
                             allowPointSelect: true,
                             cursor: 'pointer',
                             dataLabels: {
@@ -76,8 +78,8 @@
                                 format: '<b>{point.name}</b>: {point.percentage:.1f} %',
                                 style: {color: (Highcharts.theme && Highcharts.theme.contrastTextColor)||'black'}
                             }
-                        }, chartOptions)
-                    },
+                        }
+                    }, this.chartOptions),
                     yAxis: {
                         title: {text: (this.label||this.yLabel)},
                         plotLines: [{value: 0,width: 1,color: '#808080'}]
@@ -87,7 +89,7 @@
                                 Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
                                 Highcharts.numberFormat(this.y, 2);
                         }}:{},this.tooltipOptions),
-                    legend: $.extend({enabled: this.legend, layout: "vertical", verticalAlign: this.legendVertAlign, align: this.legendHorizAlign, x: this.legendPos.x, y: this.legendPos.y, backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'), shadow: true},legendOptions),
+                    legend: $.extend({enabled: this.legend, layout: "vertical", verticalAlign: this.legendVertAlign, align: this.legendHorizAlign, x: this.legendPos.x, y: this.legendPos.y, backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'), shadow: true},this.legendOptions),
                     exporting: {enabled: this.export},
                     series: Series,
                     drilldown: {series: []}
@@ -95,13 +97,15 @@
                 this.async(()=>{this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
             },
             setData: function(x,z) {if(this._chart){this._chart.series[(z||0)].setData(x)}},
-            addData: function(x,y,z) {this.pushData(x,y,z,true)},
-            pushData: function(x,y,z,append) {
-                this._chart.series[(z||0)].addPoint([x,y],true,!append)
+            addData: function(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)},
+            pushData: function(x,y,z,append,drillable) {
+                if (typeof z=="boolean") {drillable = true;z=0}
+                this._chart.series[(z||0)].addPoint(drillable?{name:x,y:y,drilldown:true}:[x,y],true,!append)
             },
-            addSeries: function(name,data) {this._chart.addSeries({name: name, data: (data||[])},true)},
-            addDrillSeries: function(point,series) {this._chart.addSeriesAsDrilldown(point, series)},
+            addSeries: function(name,data,colorByPoint) {this._chart.addSeries({name: name, data: (data||[]), colorByPoint: typeof colorByPoint=="undefined"?this.colorByPoint:colorByPoint},true)},
+            addDrillSeries: function(point,data) {this._chart.addSeriesAsDrilldown(point, {data: data})},
             updateSeries: function(data,z) {this._chart.series[(z||0)].update(data)},
+            showLoading: function(d) {this.loadingMessage=d;this.loading=true},
             resizeChart: function() {this._chart.setSize(this.offsetWidth,this.offsetHeight)},
             destroy: function() {this._chart.destroy()},
             _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)},
