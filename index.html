@@ -72,7 +72,7 @@
                 db = {"Insects": [["Ants",3],["Butterfly",4]],
                 "Birds": [["Doves",3],["Swans",2],["Eagles",4],["Crow",1]],
                 "Reptiles": [["Snakes",2],["Lizards",1]]}
-                app.$.barChart.addDrillSeries(d.point,db[d.point.name])
+                app.$.barChart.addDrillSeries(d.point,db[d.point.name],d.point.name)
             }
             app.realtime = false
             app.ternary = function(s,a,b) {return s?a:b}
