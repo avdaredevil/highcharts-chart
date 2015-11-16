@@ -1,0 +1,41 @@
+/*By @JuanMaRuiz editted heavily by @avdaredevil*/
+
+::-webkit-scrollbar {
+    background: rgba(255,255,255,.08);
+	overflow: visible;
+	width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.2);
+	border: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(0, 0, 0, 0.8);
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+	min-width: 10px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+	min-height: 10px;
+}
+
+::-webkit-scrollbar-track-piece {
+	background-color: transparent;
+}
+
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #ADADAD;
+	-webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,0.10),inset 0 -1px 0 rgba(0,0,0,0.07);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: #999;
+}
