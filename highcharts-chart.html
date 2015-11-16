@@ -41,10 +41,11 @@
                 _chart: {type: Object, readOnly: true}},
             ready: function() {
                 var xAxis = $.extend(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis);
+                var Series = []
                 switch (this.type) {
                     case 'spline': Series = [{name: this.yLabel,data: this.data}];break
                     case 'pie': Series = [{name: (this.label||this.yLabel),colorByPoint: true,data: this.data}];break
-                }
+                };app = this
                 this._set_chart(new Highcharts.Chart({
                     chart: {
                         renderTo: this.$.Chart,
@@ -52,7 +53,16 @@
                         animation: Highcharts.svg, // don't animate in old IE
                         marginRight: 10,
                     },
-                    click: function(e){},
+                    events: {
+                        click: function(e){app.fire("chart-click",{chart: this})},
+                        beforePrint: function(e){app.fire("before-print",{e: e,chart: this})},
+                        afterPrint: function(e){app.fire("after-print",{e: e,chart: this})},
+                        addSeries: function(e){app.fire("series-added",{e: e,chart: this})},
+                        drilldown: function(e){app.fire("drill-down",{e: e, chart: this})},
+                        drillup: function(e){app.fire("drill-up",{e: e,chart: this})},
+                        selection: function(e){app.fire("drill-up",{e: e,chart: this})},
+                    },
+                    //Properties
                     title: {text: this.title},
                     subtitle: {text: this.subtitle},
                     xAxis: xAxis,
@@ -79,7 +89,8 @@
                         }}:{},this.tooltipOptions),
                     legend: $.extend({enabled: this.legend, layout: "vertical", verticalAlign: this.legendVertAlign, align: this.legendHorizAlign, x: this.legendPos.x, y: this.legendPos.y, backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'), shadow: true},legendOptions),
                     exporting: {enabled: this.export},
-                    series: []
+                    series: Series,
+                    drilldown: {series: []}
                 }))
                 this.async(()=>{this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
             },
@@ -89,6 +100,7 @@
                 this._chart.series[(z||0)].addPoint([x,y],true,!append)
             },
             addSeries: function(name,data) {this._chart.addSeries({name: name, data: (data||[])},true)},
+            addDrillSeries: function(point,series) {this._chart.addSeriesAsDrilldown(point, series)},
             updateSeries: function(data,z) {this._chart.series[(z||0)].update(data)},
             resizeChart: function() {this._chart.setSize(this.offsetWidth,this.offsetHeight)},
             destroy: function() {this._chart.destroy()},
