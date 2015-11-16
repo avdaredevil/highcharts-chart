@@ -45,12 +45,12 @@
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Pie Chart</h2>
                     <article rel>
-                        <highcharts-chart id="pieChart" type="pie" color-by-point data='[["Mary", 36.3],["Davis", 60],["John", 13.6]]' label="Work" title="[[_computePieTitle(pieSelected)]]" selected="{{pieSelected}}" selectedPoints="{{piePoints}}"></highcharts-chart>
-                        <!--section id="PieHoverBox" hidden$="[[!pieSelected]]">
+                        <highcharts-chart id="pieChart" type="pie" color-by-point data='[["Mary", 36.3],["Davis", 60],["John", 13.6]]' label="Work" title="[[_computePieTitle(pieSelected)]]" selected="{{pieSelected}}" on-click="pieSelects"></highcharts-chart>
+                        <section id="PieHoverBox" hidden$="[[!pieSelected]]">
                             <template is="dom-repeat" items="[[piePoints]]" index-as="[[i]]">
                                 <article><span>[[i]]</span>. <span>[[item.name]]</span></article>
                             </template>
-                        </section-- Doesn't seem to work -->
+                        </section>
                     </article>
                     <dummy-listener prop="[[chartResize(thin)]]">
                     <paper-button colored raised on-tap="addPieData">Add Member</paper-button>
@@ -79,17 +79,19 @@
                 "Birds": [["Doves",3],["Swans",2],["Eagles",4],["Crow",1]],
                 "Reptiles": [["Snakes",2],["Lizards",1]]}
                 app.$.barChart.addDrillSeries(d.point,db[d.point.name],d.point.name)
+                app.$.barChart.addData("Who's that Pokemón",1,true)
             }
+            app.pieSelect = function(e){console.info(e.detail.e);app.set("piePoints",app.$.pieChart.selectedPoints)}
             app.realtime = false;app.splineLMsg="Preparing your Graph"
             app.ternary = function(s,a,b) {return s?a:b}
             app.addSplineDp = function(shift) {this.$.splineChart[shift===true?"pushData":"addData"](app.initTime+=1000,Math.random()*15)}
             app.toggleRealtime = function() {this.realtime=!this.realtime}
             app.toggleLoading = function() {this.splineLoading=!this.splineLoading}
             app.addPieData = function() {this.$.pieChart.addData("Random "+(++this.person),Math.random()*25)}
-            app._computePieTitle = function(s) {return "Work Distribution"+(s?" [Selected]":"")}
             app.changeAlert = function(d) {console.log("Recieved",d);return d}
             app.chartResize = function(t) {a=document.getElementsByTagName("highcharts-chart");for(i=0;i<a.length;i++){a[i].resizeChart()}}
             app._realtime = setInterval(()=>{app.realtime && app.addSplineDp(true)},1000)
+            app._computePieTitle = function(s) {return "Work Distribution"+(s?" [Selected]":"")}
             app.async(()=>{dp=[];for(i=0;i<5;i++){dp.push([app.initTime+=1000,Math.random()*10])}app.$.splineChart.setData(dp)},250)
             app.async(()=>{app.splineLoading=false},500)
         </script>

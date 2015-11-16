@@ -97,7 +97,7 @@
                 this.async(()=>{this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
             },
             setData: function(x,z) {if(this._chart){this._chart.series[(z||0)].setData(x)}},
-            addData: function(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)},
+            addData: function(x,y,z,drillable) {if (typeof z=="boolean") {drillable = true;z=0}this.pushData(x,y,z,true,drillable)},
             pushData: function(x,y,z,append,drillable) {
                 if (typeof z=="boolean") {drillable = true;z=0}
                 this._chart.series[(z||0)].addPoint(drillable?{name:x,y:y,drilldown:true}:[x,y],true,!append)
