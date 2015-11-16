@@ -34,6 +34,9 @@
                 highcharts-chart {height: 20em}
                 #PieHoverBox>.Holder {max-height: 18em;overflow: auto}
             }
+            @media screen and (max-width: 450px) {
+                paper-button {display: inline-block;width: 100%;margin: .125em 0;}
+            }
         </style>
     </head>
     <body unresolved>
@@ -42,7 +45,7 @@
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Spline Chart</h2>
                     <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="Throughput" subtitle="[[splineSubtitle]]" title="Throughput Vs. Time" vs-time></highcharts-chart>
-                    <section class="horizontal layout">
+                    <section class$="[[ternary(superThin,'','horizontal layout')]]">
                         <paper-button colored raised on-tap="addSplineDp">Add Data Point</paper-button>
                         <paper-button colored raised on-tap="toggleRealtime">Realtime: <span>[[ternary(realtime,"ON","OFF")]]</span></paper-button>
                         <paper-button colored raised on-tap="toggleLoading">Loading: <span>[[ternary(splineLoading,"ON","OFF")]]</span></paper-button>
@@ -76,6 +79,7 @@
                 </article>
             </div>
             <iron-media-query query="(max-width: 700px)" query-matches="{{thin}}"></iron-media-query>
+            <iron-media-query query="(max-width: 450px)" query-matches="{{superThin}}"></iron-media-query>
         </template>
         <script>
             app = document.getElementById("app")
@@ -83,6 +87,7 @@
             app.birdAdded=false
             app.or = function(a,b){return !!(a||b)}
             app.incr = function(a){return a+1}
+            app.ternary = function(s,a,b){return s?a:b}
             app.addInitData = function(e){app.async(()=>{[["Insects",5],["Reptiles",3]].forEach((el)=>{$("#barChart")[0].addData(el[0],el[1],true)})},450)}
             app.addBarBird = function(){if(app.birdAdded){return}app.$.barChart.addData("Birds",10,true);app.birdAdded=1}
             app.resetSpline = function(){app.$.splineChart.destroy();app.$.splineChart.ready();app._populateRandomDataToSpline()}
