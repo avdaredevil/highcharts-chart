@@ -15,10 +15,12 @@
         <style is="custom-style">
             body {padding: 40px;}
             [rel] {position: relative}
+            paper-button[red] {background-color: #E86D6D;color:white}
             paper-button[colored] {background-color: #7070D8;color:white}
             paper-button[disabled] {background-color: #848486 !important;color:white}
             h2 {font-weight: 400;margin: 0 0 .5em;padding: 0 0 .5em;border-bottom: 1px solid rgba(0, 0, 0, 0.13);}
-            #PieHoverBox {width: 30%;right: 0;top: 0;position: absolute}
+            #PieHoverBox:before {content: "Selected Names:";display:block;font-size:1.3em}
+            #PieHoverBox {width: 11em;right: 0;top: 0;position: absolute;padding: .5em;background: rgba(0,0,0,.29);color: white;border-radius: 5px;}
             highcharts-chart {height: 400px}
             paper-input {width:49.5%;display:inline-block}
             @media screen and (max-width: 700px) {
@@ -34,10 +36,12 @@
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Spline Chart</h2>
                     <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="Throughput" subtitle="[[splineSubtitle]]" title="Throughput Vs. Time" vs-time></highcharts-chart>
-                    <section class="layout around-justified">
+                    <section class="horizontal layout">
                         <paper-button colored raised on-tap="addSplineDp">Add Data Point</paper-button>
                         <paper-button colored raised on-tap="toggleRealtime">Realtime: <span>[[ternary(realtime,"ON","OFF")]]</span></paper-button>
                         <paper-button colored raised on-tap="toggleLoading">Loading: <span>[[ternary(splineLoading,"ON","OFF")]]</span></paper-button>
+                        <div class=flex></div>
+                        <paper-button red raised on-tap="resetSpline">Reset</paper-button>
                     </section>
                     <paper-input value="{{splineLMsg}}" label="Loading Message" disabled="[[splineLoading]]"></paper-input>
                     <paper-input value="{{splineSubtitle}}" label="Subtitle for Chart"></paper-input>
@@ -45,10 +49,10 @@
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Pie Chart</h2>
                     <article rel>
-                        <highcharts-chart id="pieChart" type="pie" color-by-point data='[["Mary", 36.3],["Davis", 60],["John", 13.6]]' label="Work" title="[[_computePieTitle(pieSelected)]]" selected="{{pieSelected}}" on-click="pieSelects"></highcharts-chart>
+                        <highcharts-chart id="pieChart" type="pie" color-by-point data='[["Mary", 36.3],["Davis", 60],["John", 13.6]]' label="Work" title="[[_computePieTitle(pieSelected)]]" selected="{{pieSelected}}" on-click="pieSelect"></highcharts-chart>
                         <section id="PieHoverBox" hidden$="[[!pieSelected]]">
-                            <template is="dom-repeat" items="[[piePoints]]" index-as="[[i]]">
-                                <article><span>[[i]]</span>. <span>[[item.name]]</span></article>
+                            <template is="dom-repeat" items="[[piePoints]]">
+                                <article><span>[[incr(index)]]</span>. <span>[[item.name]]</span></article>
                             </template>
                         </section>
                     </article>
@@ -70,8 +74,10 @@
             app.person=app.inDrill=0;app.initTime = (new Date()).getTime()
             app.birdAdded=false
             app.or = function(a,b){return !!(a||b)}
+            app.incr = function(a){return a+1}
             app.addInitData = function(e){app.async(()=>{[["Insects",5],["Reptiles",3]].forEach((el)=>{$("#barChart")[0].addData(el[0],el[1],true)})},450)}
             app.addBarBird = function(){if(app.birdAdded){return}app.$.barChart.addData("Birds",10,true);app.birdAdded=1}
+            app.resetSpline = function(){app.$.splineChart.destroy();app.$.splineChart.ready();app._populateRandomDataToSpline()}
             app.unDrill = function(){app.inDrill--}
             app.barDrill = function(e){
                 d=e.detail.e;app.inDrill++
@@ -92,7 +98,8 @@
             app.chartResize = function(t) {a=document.getElementsByTagName("highcharts-chart");for(i=0;i<a.length;i++){a[i].resizeChart()}}
             app._realtime = setInterval(()=>{app.realtime && app.addSplineDp(true)},1000)
             app._computePieTitle = function(s) {return "Work Distribution"+(s?" [Selected]":"")}
-            app.async(()=>{dp=[];for(i=0;i<5;i++){dp.push([app.initTime+=1000,Math.random()*10])}app.$.splineChart.setData(dp)},250)
+            app._populateRandomDataToSpline = ()=>{dp=[];for(i=0;i<5;i++){dp.push([app.initTime+=1000,Math.random()*10])}app.$.splineChart.setData(dp)}
+            app.async(app._populateRandomDataToSpline,250)
             app.async(()=>{app.splineLoading=false},500)
         </script>
     </body>
