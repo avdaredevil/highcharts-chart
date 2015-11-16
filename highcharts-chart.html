@@ -20,6 +20,7 @@
                 showAxes: {type: Array, value: ()=>{return ['bottom','left']}},
                 credits: {type: Boolean, value: false, reflectToAttribute:true},
                 legend: {type: Boolean, value: false},
+                chartOptions: {type: Object, value: ()=>{return {}}, observer: "_xAxisUpdate"},
                 xAxis: {type: Object, value: ()=>{return {}}, observer: "_xAxisUpdate"},
                 yLabel: {type: String, value: "Y-Axis"},
                 label: {type: String, value: ""},
@@ -57,7 +58,7 @@
                     xAxis: xAxis,
                     credits: this.credits,
                     plotOptions: {
-                        pie: {
+                        pie: $.extend({
                             allowPointSelect: true,
                             cursor: 'pointer',
                             dataLabels: {
@@ -65,7 +66,7 @@
                                 format: '<b>{point.name}</b>: {point.percentage:.1f} %',
                                 style: {color: (Highcharts.theme && Highcharts.theme.contrastTextColor)||'black'}
                             }
-                        }
+                        }, chartOptions)
                     },
                     yAxis: {
                         title: {text: (this.label||this.yLabel)},
@@ -88,6 +89,7 @@
                 this._chart.series[(z||0)].addPoint([x,y],true,!append)
             },
             addSeries: function(name,data) {this._chart.addSeries({name: name, data: (data||[])},true)},
+            updateSeries: function(data,z) {this._chart.series[(z||0)].update(data)},
             resizeChart: function() {this._chart.setSize(this.offsetWidth,this.offsetHeight)},
             destroy: function() {this._chart.destroy()},
             _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)},
