@@ -16,6 +16,7 @@
             body {padding: 40px;}
             [rel] {position: relative}
             paper-button[colored] {background-color: #7070D8;color:white}
+            paper-button[disabled] {background-color: #848486 !important;color:white}
             h2 {font-weight: 400;margin: 0 0 .5em;padding: 0 0 .5em;border-bottom: 1px solid rgba(0, 0, 0, 0.13);}
             #PieHoverBox {width: 30%;right: 0;top: 0;position: absolute}
             highcharts-chart {height: 400px}
@@ -41,7 +42,7 @@
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Pie Chart</h2>
                     <article rel>
-                        <highcharts-chart id="pieChart" type="pie" data='[["Mary", 36.3],["Davis", 60],["John", 13.6]]' label="Work" title="[[_computePieTitle(pieSelected)]]" selected="{{pieSelected}}" selectedPoints="{{piePoints}}"></highcharts-chart>
+                        <highcharts-chart id="pieChart" type="pie" color-by-point data='[["Mary", 36.3],["Davis", 60],["John", 13.6]]' label="Work" title="[[_computePieTitle(pieSelected)]]" selected="{{pieSelected}}" selectedPoints="{{piePoints}}"></highcharts-chart>
                         <!--section id="PieHoverBox" hidden$="[[!pieSelected]]">
                             <template is="dom-repeat" items="[[piePoints]]" index-as="[[i]]">
                                 <article><span>[[i]]</span>. <span>[[item.name]]</span></article>
@@ -51,18 +52,35 @@
                     <dummy-listener prop="[[chartResize(thin)]]">
                     <paper-button colored raised on-tap="addPieData">Add Member</paper-button>
                 </article>
+                <article class="vertical-section" thin$="[[thin]]">
+                    <h2>Spline Chart</h2>
+                    <highcharts-chart id="barChart" type="column" color-by-point x-label='Animals' x-axis='{"type": "category"}' y-label="Count" subtitle="Drillable Bar Chart" title="Animals" on-chart-load="addInitData" on-drill-down="barDrill"></highcharts-chart>
+                    <section class="layout around-justified">
+                        <paper-button colored raised on-tap="addBarBird" disabled="[[birdAdded]]">Add Data Point</paper-button>
+                    </section>
+                </article>
+
             </div>
             <iron-media-query query="(max-width: 700px)" query-matches="{{thin}}"></iron-media-query>
         </template>
         <script>
             app = document.getElementById("app")
             app.person=0;app.initTime = (new Date()).getTime()
+            app.addInitData = function(e){app.async(()=>{[["Insects",5],["Reptiles",3]].forEach((el)=>{$("#barChart")[0].addData(el[0],el[1],true)})},450)}
+            app.addBarBird = function(){if(app.birdAdded){return}app.$.barChart.addData("Birds",10,true);app.birdAdded=1}
+            app.barDrill = function(e){
+                d=e.detail.e
+                db = {"Insects": [["Ants",3],["Butterfly",4]],
+                "Birds": [["Doves",3],["Swans",2],["Eagles",4],["Crow",1]],
+                "Reptiles": [["Snakes",2],["Lizards",1]]}
+                app.$.barChart.addDrillSeries(d.point,db[d.point.name])
+            }
             app.realtime = false
             app.ternary = function(s,a,b) {return s?a:b}
             app.addSplineDp = function(shift) {this.$.splineChart[shift===true?"pushData":"addData"](app.initTime+=1000,Math.random()*15)}
             app.toggleRealtime = function() {this.realtime=!this.realtime}
             app.toggleLoading = function() {this.splineLoading=!this.splineLoading}
-            app.addPieData = function() {this.$.pieChart.addData("Random "+(this.person+=1),Math.random()*25)}
+            app.addPieData = function() {this.$.pieChart.addData("Random "+(++this.person),Math.random()*25)}
             app._computePieTitle = function(s) {return "Work Distribution"+(s?" [Selected]":"")}
             app.changeAlert = function(d) {console.log("Recieved",d);return d}
             app.chartResize = function(t) {a=document.getElementsByTagName("highcharts-chart");for(i=0;i<a.length;i++){a[i].resizeChart()}}
