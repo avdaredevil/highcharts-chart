@@ -45,7 +45,7 @@
                 _chart: {type: Object, readOnly: true}},
             ready: function() {
                 var xAxis = $.extend(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis);
-                var Series = [{name: this.xLabel,colorByPoint: this.colorByPoint, data: this.data}]
+                var Series = [{name: (this.label||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}]
                 var __app = this
                 this._set_chart(new Highcharts.Chart({
                     chart: {
@@ -96,10 +96,10 @@
                 }))
                 this.async(()=>{this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
             },
-            setData: function(x,z) {if(this._chart){this._chart.series[(z||0)].setData(x)}},
-            addData: function(x,y,z,drillable) {if (typeof z=="boolean") {drillable = z;z=0}this.pushData(x,y,z,true,drillable)},
+            setData: function(x,z) {if (typeof z != "Number"){z=0}if(this._chart){this._chart.series[z].setData(x)}},
+            addData: function(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)},
             pushData: function(x,y,z,append,drillable) {
-                if (typeof z=="boolean") {drillable = z;z=0}
+                if (typeof z=="boolean") {drillable = true;z=0}
                 this._chart.series[(z||0)].addPoint(drillable?{name:x,y:y,drilldown:true}:[x,y],true,!append)
             },
             addSeries: function(name,data,colorByPoint) {this._chart.addSeries({name: name, data: (data||[]), colorByPoint: typeof colorByPoint=="undefined"?this.colorByPoint:colorByPoint},true)},
