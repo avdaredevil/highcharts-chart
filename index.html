@@ -107,7 +107,8 @@
                 "Birds": [["Doves",3],["Swans",2],["Eagles",4],["Crow",1]],
                 "Reptiles": [["Snakes",2],["Lizards",1]]}
                 app.$.barChart.addDrillSeries(d.point,db[d.point.name],d.point.name)
-                app.$.barChart.addData("Who's that Pokemón",1,true)
+                if (app.inDrill > 6) {app.$.barChart.addData("You're one really persistent person. I dont know any Pokemóns",1)}
+                else {app.$.barChart.addData("Who's that Pokemón",1,true)}
             }
             app.addSplineSeries = function(){app.$.splineChart.addSeries()}
             app.pieSelect = function(e){app.set("piePoints",app.$.pieChart.selectedPoints)}
