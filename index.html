@@ -67,7 +67,7 @@
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Pie Chart</h2>
                     <article rel>
-                        <highcharts-chart id="pieChart" type="pie" color-by-point data='[["Mary", 36.3],["Davis", 60],["John", 13.6]]' label="Work" title="[[_computePieTitle(pieSelected)]]" selected="{{pieSelected}}" on-click="pieSelect"></highcharts-chart>
+                        <highcharts-chart id="pieChart" type="pie" color-by-point data='[{"name":"Mary", "y": 36.3},{"name":"Davis", "y":60},{"name":"John", "y":13.6}]' label="Work" title="[[_computePieTitle(pieSelected)]]" selected="{{pieSelected}}" on-click="pieSelect"></highcharts-chart>
                         <section id="PieHoverBox" class="layout vertical" hidden$="[[!pieSelected]]">
                             <h3>Selected Names:</h3>
                             <article class="Holder flex">
@@ -127,9 +127,9 @@
             app._realtime = setInterval(()=>{app.realtime && app.addSplineDp(true)},1000)
             app._computePieTitle = function(s) {return "Work Distribution"+(s?" [Selected]":"")}
             app._populateRandomDataToSpline = ()=>{dp=[];for(i=0;i<5;i++){dp.push([app.initTime+=1000,Math.random()*10])}app.$.splineChart.setData(dp)}
+            app.async(()=>{$(window).resize(()=>{app.chartResize()})},1000)
             app.async(app._populateRandomDataToSpline,250)
             app.async(()=>{app.splineLoading=false},500)
-            $(window).resize(()=>{app.chartResize()})
         </script>
         <a title="Fork 'Highcharts-Chart' by Apoorv Verma [AP]" href="https://github.com/avdaredevil/highcharts-chart"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
         <a id="GH" title="@avdaredevil on Github" href="https://github.com/avdaredevil"><i class="fa fa-github"></i></a>
