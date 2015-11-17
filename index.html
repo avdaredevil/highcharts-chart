@@ -33,8 +33,8 @@
             #PieHoverBox>.Holder span:nth-child(2) {font-style: italic}
             highcharts-chart {height: 400px}
             paper-input {width:49.5%;display:inline-block}
-            #GH {position: absolute;top: 10px;right: 10px;font-size: 3em;color: #676767;text-decoration: none;transition: }
-            #GH:hover {position: absolute;top: 10px;right: 10px;font-size: 3em;color: #676767;text-decoration: none;}
+            #GH {position: absolute;top: 10px;right: 10px;font-size: 3em;color: #676767;text-decoration: none;transition:color .25s}
+            #GH:hover {color: #313131}
             @media screen and (max-width: 700px) {
                 paper-input {width:100%}
                 body {padding:20px 0}
@@ -92,7 +92,7 @@
         <script>
             app = document.getElementById("app")
             app.person=app.inDrill=0;app.initTime = (new Date()).getTime()
-            app.birdAdded=false
+            app.birdAdded=false;app.splineSubtitle = "Click to add new series [in realtime mode]"
             app.or = function(a,b){return !!(a||b)}
             app.incr = function(a){return a+1}
             app.ternary = function(s,a,b){return s?a:b}
@@ -108,11 +108,16 @@
                 app.$.barChart.addDrillSeries(d.point,db[d.point.name],d.point.name)
                 app.$.barChart.addData("Who's that Pokemón",1,true)
             }
-            app.addSplineSeries = function(){appp.$.splineChart.addSeries("Made by AP")}
+            app.addSplineSeries = function(){app.$.splineChart.addSeries()}
             app.pieSelect = function(e){app.set("piePoints",app.$.pieChart.selectedPoints)}
             app.realtime = false;app.splineLMsg="Preparing your Graph"
             app.ternary = function(s,a,b) {return s?a:b}
-            app.addSplineDp = function(shift) {this.$.splineChart[shift===true?"pushData":"addData"](app.initTime+=1000,Math.random()*15)}
+            app.addSplineDp = function(shift) {
+                var chart=this.$.splineChart,index=shift===true?"pushData":"addData";
+                chart[index](app.initTime+=1000,Math.random()*20);
+                series = this.$.splineChart._chart.series
+                for (i=1;i<series.length;i++) {chart[series[i].data.length>4?index:"addData"](app.initTime,Math.random()*15,i)}
+            }
             app.toggleRealtime = function() {this.realtime=!this.realtime}
             app.toggleLoading = function() {this.splineLoading=!this.splineLoading}
             app.addPieData = function() {this.$.pieChart.addData("Random "+(++this.person),Math.random()*25)}
