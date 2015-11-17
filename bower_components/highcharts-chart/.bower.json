@@ -31,14 +31,14 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.2.0",
+    "polymer": "Polymer/polymer#~1.2.3",
     "jquery": "~2.1.4"
   },
   "_release": "0.0.3",
   "_resolution": {
     "type": "version",
     "tag": "v0.0.3",
-    "commit": "9b48b8f1a5a398f41239e648a3697cba15c0af55"
+    "commit": "d985be35028e00a30582fbfbfc323815c411d3f1"
   },
   "_source": "git://github.com/avdaredevil/highcharts-chart.git",
   "_target": "*",
