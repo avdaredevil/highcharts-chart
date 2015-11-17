@@ -49,7 +49,14 @@
         </style>
     </head>
     <body unresolved>
-        <h1>Highcharts-Chart by <a target=_blank title="Apoorv Verma [AP] on LinkedIn" href="https://www.linkedin.com/in/apoorvverma">Apoorv Verma [AP]</a></h1>
+        <header itemscope itemtype="http://schema.org/Person">
+            <h1>Highcharts-Chart by <a target=_blank title="Apoorv Verma [AP] on LinkedIn" href="https://www.linkedin.com/in/apoorvverma" itemprop="url"><span itemprop="name">Apoorv Verma</span> [<span itemprop="additionalName">AP</span>]</a></h1>
+            <span hidden itemprop="alumniOf">Rutgers University</span>
+            <span hidden itemprop="affiliation">Goldman Sachs</span>
+            <span hidden itemprop="affiliation">Zelco Solutions</span>
+            <span hidden itemprop="email">avdaredevil@gmail.com</span>
+            <a id="GH" title="@avdaredevil on Github" href="https://github.com/avdaredevil" itemprop="url"><i class="fa fa-github"></i></a>
+        </header>
         <template is="dom-bind" id="app">
             <div class="vertical center-justified layout">
                 <article class="vertical-section" thin$="[[thin]]">
@@ -132,7 +139,49 @@
             app.async(app._populateRandomDataToSpline,250)
             app.async(()=>{app.splineLoading=false},500)
         </script>
+        <script type="application/ld+json">{
+            "@context": "http://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "highcharts-chart",
+            "applicationCategory": ["Utilities","Polymer","Webcomponents"],
+            "applicationSuite": "Polymer",
+            "downloadUrl": "https://github.com/avdaredevil/highcharts-chart/archive/master.zip",
+            "installUrl": "https://github.com/avdaredevil/highcharts-chart/archive/master.zip",
+            "softwareVersion": "v0.0.3",
+            "contributor": "Apoorv Verma [AP]",
+            "copyrightHolder": "Apoorv Verma [AP]",
+            "creator": "Apoorv Verma [AP]",
+            "headline": "Highcharts-Chart Element for Polymer 1.0 - Apoorv Verma [AP]",
+            "inLanguage": "English",
+            "isFamilyFriendly": true,
+            "exampleOfWork": "http://avdaredevil.github.io/highcharts-chart",
+            "keywords": "Polymer,Highcharts,webcomponents,Apoorv",
+            "license": "MIT",
+            "aggregateRating": {
+                "name": "highcharts-chart",
+                "ratingValue": 5,
+                "reviewCount": 7
+            },
+            "offers": {
+                "@type": "Offer",
+                "availability": "http://schema.org/InStock",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "operatingSystem": ["Windows","Linux","Mac","OSX","Chrome","Edge","Safari"],
+            "review": [{
+                "@type": "Review",
+                "author": "David Awad",
+                "datePublished": "2015-11-17",
+                "name": "A masterpiece of software",
+                "reviewBody": "I really benefitted from this Polymer Tool. It helped me make charts so easily! Thanks!",
+                "reviewRating": {"@type": "Rating","bestRating": "5","ratingValue": "5","worstRating": "1"}
+            }],
+            "potentialAction": {
+                "@type": "ViewAction",
+                "target": ["https://github.com/avdaredevil/highcharts-chart"]
+            }
+        }</script>
         <a id="Fork" title="Fork 'Highcharts-Chart' by Apoorv Verma [AP]" href="https://github.com/avdaredevil/highcharts-chart"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
-        <a id="GH" title="@avdaredevil on Github" href="https://github.com/avdaredevil"><i class="fa fa-github"></i></a>
     </body>
 </html>
