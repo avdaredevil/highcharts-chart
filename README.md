@@ -47,7 +47,7 @@ The charting is also responsive.
 
 Attribute  | Options     | Default              | Description
 ---        | ---         | ---                  | ---
-`type`     | `spline`,`pie` | `false`           | Pick type of chart
+`type`     | `spline`,`pie`,`column` | `NA`           | Pick type of chart
 `title`    | *string*    | `Highcharts Chart`   | Title of Chart
 `subtitle` | *string*    | `""`                 | Subtitle of Chart
 `showAxes` | *array*     | `['bottom','left']`  | Pick the axes to show.
@@ -66,35 +66,39 @@ Attribute  | Options     | Default              | Description
 `legend`   | *boolean*     | `false` | Display the legend
 `colorByPoint` | *boolean* | `false` | Every point treated/colored uniquely
 `credits`  | *boolean*     | `false` | Wish to thank/credit HighCharts?
----        | ---         | ---                  | ---
 `legendHorizAlign` | *string*     | `right` | Horizontal Alignment of Legend
 `legendVertAlign`  | *string*     | `top`   | Vertical Alignment of Legend
 `legendPos`  | *object*     | `{x:-40, y: 80}` | Legend Offset
 `legendOptions` | *object* | `{}` | Override/Add Options to your legend
 `tooltipOptions` | *object* | `{}` | Override/Add Options to your tooltip
----        | ---         | ---                  | ---
 `_chart` | *object `[readonly]`* | `{}` | HighCharts exposed object
 
 ### Methods
 
-Method       | Parameters           | Returns            | Description
----          | ---                  | ---                | ---
-`setData()`  | `Data Array [e,e,e]` | Nothing.           | Replaces graph data with the passed array
-`addData()`  | `Data e` [*x*,*y*]   | Nothing.           | Appends to data [*efficient*]
-`pushData()` | `Data e` [*x*,*y*]   | Nothing.           | Shifts and adds to data [*efficient*]
+Method       | Parameters           | Description
+---          | ---                  | ---
+`setData(data,z=0)`  | `Data Array`,`Series Index` | Replaces series data with the passed array
+`addData(x,y,z,drill)`  | `x`,`y`,`index`,`drillable?` | Appends to data [*efficient*]
+`pushData(x,y,z)` | `x`,`y`,`index` | Shifts and adds to data [*efficient*]
+`addSeries(name,data,colorByPoint)` | `String`,`Array`,`boolean`  | Shifts and adds to data [*efficient*]
+`addDrillSeries(point,data,name)` | `point`,`Array`,`String`   | Shifts and adds to data [*efficient*]
+`updateSeries(options,z=0)` | `{}`,`0`   | Modifies the options for series [given by `z`]
+`showLoading(t)` | `t [Text]` | Sets `Loading-Message` equal to `t` then turns on loading screen
+`resizeChart()` | `none`   | Adjust graph to the size of the parent
+`destroy()` | `none`   | Free's up the memory used by the chart [*prevents __memory leaks__*]
 
 ### Events
 
 Event      | Description             | Payload [*`e.detail`*]
 ---        | ---                     | ---
 `chart-click` | Click event on chart | `e` [*original event*], `chart` [*chart object*]
-`chart-load` | Fired when chart loaded | `e` [*original event*], `chart` [*chart object*]
-`before-print` | Fired before chart print | `e` [*original event*], `chart` [*chart object*]
-`after-print` | Fired after chart print | `e` [*original event*], `chart` [*chart object*]
-`series-added` | Fired when series added | `e` [*original event*], `chart` [*chart object*]
-`drill-down` | Fired when drill down is triggered | `e` [*original event*], `chart` [*chart object*]
-`drill-up` | Fired when drill up is triggered | `e` [*original event*], `chart` [*chart object*]
-`drill-selection` | Fired when a range of points are selected | `e` [*original event*], `chart` [*chart object*]
+`chart-load` | Fired when chart loaded | `e`, `chart`
+`before-print` | Fired before chart print | `e`, `chart`
+`after-print` | Fired after chart print | `e`, `chart`
+`series-added` | Fired when series added | `e`, `chart`
+`drill-down` | Fired when drill down is triggered | `e`, `chart`
+`drill-up` | Fired when drill up is triggered | `e`, `chart`
+`drill-selection` | Fired when a range of points are selected | `e`, `chart`
 
 ## Contributing
 
