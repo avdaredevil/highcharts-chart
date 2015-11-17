@@ -12,9 +12,13 @@
         <link rel="import" href="bower_components/paper-button/paper-button.html">
         <link rel="import" href="bower_components/iron-media-query/iron-media-query.html">
         <link rel="import" href="bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+        <link rel="import" href="bower_components/github-fork/github-fork.html">
+        <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="assets/gmail-scrollbar.css">
         <style is="custom-style">
             body {padding: 40px;}
+            h1 {text-align: center;font-family: 'Poiret One', cursive;}
+            h1>a {color: #989898}
             [rel] {position: relative}
             paper-button[red] {background-color: #E86D6D;color:white}
             paper-button[colored] {background-color: #7070D8;color:white}
@@ -24,8 +28,9 @@
             #PieHoverBox:hover {background-color: rgba(0,0,0,.69)}
             #PieHoverBox>h3 {display:block;font-size:1.3em;margin: 0 0 .45em;padding: .35em;border-bottom: 1px solid rgba(255, 255, 255, 0.52);}
             #PieHoverBox>.Holder {max-height: 24em;overflow: auto;transition: height .25s;padding:0 .65em .5em}
-            .Holder span:first-child {display: inline-block;min-width: 1.3em;text-align:right;margin-right: .25em}
-            .Holder span:first-child:after {content:"."}
+            #PieHoverBox>.Holder span:first-child {display: inline-block;min-width: 1.3em;text-align:right;margin-right: .25em}
+            #PieHoverBox>.Holder span:first-child:after {content:"."}
+            #PieHoverBox>.Holder span:nth-child(2) {font-style: italic}
             highcharts-chart {height: 400px}
             paper-input {width:49.5%;display:inline-block}
             @media screen and (max-width: 700px) {
@@ -40,11 +45,12 @@
         </style>
     </head>
     <body unresolved>
+        <h1>Highcharts-Chart by <a target=_blank href="https://github.com/avdaredevil">Apoorv Verma [AP]</a></h1>
         <template is="dom-bind" id="app">
             <div class="vertical center-justified layout">
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Spline Chart</h2>
-                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="Throughput" subtitle="[[splineSubtitle]]" title="Throughput Vs. Time" vs-time></highcharts-chart>
+                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="Throughput" subtitle="[[splineSubtitle]]" title="Throughput Vs. Time" vs-time on-click="addSplineSeries"></highcharts-chart>
                     <section class$="[[ternary(superThin,'','horizontal layout')]]">
                         <paper-button colored raised on-tap="addSplineDp">Add Data Point</paper-button>
                         <paper-button colored raised on-tap="toggleRealtime">Realtime: <span>[[ternary(realtime,"ON","OFF")]]</span></paper-button>
@@ -100,6 +106,7 @@
                 app.$.barChart.addDrillSeries(d.point,db[d.point.name],d.point.name)
                 app.$.barChart.addData("Who's that Pokemón",1,true)
             }
+            app.addSplineSeries = function(){appp.$.splineChart.addSeries("Made by AP")}
             app.pieSelect = function(e){app.set("piePoints",app.$.pieChart.selectedPoints)}
             app.realtime = false;app.splineLMsg="Preparing your Graph"
             app.ternary = function(s,a,b) {return s?a:b}
@@ -115,5 +122,6 @@
             app.async(app._populateRandomDataToSpline,250)
             app.async(()=>{app.splineLoading=false},500)
         </script>
+        <a href="https://github.com/avdaredevil/highcharts-chart"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
     </body>
 </html>
