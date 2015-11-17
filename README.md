@@ -35,6 +35,7 @@ Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/mas
     ```html
     <highcharts-chart type="spline"></highcharts-chart>
     <highcharts-chart type="pie"></highcharts-chart>
+    <highcharts-chart type="column"></highcharts-chart>
     ```
 
 ## &lt;highcharts-chart&gt;
@@ -51,16 +52,28 @@ Attribute  | Options     | Default              | Description
 `subtitle` | *string*    | `""`                 | Subtitle of Chart
 `showAxes` | *array*     | `['bottom','left']`  | Pick the axes to show.
 `xAxis`    | *object*    | `{}` OR *`Time based`* | Specifies the configuration for the X-Axis.
+`xLabel`   | *string*    | `X-Axis`             | Label for X-Axis
 `yLabel`   | *string*    | `Y-Axis`             | Label for Y-Axis
-`label`    | *string*    | `Label`*`[for non numeric]`* | Alias for y-label
+`label`    | *string*    | `Label`*`[for non numeric]`* | Alias for both Axis
 `data`     | *array*     | `[]` | Data for chart
 `loading`  | *boolean*     | `false` | Toggle loading overlay on chart
 `loadingMessage` | *string* | `Loading...` | Loading Text Display
 `selected` | *boolean*     | `false` | Is any element selected on graph
 `selectedPoints` | *array* | `[]` | Which elements are selected
 `vsTime`   | *boolean*     | `false` | Set all options appropriate for a time chart
-`legend`   | *boolean*   | `false`              | Display the legend
+`chartOptions` | *object*  | `{}` | Override/Add Properties for your type of chart
+`export`   | *boolean*     | `false` | Enable exporting of chart
+`legend`   | *boolean*     | `false` | Display the legend
+`colorByPoint` | *boolean* | `false` | Every point treated/colored uniquely
 `credits`  | *boolean*     | `false` | Wish to thank/credit HighCharts?
+---        | ---         | ---                  | ---
+`legendHorizAlign` | *string*     | `right` | Horizontal Alignment of Legend
+`legendVertAlign`  | *string*     | `top`   | Vertical Alignment of Legend
+`legendPos`  | *object*     | `{x:-40, y: 80}` | Legend Offset
+`legendOptions` | *object* | `{}` | Override/Add Options to your legend
+`tooltipOptions` | *object* | `{}` | Override/Add Options to your tooltip
+---        | ---         | ---                  | ---
+`_chart` | *object `[readonly]`* | `{}` | HighCharts exposed object
 
 ### Methods
 
@@ -72,9 +85,16 @@ Method       | Parameters           | Returns            | Description
 
 ### Events
 
-Event      | Description
----        | ---
-`NA`       | NA
+Event      | Description             | Payload [*`e.detail`*]
+---        | ---                     | ---
+`chart-click` | Click event on chart | `e` [*original event*], `chart` [*chart object*]
+`chart-load` | Fired when chart loaded | `e` [*original event*], `chart` [*chart object*]
+`before-print` | Fired before chart print | `e` [*original event*], `chart` [*chart object*]
+`after-print` | Fired after chart print | `e` [*original event*], `chart` [*chart object*]
+`series-added` | Fired when series added | `e` [*original event*], `chart` [*chart object*]
+`drill-down` | Fired when drill down is triggered | `e` [*original event*], `chart` [*chart object*]
+`drill-up` | Fired when drill up is triggered | `e` [*original event*], `chart` [*chart object*]
+`drill-selection` | Fired when a range of points are selected | `e` [*original event*], `chart` [*chart object*]
 
 ## Contributing
 

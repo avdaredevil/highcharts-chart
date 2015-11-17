@@ -29,12 +29,10 @@
                 label: {type: String, value: ""},
                 data: {type: Array, value: ()=>{return []}, observer:"setData"},
                 vsTime: {type: Boolean, value: false},
-                categorical: {type: Boolean, value: false, reflectToAttribute:true},
                 loading: {type: Boolean, value: false, observer: "_loadingUpdate", reflectToAttribute:true},
                 loadingMessage: {type: String, value: ""},
                 selected: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
                 selectedPoints: {type: Array, readOnly: true, notify: true},
-                hideLabels: {type: Boolean, value: false, reflectToAttribute: true},
                 export: {type: Boolean, value: false, reflectToAttribute: true},
                 //Custom Chart Declarations
                 legendHorizAlign: {type: String, value: "right"},
