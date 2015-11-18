@@ -96,9 +96,9 @@
                 }))
                 this.async(()=>{this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
             },
-            setData: function(x,z) {if (typeof z != "Number"){z=0}if(this._chart){console.info("this._chart.series[",z,"].setData(",x")");this._chart.series[z].setData(x)}},
+            setData: function(x,z) {if(!this._chart){return};if (typeof z != "Number"){z=0};console.info("Z is [",typeof z,"] :: "+"this._chart.series[",z,"].setData(",x")");this._chart.series[z].setData(x)}},
             addData: function(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)},
-            pushData: function(x,y,z,append,drillable) {
+            pushData: function(x,y,z,append,drillable) {if(!this._chart){return}
                 if (typeof z=="boolean") {drillable = true;z=0}
                 this._chart.series[(z||0)].addPoint(drillable?{name:x,y:y,drilldown:true}:[x,y],true,!append)
             },
