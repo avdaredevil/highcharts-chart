@@ -63,7 +63,7 @@
                             drillup: function(e){__app.fire("drill-up",{e: e,chart: this})},
                             selection: function(e){__app.fire("selection",{e: e,chart: this})},
                         }
-                    },this.xZoom||this.yZoom?{zoomType: (this.xZoom?"x":"")+(this.yZoom?"y":"")}),
+                    },this.xZoom||this.yZoom?{zoomType: (this.xZoom&&"x")+(this.yZoom&&"y")}:{}),
                     //Properties
                     title: {text: this.title},
                     subtitle: {text: this.subtitle},
