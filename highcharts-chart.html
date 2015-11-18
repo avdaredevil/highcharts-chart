@@ -15,7 +15,7 @@
         Polymer({
             is: "highcharts-chart",
             properties: {
-                type: {type: String, value: 'spline'},
+                type: {type: String, value: 'spline', observer: '_updateType'},
                 title: {type: String, value: "Highcharts Chart", observer: "_titleUpdate"},
                 subtitle: {type: String, value: "", observer: "_subtitleUpdate"},
                 showAxes: {type: Array, value: ()=>{return ['bottom','left']}},
@@ -108,6 +108,8 @@
             showLoading: function(d) {this.loadingMessage=d;this.loading=true},
             resizeChart: function() {this._chart.setSize(this.offsetWidth,this.offsetHeight)},
             destroy: function() {this._chart.destroy()},
+            updateSeries: function(k,v,z) {if(!this._chart){return};this._chart.series(k,v,(z||0))},
+            _updateType: function(t) {this.updateSeries("type",t)},
             _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)},
             _xAxisUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update(this.xAxis)},
             _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})},
