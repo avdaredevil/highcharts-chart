@@ -96,7 +96,7 @@
                 }))
                 this.async(()=>{this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
             },
-            setData: function(x,z) {if (typeof z != "Number"){z=0}if(this._chart){this._chart.series[z].setData(x)}},
+            setData: function(x,z) {if (typeof z != "Number"){z=0}if(this._chart){console.info("this._chart.series[",z,"].setData(",x")");this._chart.series[z].setData(x)}},
             addData: function(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)},
             pushData: function(x,y,z,append,drillable) {
                 if (typeof z=="boolean") {drillable = true;z=0}
