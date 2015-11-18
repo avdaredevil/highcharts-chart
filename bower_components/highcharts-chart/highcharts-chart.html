@@ -15,7 +15,7 @@
         Polymer({
             is: "highcharts-chart",
             properties: {
-                type: {type: String, value: 'spline'},
+                type: {type: String, value: 'spline', observer: '_updateType'},
                 title: {type: String, value: "Highcharts Chart", observer: "_titleUpdate"},
                 subtitle: {type: String, value: "", observer: "_subtitleUpdate"},
                 showAxes: {type: Array, value: ()=>{return ['bottom','left']}},
@@ -29,13 +29,13 @@
                 label: {type: String, value: ""},
                 data: {type: Array, value: ()=>{return []}, observer:"setData"},
                 vsTime: {type: Boolean, value: false},
-                categorical: {type: Boolean, value: false, reflectToAttribute:true},
                 loading: {type: Boolean, value: false, observer: "_loadingUpdate", reflectToAttribute:true},
                 loadingMessage: {type: String, value: ""},
                 selected: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
                 selectedPoints: {type: Array, readOnly: true, notify: true},
-                hideLabels: {type: Boolean, value: false, reflectToAttribute: true},
                 export: {type: Boolean, value: false, reflectToAttribute: true},
+                xZoom: {type: Boolean, value: false, reflectToAttribute: true},
+                yZoom: {type: Boolean, value: false, reflectToAttribute: true},
                 //Custom Chart Declarations
                 legendHorizAlign: {type: String, value: "right"},
                 legendVertAlign: {type: String, value: "top"},
@@ -48,7 +48,7 @@
                 var Series = [{name: (this.label||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}]
                 var __app = this
                 this._set_chart(new Highcharts.Chart({
-                    chart: {
+                    chart: $.extend({
                         renderTo: this.$.Chart,
                         defaultSeriesType: this.type,
                         animation: Highcharts.svg, // don't animate in old IE
@@ -63,7 +63,7 @@
                             drillup: function(e){__app.fire("drill-up",{e: e,chart: this})},
                             selection: function(e){__app.fire("selection",{e: e,chart: this})},
                         }
-                    },
+                    },this.xZoom||this.yZoom?{zoomType: (this.xZoom&&"x")+(this.yZoom&&"y")}:{}),
                     //Properties
                     title: {text: this.title},
                     subtitle: {text: this.subtitle},
@@ -96,18 +96,19 @@
                 }))
                 this.async(()=>{this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
             },
-            setData: function(x,z) {if (typeof z != "Number"){z=0}if(this._chart){this._chart.series[z].setData(x)}},
+            setData: function(x,z) {if(!this._chart){return};if (typeof z != "number"){z=0}this._chart.series[z].setData(x)},
             addData: function(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)},
-            pushData: function(x,y,z,append,drillable) {
+            pushData: function(x,y,z,append,drillable) {if(!this._chart){return}
                 if (typeof z=="boolean") {drillable = true;z=0}
                 this._chart.series[(z||0)].addPoint(drillable?{name:x,y:y,drilldown:true}:[x,y],true,!append)
             },
             addSeries: function(name,data,colorByPoint) {this._chart.addSeries({name: name, data: (data||[]), colorByPoint: typeof colorByPoint=="undefined"?this.colorByPoint:colorByPoint},true)},
             addDrillSeries: function(point,data,name) {this._chart.addSeriesAsDrilldown(point, {name: name, data: data})},
-            updateSeries: function(data,z) {this._chart.series[(z||0)].update(data)},
             showLoading: function(d) {this.loadingMessage=d;this.loading=true},
             resizeChart: function() {this._chart.setSize(this.offsetWidth,this.offsetHeight)},
             destroy: function() {this._chart.destroy()},
+            updateSeries: function(k,v,z) {if(!this._chart){return};var NewEl = {};if(typeof k=="object"){NewEl = k}else{NewEl[k]=v};this._chart.series[(z||0)].update(NewEl)},
+            _updateType: function(t) {this.updateSeries("type",t)},
             _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)},
             _xAxisUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update(this.xAxis)},
             _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})},
