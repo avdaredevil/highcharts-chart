@@ -34,6 +34,8 @@
                 selected: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
                 selectedPoints: {type: Array, readOnly: true, notify: true},
                 export: {type: Boolean, value: false, reflectToAttribute: true},
+                zoom: {type: Boolean, value: false, reflectToAttribute: true},
+                zoomType: {type: String, value: "none"},
                 //Custom Chart Declarations
                 legendHorizAlign: {type: String, value: "right"},
                 legendVertAlign: {type: String, value: "top"},
@@ -46,7 +48,7 @@
                 var Series = [{name: (this.label||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}]
                 var __app = this
                 this._set_chart(new Highcharts.Chart({
-                    chart: {
+                    chart: $.extend({
                         renderTo: this.$.Chart,
                         defaultSeriesType: this.type,
                         animation: Highcharts.svg, // don't animate in old IE
@@ -61,7 +63,7 @@
                             drillup: function(e){__app.fire("drill-up",{e: e,chart: this})},
                             selection: function(e){__app.fire("selection",{e: e,chart: this})},
                         }
-                    },
+                    },(this.zoom||this.zoomType!="none")?{zoomType: this.zoomType=="none"?"x":this.zoomType}),
                     //Properties
                     title: {text: this.title},
                     subtitle: {text: this.subtitle},
