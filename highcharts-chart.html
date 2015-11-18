@@ -108,7 +108,7 @@
             showLoading: function(d) {this.loadingMessage=d;this.loading=true},
             resizeChart: function() {this._chart.setSize(this.offsetWidth,this.offsetHeight)},
             destroy: function() {this._chart.destroy()},
-            updateSeries: function(k,v,z) {if(!this._chart){return};this._chart.series(k,v,(z||0))},
+            updateSeries: function(k,v,z) {if(!this._chart){return};var NewEl = {};NewEl[k]=v;this._chart.series[(z||0)](NewEl)},
             _updateType: function(t) {this.updateSeries("type",t)},
             _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)},
             _xAxisUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update(this.xAxis)},
