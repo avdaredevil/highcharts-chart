@@ -26,5 +26,8 @@
     "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.0.5",
     "paper-input": "PolymerElements/paper-input#~1.0.18",
     "Trip.js": "trip.js#~3.1.0"
+  },
+  "resolutions": {
+    "jquery": "~2.1.4"
   }
 }
