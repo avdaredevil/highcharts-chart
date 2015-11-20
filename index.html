@@ -62,17 +62,17 @@
         </style>
     </head>
     <body unresolved>
-        <header itemscope itemtype="http://schema.org/Person">
-            <h1>Highcharts-Chart by <a target=_blank title="Apoorv Verma [AP] on LinkedIn" href="https://www.linkedin.com/in/apoorvverma" itemprop="url"><span itemprop="name">Apoorv Verma</span> [<span itemprop="additionalName">AP</span>]</a></h1>
-            <span hidden itemprop="alumniOf">Rutgers University</span>
-            <span hidden itemprop="affiliation">Goldman Sachs</span>
-            <span hidden itemprop="affiliation">Zelco Solutions</span>
-            <span hidden itemprop="email">avdaredevil@gmail.com</span>
-            <a id="GH" top-hover title="@avdaredevil on Github" href="https://github.com/avdaredevil" itemprop="url"><i class="fa fa-github"></i></a>
-            <h2 id="SubLine">A very robust responsive charting/graphing library [highcharts.js] integrated with polymer, to create charts with just one line!</h2>
-        </header>
         <template is="dom-bind" id="app">
-            <div class="vertical center-justified layout">
+            <header itemscope itemtype="http://schema.org/Person">
+                <h1>Highcharts-Chart by <a target=_blank title="Apoorv Verma [AP] on LinkedIn" on-tap="_trackLinkedIn" href="https://www.linkedin.com/in/apoorvverma" itemprop="url"><span itemprop="name">Apoorv Verma</span> [<span itemprop="additionalName">AP</span>]</a></h1>
+                <span hidden itemprop="alumniOf">Rutgers University</span>
+                <span hidden itemprop="affiliation">Goldman Sachs</span>
+                <span hidden itemprop="affiliation">Zelco Solutions</span>
+                <span hidden itemprop="email">avdaredevil@gmail.com</span>
+                <a id="GH" top-hover title="@avdaredevil on Github" href="https://github.com/avdaredevil" on-tap="_trackGH" itemprop="url"><i class="fa fa-github"></i></a>
+                <h2 id="SubLine">A very robust responsive charting/graphing library [highcharts.js] integrated with polymer, to create charts with just one line!</h2>
+            </header>
+                <div class="vertical center-justified layout">
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Spline Chart</h2>
                     <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="Throughput" subtitle="[[splineSubtitle]]" title="Throughput Vs. Time" vs-time on-click="addSplineSeries"></highcharts-chart>
@@ -151,7 +151,9 @@
             app.changeAlert = function(d) {console.log("Recieved",d);return d}
             app.chartResize = function(t) {a=document.getElementsByTagName("highcharts-chart");for(i=0;i<a.length;i++){a[i].resizeChart()}}
             app.startTutorial = function() {app._trackEvent("button","Help Me");app.tutorial.start()}
-            app._trackFork = ()=>{app._trackEvent("button","Fork Repo")}
+            app._trackGH = ()=>{app._trackEvent("navigate","Github")}
+            app._trackLinkedIn = ()=>{app._trackEvent("navigate","LinkedIn")}
+            app._trackFork = ()=>{app._trackEvent("navigate","Fork Repo")}
             app._trackEvent = (a,b,c)=>{ga('send', {hitType: 'event',eventCategory: a,eventAction: b, eventLabel: c});}
             app._realtime = setInterval(()=>{app.realtime && app.addSplineDp(true)},1000)
             app._computePieTitle = function(s) {return "Work Distribution"+(s?" [Selected]":"")}
@@ -173,7 +175,7 @@
                     {sel: app.$.pieChart, content: "Click [or <span tut-code>ctrl click</span>] any slice to see all members data binded to an element in the right", delay: 5000},
                     {sel: $(".vertical-section:nth-of-type(3)"), content: "This is a <i><span tut-code>Drillable</span> Column Chart</i>"},
                     {sel: $(".vertical-section:nth-of-type(3)"), delay: 2500, content: "That means all elements can be clicked into"},
-                    {sel: $(".vertical-section:nth-of-type(3) paper-button"), position: "e", delay: 5000, content: "<section>Use this button to dynamically insert birds into the Animals chart</section>[sub charts are not permitted in this example]"},
+                    {sel: $(".vertical-section:nth-of-type(3) paper-button"), position: "e", delay: 5000, content: "<section>Use this button to dynamically insert birds into the Animals chart</section>[sub charts are not permitted in this example]", onEnd: ()=>{app._track("behavior","Tutorial","Complete")}},
                 ].map((el)=>{return $.extend({delay: 3000, expose: true, animation: 'bounce'},el)}),{backToTopWhenEnded : true});app.helpLoaded=true;
             }, 1000)
         </script>
