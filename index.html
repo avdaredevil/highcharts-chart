@@ -149,7 +149,7 @@
             app.addPieData = function() {this.$.pieChart.addData("Random "+(++this.person),Math.random()*25)}
             app.changeAlert = function(d) {console.log("Recieved",d);return d}
             app.chartResize = function(t) {a=document.getElementsByTagName("highcharts-chart");for(i=0;i<a.length;i++){a[i].resizeChart()}}
-            app.startTutorial = function() {app.tutorial.start()}
+            app.startTutorial = function() {ga('send', {hitType: 'event',eventCategory: 'Buttons',eventAction: 'click',eventLabel: 'Help Me'});app.tutorial.start()}
             app._realtime = setInterval(()=>{app.realtime && app.addSplineDp(true)},1000)
             app._computePieTitle = function(s) {return "Work Distribution"+(s?" [Selected]":"")}
             app._populateRandomDataToSpline = ()=>{dp=[];for(i=0;i<5;i++){dp.push([app.initTime+=1000,Math.random()*10])}app.$.splineChart.setData(dp)}
@@ -173,6 +173,13 @@
                     {sel: $(".vertical-section:nth-of-type(3) paper-button"), position: "e", delay: 5000, content: "<section>Use this button to dynamically insert birds into the Animals chart</section>[sub charts are not permitted in this example]"},
                 ].map((el)=>{return $.extend({delay: 3000, expose: true, animation: 'bounce'},el)}),{backToTopWhenEnded : true});app.helpLoaded=true;
             }, 1000)
+        </script>
+        <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-70396261-1', 'auto');
+          ga('send', 'pageview');
         </script>
         <script type="application/ld+json">{
             "@context": "http://schema.org",
