@@ -13,9 +13,11 @@
         <link rel="import" href="bower_components/paper-button/paper-button.html">
         <link rel="import" href="bower_components/iron-media-query/iron-media-query.html">
         <link rel="import" href="bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+        <link rel="stylesheet" href="assets/gmail-scrollbar.css">
+        <link rel="stylesheet" href="bower_components/Trip.js/dist/trip.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="assets/gmail-scrollbar.css">
+        <script src="bower_components/Trip.js/dist/trip.min.js"></script>
         <style is="custom-style">
             body {padding: 40px;}
             h1 {text-align: center;font-family: 'Poiret One', cursive;}
@@ -34,17 +36,26 @@
             #PieHoverBox>.Holder span:nth-child(2) {font-style: italic}
             highcharts-chart {height: 400px}
             paper-input {width:49.5%;display:inline-block}
-            #GH {position: absolute;top: 10px;right: 10px;font-size: 3em;color: #676767;text-decoration: none;transition:color .25s}
-            #GH:hover {color: #313131}
+            [top-hover] {top: 10px;position: absolute;cursor:pointer;font-size: 3em;color: #676767;text-decoration: none;transition:color .25s}
+            [top-hover]:hover {color: #313131}
+            #GH {right: 10px}
+            #Help-Me {top: 52px;right: 10px}
             #SubLine {font-size: .85em;text-align: center;border: 0;font-style: italic}
+            .trip-exposed {box-shadow: 0px 0px 18px -3px inset}
+            .trip-next,.trip-prev {color: #848484;transition: color .25s}
+            .trip-next:hover,.trip-prev:hover {color: #EF4242}
+            [tut-code] {color: #84B764}
             @media screen and (max-width: 700px) {
                 paper-input {width:100%}
-                body {padding:20px 0}
+                body {padding:25px 0}
                 highcharts-chart {height: 20em}
                 #Fork {display: none}
                 #PieHoverBox>.Holder {max-height: 18em;overflow: auto}
+                [top-hover] {top: 0}
+                #Help-Me {top: 0;right: 20px;transform: translateX(-100%)}
             }
             @media screen and (max-width: 450px) {
+                .vertical-section {padding: 12px;margin: 5px 12px 20px}
                 paper-button {display: inline-block;width: 100%;margin: .125em 0;}
             }
         </style>
@@ -56,23 +67,25 @@
             <span hidden itemprop="affiliation">Goldman Sachs</span>
             <span hidden itemprop="affiliation">Zelco Solutions</span>
             <span hidden itemprop="email">avdaredevil@gmail.com</span>
-            <a id="GH" title="@avdaredevil on Github" href="https://github.com/avdaredevil" itemprop="url"><i class="fa fa-github"></i></a>
-            <h2 id="SubLine">A very robust charting and graphing library [highcharts.js] integrated with polymer, to create charts with just one line!</h2>
+            <a id="GH" top-hover title="@avdaredevil on Github" href="https://github.com/avdaredevil" itemprop="url"><i class="fa fa-github"></i></a>
+            <h2 id="SubLine">A very robust responsive charting/graphing library [highcharts.js] integrated with polymer, to create charts with just one line!</h2>
         </header>
         <template is="dom-bind" id="app">
             <div class="vertical center-justified layout">
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Spline Chart</h2>
                     <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="Throughput" subtitle="[[splineSubtitle]]" title="Throughput Vs. Time" vs-time on-click="addSplineSeries"></highcharts-chart>
-                    <section class$="[[ternary(superThin,'','horizontal layout')]]">
+                    <section buttons class$="[[ternary(superThin,'','horizontal layout')]]">
                         <paper-button colored raised on-tap="addSplineDp">Add Data Point</paper-button>
                         <paper-button colored raised on-tap="toggleRealtime">Realtime: <span>[[ternary(realtime,"ON","OFF")]]</span></paper-button>
                         <paper-button colored raised on-tap="toggleLoading">Loading: <span>[[ternary(splineLoading,"ON","OFF")]]</span></paper-button>
                         <div class=flex></div>
                         <paper-button red raised on-tap="resetSpline">Reset</paper-button>
                     </section>
-                    <paper-input value="{{splineLMsg}}" label="Loading Message" disabled="[[splineLoading]]"></paper-input>
-                    <paper-input value="{{splineSubtitle}}" label="Subtitle for Chart"></paper-input>
+                    <section demo-inputs>
+                        <paper-input value="{{splineLMsg}}" label="Loading Message" disabled="[[splineLoading]]"></paper-input>
+                        <paper-input value="{{splineSubtitle}}" label="Subtitle for Chart"></paper-input>
+                    <section>
                 </article>
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Pie Chart</h2>
@@ -91,18 +104,19 @@
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Bar/Column Chart</h2>
                     <highcharts-chart id="barChart" type="column" color-by-point x-label='Animals' x-axis='{"type": "category"}' y-label="Count" subtitle="Drillable Bar Chart" title="Animals" on-chart-load="addInitData" on-drill-down="barDrill" on-drill-up="unDrill"></highcharts-chart>
-                    <section class="layout horizontal">
+                    <section buttons class="layout horizontal">
                         <paper-button colored raised on-tap="addBarBird" disabled="[[or(birdAdded,inDrill)]]">Add Birds</paper-button>
                     </section>
                 </article>
             </div>
             <iron-media-query query="(max-width: 700px)" query-matches="{{thin}}"></iron-media-query>
             <iron-media-query query="(max-width: 450px)" query-matches="{{superThin}}"></iron-media-query>
+            <a id="Help-Me" hidden$="[[!helpLoaded]]" top-hover title="Help Me" on-tap="startTutorial"><i class="fa fa-question-circle"></i></a>
         </template>
         <script>
             app = document.getElementById("app")
             app.person=app.inDrill=0;app.initTime = (new Date()).getTime()
-            app.birdAdded=false;app.splineSubtitle = "Click to add new series [in realtime mode]"
+            app.birdAdded=app.helpLoaded=false;app.splineSubtitle = "Click to add new series [in realtime mode]"
             app.or = function(a,b){return !!(a||b)}
             app.incr = function(a){return a+1}
             app.ternary = function(s,a,b){return s?a:b}
@@ -134,12 +148,30 @@
             app.addPieData = function() {this.$.pieChart.addData("Random "+(++this.person),Math.random()*25)}
             app.changeAlert = function(d) {console.log("Recieved",d);return d}
             app.chartResize = function(t) {a=document.getElementsByTagName("highcharts-chart");for(i=0;i<a.length;i++){a[i].resizeChart()}}
+            app.startTutorial = function() {app.tutorial.start()}
             app._realtime = setInterval(()=>{app.realtime && app.addSplineDp(true)},1000)
             app._computePieTitle = function(s) {return "Work Distribution"+(s?" [Selected]":"")}
             app._populateRandomDataToSpline = ()=>{dp=[];for(i=0;i<5;i++){dp.push([app.initTime+=1000,Math.random()*10])}app.$.splineChart.setData(dp)}
             app.async(()=>{$(window).resize(()=>{app.chartResize()})},1000)
             app.async(app._populateRandomDataToSpline,250)
             app.async(()=>{app.splineLoading=false},500)
+            app.async(()=>{
+                app.tutorial = new Trip([
+                    {sel: $("h1:first"), position: "s", animation: 'tada', content: "This is a Polymer element to replace the pains of the Highcharts library."},
+                    {sel: $("h1:first"), delay: -1, showNavigation: true, position: "s", content: "You can press <span style='color:#BBA400'>Escape</span> at any time to close this tutorial."},
+                    {sel: $(".vertical-section:first"), delay: 2000, content: "Let's look at the spline chart"},
+                    {sel: app.$.splineChart, delay: 3500, expose: true, animation: 'bounce', content: "This is a Polymer element, made with <span tut-code>&lt;highcharts-chart type=\"spline\"&gt;</span>"},
+                    {sel: $(".vertical-section:first [buttons]"), delay: 3500,content: "You can use these to manupilate the chart in real-time"},
+                    {sel: $(".vertical-section:first [demo-inputs]"), content: "Check out the cool data binds"},
+                    {sel: $(".vertical-section:first [demo-inputs]"), content: "Want to move on?", delay: -1, showNavigation: true, showCloseBox: true},
+                    {sel: $(".vertical-section:nth-of-type(2)"), content: "This is the pie chart"},
+                    {sel: $(".vertical-section:nth-of-type(2) paper-button"), content: "Use this to add new members"},
+                    {sel: app.$.pieChart, content: "Click [or <span tut-code>ctrl click</span>] any slice to see all members data binded to an element in the right", delay: 5000},
+                    {sel: $(".vertical-section:nth-of-type(3)"), content: "This is a <i><span tut-code>Drillable</span> Column Chart</i>"},
+                    {sel: $(".vertical-section:nth-of-type(3)"), delay: 2500, content: "That means all elements can be clicked into"},
+                    {sel: $(".vertical-section:nth-of-type(3) paper-button"), delay: , content: "Use this button to dynamically insert birds into the Animals chart [sub charts are not permitted in this example]"},
+                ].map((el)=>{return $.extend({delay: 3000, expose: true, animation: 'bounce'},el)}),{backToTopWhenEnded : true});app.helpLoaded=true;
+            }, 1000)
         </script>
         <script type="application/ld+json">{
             "@context": "http://schema.org",
