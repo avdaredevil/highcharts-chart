@@ -149,7 +149,7 @@
             app.addPieData = function() {this.$.pieChart.addData("Random "+(++this.person),Math.random()*25)}
             app.changeAlert = function(d) {console.log("Recieved",d);return d}
             app.chartResize = function(t) {a=document.getElementsByTagName("highcharts-chart");for(i=0;i<a.length;i++){a[i].resizeChart()}}
-            app.startTutorial = function() {ga('send', {hitType: 'event',eventCategory: 'Buttons',eventAction: 'click',eventLabel: 'Help Me'});app.tutorial.start()}
+            app.startTutorial = function() {ga('send', {hitType: 'event',eventCategory: 'Buttons',eventAction: 'Help'});app.tutorial.start()}
             app._realtime = setInterval(()=>{app.realtime && app.addSplineDp(true)},1000)
             app._computePieTitle = function(s) {return "Work Distribution"+(s?" [Selected]":"")}
             app._populateRandomDataToSpline = ()=>{dp=[];for(i=0;i<5;i++){dp.push([app.initTime+=1000,Math.random()*10])}app.$.splineChart.setData(dp)}
