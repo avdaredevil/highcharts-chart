@@ -169,7 +169,7 @@
                     {sel: app.$.pieChart, content: "Click [or <span tut-code>ctrl click</span>] any slice to see all members data binded to an element in the right", delay: 5000},
                     {sel: $(".vertical-section:nth-of-type(3)"), content: "This is a <i><span tut-code>Drillable</span> Column Chart</i>"},
                     {sel: $(".vertical-section:nth-of-type(3)"), delay: 2500, content: "That means all elements can be clicked into"},
-                    {sel: $(".vertical-section:nth-of-type(3) paper-button"), delay: 5000, content: "Use this button to dynamically insert birds into the Animals chart [sub charts are not permitted in this example]"},
+                    {sel: $(".vertical-section:nth-of-type(3) paper-button"), delay: 5000, content: "<section>Use this button to dynamically insert birds into the Animals chart</section>[sub charts are not permitted in this example]"},
                 ].map((el)=>{return $.extend({delay: 3000, expose: true, animation: 'bounce'},el)}),{backToTopWhenEnded : true});app.helpLoaded=true;
             }, 1000)
         </script>
