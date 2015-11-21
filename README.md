@@ -58,8 +58,8 @@ Attribute  | Options     | Default              | Description
 `data`     | *array*     | `[]` | Data for chart
 `loading`  | *boolean*     | `false` | Toggle loading overlay on chart
 `loadingMessage` | *string* | `Loading...` | Loading Text Display
-`selected` | *boolean*     | `false` | Is any element selected on graph
-`selectedPoints` | *array* | `[]` | Which elements are selected
+`selected` | *boolean `[readonly]`*     | `false` | Is any element selected on graph
+`selectedPoints` | *array `[readonly]`* | `[]` | Which elements are selected
 `vsTime`   | *boolean*     | `false` | Set all options appropriate for a time chart
 `chartOptions` | *object*  | `{}` | Override/Add Properties for your type of chart
 `export`   | *boolean*     | `false` | Enable exporting of chart
