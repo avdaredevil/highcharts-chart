@@ -100,7 +100,7 @@ Event      | Description             | Payload [*`e.detail`*]
 `drill-up` | Fired when drill up is triggered | `e`, `chart`
 `drill-selection` | Fired when a range of points are selected | `e`, `chart`
 
-## Contributing
+## Contributing/Suggestions
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
