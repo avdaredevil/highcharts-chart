@@ -80,7 +80,7 @@ Method       | Parameters           | Description
 `setData(data,z=0)`  | `Data Array`,`Series Index` | Replaces series data with the passed array
 `addData(x,y,z,drill)`  | `x`,`y`,`index`,`drillable?` | Appends to data [*efficient*]
 `pushData(x,y,z)` | `x`,`y`,`index` | Shifts and adds to data [*efficient*]
-`addSeries(name,data,colorByPoint)` | `String`,`Array`,`boolean`  | Adds a new Series to Data
+`addSeries(name,data,colorByPoint)` | `String`,`Array`,`boolean`  | Adds a new Series to Plot
 `addDrillSeries(point,data,name)` | `point`,`Array`,`String`   | Adds a series that is viewable when an Element is clicked into
 `updateSeries(options,z=0)` | `{}`,`0`   | Modifies the options for series [given by `z`]
 `showLoading(t)` | `t [Text]` | Sets `Loading-Message` equal to `t` then turns on loading screen
