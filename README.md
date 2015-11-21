@@ -47,7 +47,7 @@ The charting is also responsive.
 
 Attribute  | Options     | Default              | Description
 ---        | ---         | ---                  | ---
-`type`     | `spline`,`pie`,`column` | `NA`           | Pick type of chart
+`type`     | `spline`,`pie`,`column` | `spline` | Pick type of chart
 `title`    | *string*    | `Highcharts Chart`   | Title of Chart
 `subtitle` | *string*    | `""`                 | Subtitle of Chart
 `showAxes` | *array*     | `['bottom','left']`  | Pick the axes to show.
