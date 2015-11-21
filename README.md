@@ -4,7 +4,7 @@
 
 ## Demo
 
-[You can see a Realtime/Resonsive demo live! With a Tutorial Icon in the top right](http://avdaredevil.github.io/highcharts-chart)
+You can see a [Realtime/Resonsive demo live](http://avdaredevil.github.io/highcharts-chart)! With a Tutorial Icon in the top right.
 
 ## Install
 
