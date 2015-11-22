@@ -21,6 +21,7 @@
         <link rel="stylesheet" href="bower_components/Trip.js/dist/trip.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
         <script src="bower_components/Trip.js/dist/trip.min.js"></script>
         <script src="https://js.stripe.com/v2"></script>
         <script src="https://checkout.stripe.com/checkout.js"></script>
@@ -205,26 +206,28 @@
                 locale: 'auto',
                 token: function(token) {app.donationResult=token;app._trackEvent("e-commerce","Donations","Stripe",app.donationAmt);app.$.Thanks.open()}
             });
-            app.async(()=>{$(window).resize(()=>{app.chartResize()})},1000)
-            app.async(app._populateRandomDataToSpline,250)
-            app.async(()=>{app.splineLoading=false},500)
-            app.async(()=>{
-                app.tutorial = new Trip([
-                    {sel: $("h1:first"), position: "s", animation: 'tada', content: "This is a Polymer element to replace the pains of the Highcharts library."},
-                    {sel: $("h1:first"), delay: -1, showNavigation: true, position: "s", content: "You can press <span style='color:#BBA400'>Escape</span> at any time to close this tutorial."},
-                    {sel: $(".vertical-section:first"), delay: 2000, content: "Let's look at the spline chart"},
-                    {sel: app.$.splineChart, delay: 3500, expose: true, animation: 'bounce', content: "This is a Polymer element, made with <span tut-code>&lt;highcharts-chart type=\"spline\"&gt;</span>"},
-                    {sel: $(".vertical-section:first [buttons]"), delay: 3500,content: "You can use these to manupilate the chart in real-time"},
-                    {sel: $(".vertical-section:first [demo-inputs]"), content: "Check out the cool data binds"},
-                    {sel: $(".vertical-section:first [demo-inputs]"), content: "Want to move on?", delay: -1, showNavigation: true, showCloseBox: true},
-                    {sel: $(".vertical-section:nth-of-type(2)"), content: "This is the pie chart"},
-                    {sel: $(".vertical-section:nth-of-type(2) paper-button"), content: "Use this to add new members"},
-                    {sel: app.$.pieChart, content: "Click [or <span tut-code>ctrl click</span>] any slice to see all members data binded to an element in the right", delay: 5000},
-                    {sel: $(".vertical-section:nth-of-type(3)"), content: "This is a <i><span tut-code>Drillable</span> Column Chart</i>"},
-                    {sel: $(".vertical-section:nth-of-type(3)"), delay: 2500, content: "That means all elements can be clicked into"},
-                    {sel: $(".vertical-section:nth-of-type(3) paper-button"), position: "e", delay: 5000, content: "<section>Use this button to dynamically insert birds into the Animals chart</section>[sub charts are not permitted in this example]", onTripEnd: function(){app._trackEvent("behavior","Tutorial","Complete")}},
-                ].map((el)=>{return $.extend({delay: 3000, expose: true, animation: 'bounce'},el)}),{backToTopWhenEnded : true});app.helpLoaded=true;
-            }, 1000)
+            window.addEventListener('WebComponentsReady', function(e) {
+                app.async(()=>{$(window).resize(()=>{app.chartResize()})},1000)
+                app.async(app._populateRandomDataToSpline,250)
+                app.async(()=>{app.splineLoading=false},500)
+                app.async(()=>{
+                    app.tutorial = new Trip([
+                        {sel: $("h1:first"), position: "s", animation: 'tada', content: "This is a Polymer element to replace the pains of the Highcharts library."},
+                        {sel: $("h1:first"), delay: -1, showNavigation: true, position: "s", content: "You can press <span style='color:#BBA400'>Escape</span> at any time to close this tutorial."},
+                        {sel: $(".vertical-section:first"), delay: 2000, content: "Let's look at the spline chart"},
+                        {sel: app.$.splineChart, delay: 3500, expose: true, animation: 'bounce', content: "This is a Polymer element, made with <span tut-code>&lt;highcharts-chart type=\"spline\"&gt;</span>"},
+                        {sel: $(".vertical-section:first [buttons]"), delay: 3500,content: "You can use these to manupilate the chart in real-time"},
+                        {sel: $(".vertical-section:first [demo-inputs]"), content: "Check out the cool data binds"},
+                        {sel: $(".vertical-section:first [demo-inputs]"), content: "Want to move on?", delay: -1, showNavigation: true, showCloseBox: true},
+                        {sel: $(".vertical-section:nth-of-type(2)"), content: "This is the pie chart"},
+                        {sel: $(".vertical-section:nth-of-type(2) paper-button"), content: "Use this to add new members"},
+                        {sel: app.$.pieChart, content: "Click [or <span tut-code>ctrl click</span>] any slice to see all members data binded to an element in the right", delay: 5000},
+                        {sel: $(".vertical-section:nth-of-type(3)"), content: "This is a <i><span tut-code>Drillable</span> Column Chart</i>"},
+                        {sel: $(".vertical-section:nth-of-type(3)"), delay: 2500, content: "That means all elements can be clicked into"},
+                        {sel: $(".vertical-section:nth-of-type(3) paper-button"), position: "e", delay: 5000, content: "<section>Use this button to dynamically insert birds into the Animals chart</section>[sub charts are not permitted in this example]", onTripEnd: function(){app._trackEvent("behavior","Tutorial","Complete")}},
+                    ].map((el)=>{return $.extend({delay: 3000, expose: true, animation: 'bounce'},el)}),{backToTopWhenEnded : true});app.helpLoaded=true;
+                }, 1000)
+            });
             console.log("%cHey, you're a rebel! I like you.","color:orange;font-size:1.3em;text-decoration:underline")
             console.log("%cConsider donating perhaps?","font-size: .9em;font-style:italic")
         </script>
