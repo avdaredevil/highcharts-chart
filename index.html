@@ -126,10 +126,11 @@
                     <section class="layout horizontal around-justified center-center">
                         <section>Donation Amount:</section>
                         <paper-slider class="flex" min="0" max="50" value="{{donationAmt}}" immediate-value="{{diagAmt}}" editable></paper-slider>
+                        <span>USD</span>
                     </section>
                     <section class="layout horizontal around-justified center-center">
                         <aside quote>[[donationDialog(diagAmt)]]</aside>
-                        <div class="flex"></div><paper-button class="donate-btn" colored raised on-tap="Donate">Donate: &nbsp; <span class="fa"><i class="fa-credit-card"></i> <i class="fa-bitcoin"></i></span></paper-button>
+                        <div class="flex"></div><paper-button class="donate-btn" disabled="{{eq(donationAmt,'0')}}" colored raised on-tap="Donate">Donate: &nbsp; <span class="fa"><i class="fa-credit-card"></i> <i class="fa-bitcoin"></i></span></paper-button>
                     </section>
                 </article>
             </div>
@@ -149,6 +150,7 @@
             app.birdAdded=app.helpLoaded=false;app.splineSubtitle = "Click to add new series [in realtime mode]"
             app.or = function(a,b){return !!(a||b)}
             app.incr = function(a){return a+1}
+            app.eq = function(a,b){return a==b}
             app.ternary = function(s,a,b){return s?a:b}
             app.donationDialog = function(d){return d<=0?"I'm sorry you did not like this library. Perhaps you could leave me a suggestion in my repo.":d<5?"Every bit counts. Thank you.":d<11?"Thanks a lot!":d<21?"You are a very generous person":d<31?"Wow, I will send you a personal thank you card!":"I'm speechless! I will send you a very detailed thank you card."}
             app.Donate = function(){
