@@ -7,11 +7,14 @@
         <title>Highcharts-Chart Element for Polymer 1.0 - Apoorv Verma [AP]</title>
         <meta name="description" content="Highcharts Element wrapper for polymer 1.0 using webcomponents, with data binding">
         <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script>if (window.location.host.indexOf('github.io') > -1 && window.location.protocol != "https:"){window.location.protocol = "https";}</script>
         <link rel="icon" type="image/ico" href="favicon.ico">
         <link rel="import" href="bower_components/highcharts-chart/highcharts-chart.html">
         <link rel="import" href="bower_components/paper-input/paper-input.html">
         <link rel="import" href="bower_components/paper-styles/demo-pages.html">
         <link rel="import" href="bower_components/paper-button/paper-button.html">
+        <link rel="import" href="bower_components/paper-dialog/paper-dialog.html">
+        <link rel="import" href="bower_components/paper-slider/paper-slider.html">
         <link rel="import" href="bower_components/iron-media-query/iron-media-query.html">
         <link rel="import" href="bower_components/iron-flex-layout/classes/iron-flex-layout.html">
         <link rel="stylesheet" href="assets/gmail-scrollbar.css">
@@ -19,6 +22,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
         <script src="bower_components/Trip.js/dist/trip.min.js"></script>
+        <script src="https://js.stripe.com/v2"></script>
+        <script src="https://checkout.stripe.com/checkout.js"></script>
         <style is="custom-style">
             body {padding: 40px;}
             h1 {text-align: center;font-family: 'Poiret One', cursive;}
@@ -42,10 +47,16 @@
             #GH {right: 10px}
             #Help-Me {top: 52px;right: 10px}
             #SubLine {font-size: .85em;text-align: center;border: 0;font-style: italic}
+            [donate] {width: 4em}
+                .donate-btn {padding: .5em 1.25em}
+                .donate-btn .fa>* {margin-right:.35em}
+                [prefix] {margin-right: .1em}
+                [quote] {font-style: italic;font-size:.85em}
             .trip-exposed {box-shadow: 0px 0px 18px -3px inset}
             .trip-next,.trip-prev {color: #848484;transition: color .25s}
             .trip-next:hover,.trip-prev:hover {color: #EF4242}
             [tut-code] {color: #84B764}
+            [mt] {margin-top: 1.5em;}
             @media screen and (max-width: 700px) {
                 paper-input {width:100%}
                 body {padding:25px 0}
@@ -109,7 +120,24 @@
                         <paper-button colored raised on-tap="addBarBird" disabled="[[or(birdAdded,inDrill)]]">Add Birds</paper-button>
                     </section>
                 </article>
+                <article class="vertical-section" thin$="[[thin]]">
+                    <h2 class="layout horizontal">If you like this project, please show your support:<div class=flex></div><iframe src="https://ghbtns.com/github-btn.html?user=avdaredevil&repo=highcharts-chart&type=star&count=true&size=large" frameborder="0" scrolling="0" width="[[ternary(superThin,'80px','130px')]]" height="30px"></iframe></h2>
+                    <section><small>It allows me allocate more time to make/improve useful open-source libraries/components</small></section>
+                    <section class="layout horizontal around-justified center-center">
+                        <section>Donation Amount:</section>
+                        <paper-slider class="flex" min="0" max="50" value="{{donationAmt}}" immediate-value="{{diagAmt}}" editable></paper-slider>
+                    </section>
+                    <section class="layout horizontal around-justified center-center">
+                        <aside quote>[[donationDialog(diagAmt)]]</aside>
+                        <div class="flex"></div><paper-button class="donate-btn" colored raised on-tap="Donate">Donate: &nbsp; <span class="fa"><i class="fa-credit-card"></i> <i class="fa-bitcoin"></i></span></paper-button>
+                    </section>
+                </article>
             </div>
+            <paper-dialog with-backdrop id="Thanks">
+                <h3>Thank you so much for your donation!</h3>
+                <article>This really helps me out a lot! Please message me if you have any suggestions/feedback.</article>
+                <article>Email: <a href="mailto:[[_apEmail()]]">[[_apEmail()]]</span></article>
+            </paper-dialog>
             <iron-media-query query="(max-width: 700px)" query-matches="{{thin}}"></iron-media-query>
             <iron-media-query query="(max-width: 450px)" query-matches="{{superThin}}"></iron-media-query>
             <a id="Help-Me" hidden$="[[!helpLoaded]]" top-hover title="Help Me" on-tap="startTutorial"><i class="fa fa-question-circle"></i></a>
@@ -117,11 +145,21 @@
         </template>
         <script>
             app = document.getElementById("app")
-            app.person=app.inDrill=0;app.initTime = (new Date()).getTime()
+            app.person=app.inDrill=0;app.initTime = (new Date()).getTime();app.donationAmt = 5
             app.birdAdded=app.helpLoaded=false;app.splineSubtitle = "Click to add new series [in realtime mode]"
             app.or = function(a,b){return !!(a||b)}
             app.incr = function(a){return a+1}
             app.ternary = function(s,a,b){return s?a:b}
+            app.donationDialog = function(d){return d<=0?"I'm sorry you did not like this library. Perhaps you could leave me a suggestion in my repo.":d<5?"Every bit counts. Thank you.":d<11?"Thanks a lot!":d<21?"You are a very generous person":d<31?"Wow, I will send you a personal thank you card!":"I'm speechless! I will send you a very detailed thank you card."}
+            app.Donate = function(){
+                app._stripe.open({
+                    name: 'Apoorv Verma',
+                    bitcoin: true,
+                    alipay: true,
+                    description: 'Donation to @avdaredevil',
+                    amount: app.donationAmt*100
+                })
+            }
             app.addInitData = function(e){app.async(()=>{[["Insects",5],["Reptiles",3]].forEach((el)=>{$("#barChart")[0].addData(el[0],el[1],true)})},450)}
             app.addBarBird = function(){if(app.birdAdded){return}app.$.barChart.addData("Birds",10,true);app.birdAdded=1}
             app.resetSpline = function(){app.$.splineChart.destroy();app.$.splineChart.ready();app._populateRandomDataToSpline()}
@@ -154,10 +192,17 @@
             app._trackGH = ()=>{app._trackEvent("navigate","Github")}
             app._trackLinkedIn = ()=>{app._trackEvent("navigate","LinkedIn")}
             app._trackFork = ()=>{app._trackEvent("navigate","Fork Repo")}
-            app._trackEvent = (a,b,c)=>{ga('send', {hitType: 'event',eventCategory: a,eventAction: b, eventLabel: c});}
+            app._trackEvent = (a,b,c,v)=>{ga('send', {hitType: 'event',eventCategory: a,eventAction: b, eventLabel: c, eventValue: v});}
             app._realtime = setInterval(()=>{app.realtime && app.addSplineDp(true)},1000)
             app._computePieTitle = function(s) {return "Work Distribution"+(s?" [Selected]":"")}
             app._populateRandomDataToSpline = ()=>{dp=[];for(i=0;i<5;i++){dp.push([app.initTime+=1000,Math.random()*10])}app.$.splineChart.setData(dp)}
+            app._apEmail = ()=>{return "avdaredevil"+"@"+"gmail"+".com"}
+            app._stripe = StripeCheckout.configure({
+                key: 'pk_live_FsJgg8vQSIZpsYFzxzZsFjOy',
+                image: 'https://avatars2.githubusercontent.com/u/5303018?v=3&s=460',
+                locale: 'auto',
+                token: function(token) {app.donationResult=token;app._trackEvent("e-commerce","Donations","Stripe",app.donationAmt);app.$.Thanks.open()}
+            });
             app.async(()=>{$(window).resize(()=>{app.chartResize()})},1000)
             app.async(app._populateRandomDataToSpline,250)
             app.async(()=>{app.splineLoading=false},500)
@@ -178,6 +223,8 @@
                     {sel: $(".vertical-section:nth-of-type(3) paper-button"), position: "e", delay: 5000, content: "<section>Use this button to dynamically insert birds into the Animals chart</section>[sub charts are not permitted in this example]", onTripEnd: function(){app._trackEvent("behavior","Tutorial","Complete")}},
                 ].map((el)=>{return $.extend({delay: 3000, expose: true, animation: 'bounce'},el)}),{backToTopWhenEnded : true});app.helpLoaded=true;
             }, 1000)
+            console.log("%cHey, you're a rebel! I like you.","color:orange;font-size:1.3em;text-decoration:underline")
+            console.log("%cConsider donating perhaps?","font-size: .9em;font-style:italic")
         </script>
         <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
           (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
