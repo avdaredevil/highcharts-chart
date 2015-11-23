@@ -38,7 +38,7 @@
   "_resolution": {
     "type": "version",
     "tag": "v0.0.4",
-    "commit": "247c1f8cc4bbcea05f061f4773aed2e2d12e97fc"
+    "commit": "8534020f10faad5911845ec4ec6e30fb3fef5635"
   },
   "_source": "git://github.com/avdaredevil/highcharts-chart.git",
   "_target": "*",
