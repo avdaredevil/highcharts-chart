@@ -4,7 +4,7 @@
 
 ## Demo
 
-[Check it live!](http://avdaredevil.github.io/highcharts-chart)
+You can see a [Realtime/Resonsive demo live](http://avdaredevil.github.io/highcharts-chart)! With a Tutorial Icon in the top right.
 
 ## Install
 
@@ -47,7 +47,7 @@ The charting is also responsive.
 
 Attribute  | Options     | Default              | Description
 ---        | ---         | ---                  | ---
-`type`     | `spline`,`pie`,`column` | `NA`           | Pick type of chart
+`type`     | `spline`,`pie`,`column` | `spline` | Pick type of chart
 `title`    | *string*    | `Highcharts Chart`   | Title of Chart
 `subtitle` | *string*    | `""`                 | Subtitle of Chart
 `showAxes` | *array*     | `['bottom','left']`  | Pick the axes to show.
@@ -58,8 +58,8 @@ Attribute  | Options     | Default              | Description
 `data`     | *array*     | `[]` | Data for chart
 `loading`  | *boolean*     | `false` | Toggle loading overlay on chart
 `loadingMessage` | *string* | `Loading...` | Loading Text Display
-`selected` | *boolean*     | `false` | Is any element selected on graph
-`selectedPoints` | *array* | `[]` | Which elements are selected
+`selected` | *boolean `[readonly]`*     | `false` | Is any element selected on graph
+`selectedPoints` | *array `[readonly]`* | `[]` | Which elements are selected
 `vsTime`   | *boolean*     | `false` | Set all options appropriate for a time chart
 `chartOptions` | *object*  | `{}` | Override/Add Properties for your type of chart
 `export`   | *boolean*     | `false` | Enable exporting of chart
@@ -80,11 +80,12 @@ Method       | Parameters           | Description
 `setData(data,z=0)`  | `Data Array`,`Series Index` | Replaces series data with the passed array
 `addData(x,y,z,drill)`  | `x`,`y`,`index`,`drillable?` | Appends to data [*efficient*]
 `pushData(x,y,z)` | `x`,`y`,`index` | Shifts and adds to data [*efficient*]
-`addSeries(name,data,colorByPoint)` | `String`,`Array`,`boolean`  | Shifts and adds to data [*efficient*]
-`addDrillSeries(point,data,name)` | `point`,`Array`,`String`   | Shifts and adds to data [*efficient*]
-`updateSeries(options,z=0)` | `{}`,`0`   | Modifies the options for series [given by `z`]
+`addSeries(name,data,colorByPoint)` | `String`,`Array`,`boolean`  | Adds a new Series to Plot
+`addDrillSeries(point,data,name)` | `point`,`Array`,`String`   | Adds a series that is viewable when an Element is clicked into
+`updateSeries(options,z)` | `{}`,`0`   | Modifies the options for series [given by `z`]
+`removeSeries(z)` | `index`  | Removes Series denoted by index
 `showLoading(t)` | `t [Text]` | Sets `Loading-Message` equal to `t` then turns on loading screen
-`resizeChart()` | `none`   | Adjust graph to the size of the parent
+`resizeChart()` | `none`   | Adjust graph to the size of the parent [*for bi-directional responsive design*]
 `destroy()` | `none`   | Free's up the memory used by the chart [*prevents __memory leaks__*]
 
 ### Events
@@ -100,7 +101,7 @@ Event      | Description             | Payload [*`e.detail`*]
 `drill-up` | Fired when drill up is triggered | `e`, `chart`
 `drill-selection` | Fired when a range of points are selected | `e`, `chart`
 
-## Contributing
+## Contributing/Suggestions
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
@@ -111,3 +112,4 @@ Event      | Description             | Payload [*`e.detail`*]
 ## License
 
 [MIT License](http://avdaredevil.mit-license.org/) © Apoorv Verma
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/avdaredevil/highcharts-chart/trend.png)](https://bitdeli.com/free "Bitdeli Badge")

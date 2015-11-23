@@ -104,16 +104,20 @@
             },
             addSeries: function(name,data,colorByPoint) {this._chart.addSeries({name: name, data: (data||[]), colorByPoint: typeof colorByPoint=="undefined"?this.colorByPoint:colorByPoint},true)},
             addDrillSeries: function(point,data,name) {this._chart.addSeriesAsDrilldown(point, {name: name, data: data})},
+            removeSeries: function(z) {this._getSeries(z).remove()},
+            updateSeries: function(k,v,z) {var NewEl = {};if(typeof k=="object"){NewEl = k}else{NewEl[k]=v};this._getSeries(z).update(NewEl)},
             showLoading: function(d) {this.loadingMessage=d;this.loading=true},
             resizeChart: function() {this._chart.setSize(this.offsetWidth,this.offsetHeight)},
             destroy: function() {this._chart.destroy()},
-            updateSeries: function(k,v,z) {if(!this._chart){return};var NewEl = {};if(typeof k=="object"){NewEl = k}else{NewEl[k]=v};this._chart.series[(z||0)].update(NewEl)},
+            _getSeries: function(z) {if(!this._chart){return};z=z||0;var s=this._chart.series;if (!s.length) {this._warn("Chart is empty [no series]");return this._returnDummySeries()};if (z>=s.length){return s[(z||0)]}else{this._warn("Index z out of bounds");return this._returnDummySeries()}},
+            _warn: function(err) {console.warn("%c[highcharts-chart] ","font-weight:bold;background-color:yellow",err)},
             _updateType: function(t) {this.updateSeries("type",t)},
             _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)},
             _xAxisUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update(this.xAxis)},
             _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})},
             _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
             _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})}
+            _returnDummySeries: ()=>{return {update: ()=>{},remove: ()=>{}}}
         });
     </script>
 </dom-module>
