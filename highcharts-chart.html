@@ -116,7 +116,7 @@
             _xAxisUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update(this.xAxis)},
             _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})},
             _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
-            _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})}
+            _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})},
             _returnDummySeries: ()=>{return {update: ()=>{},remove: ()=>{}}}
         });
     </script>
