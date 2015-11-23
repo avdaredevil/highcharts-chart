@@ -82,7 +82,8 @@ Method       | Parameters           | Description
 `pushData(x,y,z)` | `x`,`y`,`index` | Shifts and adds to data [*efficient*]
 `addSeries(name,data,colorByPoint)` | `String`,`Array`,`boolean`  | Adds a new Series to Plot
 `addDrillSeries(point,data,name)` | `point`,`Array`,`String`   | Adds a series that is viewable when an Element is clicked into
-`updateSeries(options,z=0)` | `{}`,`0`   | Modifies the options for series [given by `z`]
+`updateSeries(options,z)` | `{}`,`0`   | Modifies the options for series [given by `z`]
+`removeSeries(z)` | `index`  | Removes Series denoted by index
 `showLoading(t)` | `t [Text]` | Sets `Loading-Message` equal to `t` then turns on loading screen
 `resizeChart()` | `none`   | Adjust graph to the size of the parent [*for bi-directional responsive design*]
 `destroy()` | `none`   | Free's up the memory used by the chart [*prevents __memory leaks__*]
