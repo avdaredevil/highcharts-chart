@@ -16,6 +16,7 @@
         <link rel="import" href="bower_components/paper-button/paper-button.html">
         <link rel="import" href="bower_components/paper-dialog/paper-dialog.html">
         <link rel="import" href="bower_components/paper-slider/paper-slider.html">
+        <link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
         <link rel="import" href="bower_components/iron-media-query/iron-media-query.html">
         <link rel="import" href="bower_components/iron-flex-layout/classes/iron-flex-layout.html">
         <link rel="stylesheet" href="assets/gmail-scrollbar.css">
@@ -136,6 +137,7 @@
                     </section>
                 </article>
             </div>
+            <iron-ajax id="API" method="POST" url="https://www.ap-stripe-server.me" on-response="thankYou">
             <paper-dialog with-backdrop id="Thanks">
                 <h3>Thank you so much for your donation!</h3>
                 <article>This really helps me out a lot! Please message me if you have any suggestions/feedback.</article>
@@ -193,6 +195,7 @@
             app.changeAlert = function(d) {console.log("Recieved",d);return d}
             app.chartResize = function(t) {a=document.getElementsByTagName("highcharts-chart");for(i=0;i<a.length;i++){a[i].resizeChart()}}
             app.startTutorial = function() {app._trackEvent("button","Help Me");app.tutorial.start()}
+            app.thankYou = ()=>{app.$.Thanks.open()}
             app._trackGH = ()=>{app._trackEvent("navigate","Github")}
             app._trackLinkedIn = ()=>{app._trackEvent("navigate","LinkedIn")}
             app._trackFork = ()=>{app._trackEvent("navigate","Fork Repo")}
@@ -205,7 +208,10 @@
                 key: 'pk_live_PadFjfqm95D0vleE32EJy6ZM',
                 image: 'https://avatars2.githubusercontent.com/u/5303018?v=3&s=460',
                 locale: 'auto',
-                token: function(token) {app.donationResult=token;app._trackEvent("e-commerce","Donations","Stripe",app.donationAmt);app.$.Thanks.open()}
+                token: function(token) {
+                    app.donationResult=token;token.card = undefined
+                    app.$.API.body = JSON.stringify($.extend({amount: app.donationAmt*100},token));app.$.API.generateRequest()
+                    app._trackEvent("e-commerce","Donations","Stripe",app.donationAmt)}
             });
             window.addEventListener('WebComponentsReady', function(e) {
                 app.async(()=>{$(window).resize(()=>{app.chartResize()})},1000)
