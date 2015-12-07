@@ -176,7 +176,7 @@
                 "Birds": [["Doves",3],["Swans",2],["Eagles",4],["Crow",1]],
                 "Reptiles": [["Snakes",2],["Lizards",1]]}
                 app.$.barChart.addDrillSeries(d.point,db[d.point.name],d.point.name)
-                if (app.inDrill > 6) {app.$.barChart.addData("You're one really persistent person. I dont know any Pokemóns",1)}
+                if (app.inDrill > 6) {app.$.barChart.addData("You're one really persistent person. I dont know any Pokemón",1);app._trackEvent("behavior","Easter-Egg","2")}
                 else {app.$.barChart.addData("Who's that Pokemón",1,true)}
             }
             app.addSplineSeries = function(){app.$.splineChart.addSeries()}
