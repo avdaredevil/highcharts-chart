@@ -26,16 +26,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    uglify: {
-      my_target: {
-        options: {
-          preserveComments: 'some'
-        },
-        files: {
-          'dist/trip.min.js': ['dist/trip.js']
-        }
-      }
-    },
     sass: {
       dist_non_compressed: {
         options: {
@@ -43,7 +33,8 @@ module.exports = function(grunt) {
           sourcemap: 'none'
         },
         files: {
-          'dist/trip.css': 'src/trip.scss'
+          'dist/trip.css': './src/styles/trip.all.scss',
+          'dist/trip.nodep.css': './src/styles/trip.nodep.scss'
         }
       },
       dist_compressed: {
@@ -53,25 +44,19 @@ module.exports = function(grunt) {
           sourcemap: 'none'
         },
         files: {
-          'dist/trip.min.css': 'src/trip.scss'
+          'dist/trip.min.css': './src/styles/trip.all.scss',
+          'dist/trip.nodep.min.css': './src/styles/trip.nodep.scss'
         }
       }
     },
-    concat: {
-      dist: {
-        // we have to sore this in order to make sure nothing would get wrong
-        src: [
-          'src/trip._header_.js',
-          'src/trip.parser.js',
-          'src/trip.core.js'
-        ],
-        dest: 'dist/trip.js'
-      }
+    webpack: {
+      'trip.js': require('./webpack.config.js'),
+      'trip.min.js': require('./webpack.config.min.js')
     },
     jscs: {
       // we will check distributed version directly and if there is any wrong,
       // we can go find related line from sources.
-      src: 'dist/trip.js',
+      src: 'src/trip.*.js',
       options: {
         config: '.jscsrc',
         verbose: true
@@ -79,14 +64,11 @@ module.exports = function(grunt) {
     },
     jshint: {
       options: {
-        maxlen: 80,
-        globals: {
-          jQuery: true
-        }
+        maxlen: 80
       },
       all: [
         'Gruntfile.js',
-        'src/trip.js'
+        'src/trip.*.js'
       ],
     },
     replace: {
@@ -115,7 +97,7 @@ module.exports = function(grunt) {
         overwrite: true,
         replacements: [{
           from: (function() {
-            return new RegExp(grunt.option('oldv'));
+            return new RegExp(grunt.option('oldv'), 'g');
           })(),
           to: function() {
             return grunt.option('newv');
@@ -165,33 +147,34 @@ module.exports = function(grunt) {
           './index.html': ['views/src/_index.html'],
           './demo.html': ['views/src/_demo.html'],
           './doc-configuration.html': ['doc/configuration.html'],
-          './doc-setup.html': ['doc/setup.html']
+          './doc-setup.html': ['doc/setup.html'],
+          './doc-api.html': ['doc/api.html']
         }
       }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-jsdoc');
+  grunt.loadNpmTasks('grunt-webpack');
   grunt.loadNpmTasks('grunt-text-replace');
   grunt.loadNpmTasks('grunt-markdown');
   grunt.loadNpmTasks('grunt-include-replace');
   grunt.loadNpmTasks('grunt-jscs');
 
   // Default task(s).
-  grunt.registerTask('test', ['jshint', 'connect', 'qunit']);
+  grunt.registerTask('test', ['connect', 'qunit']);
   grunt.registerTask('scss', ['sass']);
-  grunt.registerTask('minify', ['jshint', 'concat', 'jscs', 'uglify']);
-  grunt.registerTask('build', ['minify', 'sass']);
+  grunt.registerTask('build-js', ['jshint', 'jscs', 'webpack']);
+  grunt.registerTask('build-css', ['sass']);
+  grunt.registerTask('build', ['build-js', 'build-css']);
   grunt.registerTask('doc', ['markdown', 'includereplace']);
   grunt.registerTask('all', ['build', 'jsdoc', 'doc']);
   grunt.registerTask('bumpversion',
-    ['replace:configfiles', 'replace:sourcefiles', 'build', 'doc', 'jsdoc']);
+    ['replace:configfiles', 'replace:sourcefiles', 'all']);
 
   // How to bump version ?
   //
