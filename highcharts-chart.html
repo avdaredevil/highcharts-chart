@@ -22,7 +22,7 @@
                 credits: {type: Boolean, value: false, reflectToAttribute:true},
                 colorByPoint: {type: Boolean, value: false, reflectToAttribute:true},
                 legend: {type: Boolean, value: false, reflectToAttribute:true},
-                chartOptions: {type: Object, value: ()=>{return {}}, observer: "_xAxisUpdate"},
+                chartOptions: {type: Object, value: ()=>{return {}}},
                 xAxis: {type: Object, value: ()=>{return {}}, observer: "_xAxisUpdate"},
                 xLabel: {type: String, value: "X-Axis"},
                 yLabel: {type: String, value: "Y-Axis"},
@@ -102,7 +102,7 @@
                 if (typeof z=="boolean") {drillable = true;z=0}
                 this._chart.series[(z||0)].addPoint(drillable?{name:x,y:y,drilldown:true}:[x,y],true,!append)
             },
-            addSeries: function(name,data,colorByPoint) {this._chart.addSeries({name: name, data: (data||[]), colorByPoint: typeof colorByPoint=="undefined"?this.colorByPoint:colorByPoint},true)},
+            addSeries: function(name,data,colorByPoint,otherOptions) {this._chart.addSeries($.extend({name: name, data: (data||[]), colorByPoint: typeof colorByPoint=="undefined"?this.colorByPoint:colorByPoint},typeof otherOptions == "object"?otherOptions:{}),true)},
             addDrillSeries: function(point,data,name) {this._chart.addSeriesAsDrilldown(point, {name: name, data: data})},
             removeSeries: function(z) {this._getSeries(z).remove()},
             updateSeries: function(k,v,z) {var NewEl = {};if(typeof k=="object"){NewEl = k}else{NewEl[k]=v};this._getSeries(z).update(NewEl)},
