@@ -108,7 +108,7 @@
             addSeries: function(name,data,colorByPoint,otherOptions) {this._chart.addSeries($.extend({name: name, data: (data||[]), colorByPoint: typeof colorByPoint=="undefined"?this.colorByPoint:colorByPoint},typeof otherOptions == "object"?otherOptions:{}),true)},
             addDrillSeries: function(point,data,name) {this._chart.addSeriesAsDrilldown(point, {name: name, data: data})},
             removeSeries: function(z) {this._getSeries(z).remove()},
-            updateSeries: function(k,v,z) {var NewEl = {};if(typeof k=="object"){NewEl = k}else{NewEl[k]=v};this._getSeries(z).update(NewEl)},
+            updateSeries: function(k,v,z) {var NewEl = {};if(typeof k=="object"){NewEl = k;z=v||z}else{NewEl[k]=v};this._getSeries(z).update(NewEl)},
             showLoading: function(d) {this.loadingMessage=d;this.loading=true},
             resizeChart: function() {this._chart.setSize(this.$.Chart.offsetWidth,this.$.Chart.offsetHeight)},
             destroy: function() {this._chart.destroy()},
