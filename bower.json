@@ -31,6 +31,6 @@
     "iron-ajax": "PolymerElements/iron-ajax#~1.1.1"
   },
   "resolutions": {
-    "jquery": "~2.1.4"
+    "jquery": "~1.11.3"
   }
 }
