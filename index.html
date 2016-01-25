@@ -137,7 +137,7 @@
                     </section>
                 </article>
             </div>
-            <iron-ajax id="API" method="POST" handle-as="json" url="https://www.ap-stripe-server.me/donations/highcharts" on-response="thankYou"></iron-ajax>
+            <iron-ajax id="API" method="POST" handle-as="json" url="https://www.ap-stripe-server.me/donations/highcharts" on-response="thankYou" on-error="donationError"></iron-ajax>
             <paper-dialog with-backdrop id="Thanks">
                 <h3>Thank you so much for your donation!</h3>
                 <article>This really helps me out a lot! Please message me if you have any suggestions/feedback.</article>
@@ -195,7 +195,8 @@
             app.changeAlert = function(d) {console.log("Recieved",d);return d}
             app.chartResize = function(t) {a=document.getElementsByTagName("highcharts-chart");for(i=0;i<a.length;i++){a[i].resizeChart()}}
             app.startTutorial = function() {app._trackEvent("button","Help Me");app.tutorial.start()}
-            app.thankYou = ()=>{app.$.Thanks.open()}
+            app.thankYou = ()=>{app._trackEvent("e-commerce","Donations","Stripe",app.donationAmt);app.$.Thanks.open()}
+            app.donationError = e=>{console.error(e);app._trackEvent("e-commerce","Donations","FAILED",0)}
             app._trackGH = ()=>{app._trackEvent("navigate","Github")}
             app._trackLinkedIn = ()=>{app._trackEvent("navigate","LinkedIn")}
             app._trackFork = ()=>{app._trackEvent("navigate","Fork Repo")}
@@ -210,8 +211,7 @@
                 locale: 'auto',
                 token: function(token) {
                     app.donationResult=token;token.card = undefined
-                    app.$.API.body = JSON.stringify($.extend({amount: app.donationAmt*100},token));app.$.API.generateRequest()
-                    app._trackEvent("e-commerce","Donations","Stripe",app.donationAmt)}
+                    app.$.API.body = JSON.stringify($.extend({amount: app.donationAmt*100},token));app.$.API.generateRequest()}
             });
             window.addEventListener('WebComponentsReady', function(e) {
                 app.async(()=>{$(window).resize(()=>{app.chartResize()})},1000)
