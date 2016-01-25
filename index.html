@@ -196,7 +196,7 @@
             app.chartResize = function(t) {a=document.getElementsByTagName("highcharts-chart");for(i=0;i<a.length;i++){a[i].resizeChart()}}
             app.startTutorial = function() {app._trackEvent("button","Help Me");app.tutorial.start()}
             app.thankYou = ()=>{app._trackEvent("e-commerce","Donations","Stripe",app.donationAmt);app.$.Thanks.open()}
-            app.donationError = e=>{console.error(e);app._trackEvent("e-commerce","Donations","FAILED",0)}
+            app.donationError = e=>{alert("There was an error processing transaction: Server is offline [Thank you for your consideration]");app._trackEvent("e-commerce","Donations","FAILED",0)}
             app._trackGH = ()=>{app._trackEvent("navigate","Github")}
             app._trackLinkedIn = ()=>{app._trackEvent("navigate","LinkedIn")}
             app._trackFork = ()=>{app._trackEvent("navigate","Fork Repo")}
