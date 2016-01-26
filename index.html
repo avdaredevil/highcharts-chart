@@ -137,7 +137,7 @@
                     </section>
                 </article>
             </div>
-            <iron-ajax id="API" method="POST" handle-as="json" url="https://www.ap-stripe-server.me/donations/highcharts" on-response="thankYou" on-error="donationError"></iron-ajax>
+            <iron-ajax id="API" method="POST" handle-as="json" url="https://ap-donationserver.rhcloud.com/donations/highcharts" on-response="thankYou" on-error="donationError"></iron-ajax>
             <paper-dialog with-backdrop id="Thanks">
                 <h3>Thank you so much for your donation!</h3>
                 <article>This really helps me out a lot! Please message me if you have any suggestions/feedback.</article>
