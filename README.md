@@ -1,4 +1,4 @@
-# &lt;highcharts-chart&gt; [![Bower version](https://badge.fury.io/bo/highcharts-chart.svg)](http://badge.fury.io/bo/highcharts-chart)
+# &lt;highcharts-chart&gt; [![Bower version](https://badge.fury.io/bo/highcharts-chart.svg)](http://badge.fury.io/bo/highcharts-chart)[![Downloads](https://img.shields.io/github/downloads/avdaredevil/highcharts-chart/total.svg)](https://img.shields.io/github/downloads/avdaredevil/highcharts-chart/total.svg)
 
 > Web Component wrapper to the [Highcharts Graphing Library](http://www.highcharts.com/), to create a multitude of graphs (spline, pie, and more) using [Polymer 1.0](http://www.polymer-project.org/1.0/).
 
