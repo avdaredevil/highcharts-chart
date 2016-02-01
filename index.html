@@ -91,7 +91,7 @@
                 <div class="vertical center-justified layout">
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Spline Chart</h2>
-                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="[[splineYLabel]]" subtitle="[[_getSplineSubtitle(superThin)]]" title="Throughput Vs. Time" vs-time on-click="addSplineSeries"></highcharts-chart>
+                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="[[splineYLabel]]" subtitle="[[_getSplineSubtitle(superThin)]]" title="[[splineTitle]]" vs-time on-click="addSplineSeries"></highcharts-chart>
                     <section buttons class$="[[ternary(superThin,'','horizontal layout')]]">
                         <paper-button colored raised on-tap="addSplineDp">Add Data Point</paper-button>
                         <paper-button colored raised on-tap="toggleRealtime">Realtime: <span>[[ternary(realtime,"ON","OFF")]]</span></paper-button>
@@ -101,7 +101,8 @@
                     </section>
                     <section demo-inputs>
                         <paper-input value="{{splineLMsg}}" label="Loading Message" disabled="[[splineLoading]]"></paper-input>
-                        <paper-input value="{{splineYLabel}}" label="Y-Label For Chart"></paper-input>
+                        <paper-input value="{{splineTitle}}" label="Title For Chart"></paper-input>
+                        <paper-input value="{{splineYLabel}}" label="Y-Label For Chart" hidden$="[[!thin]]"></paper-input>
                     <section>
                 </article>
                 <article class="vertical-section" thin$="[[thin]]">
@@ -152,7 +153,8 @@
         </template>
         <script>
             app = document.getElementById("app")
-            app.person=app.inDrill=0;app.initTime = (new Date()).getTime();app.donationAmt = 5;app.splineYLabel = "Throughput"
+            app.person=app.inDrill=0;app.initTime = (new Date()).getTime();app.donationAmt = 5
+            app.splineTitle = "Throughput Vs. Time";app.splineYLabel = "Throughput"
             app.birdAdded=app.helpLoaded=false;
             app.or = function(a,b){return !!(a||b)}
             app.incr = function(a){return a+1}

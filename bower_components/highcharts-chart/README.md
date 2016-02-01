@@ -54,6 +54,8 @@ Attribute  | Options     | Default              | Description
 `xAxis`    | *object*    | `{}` OR *`Time based`* | Specifies the configuration for the X-Axis.
 `xLabel`   | *string*    | `X-Axis`             | Label for X-Axis
 `yLabel`   | *string*    | `Y-Axis`             | Label for Y-Axis
+`xZoom`   | *boolean*    | `false`             | Zooming Allowed On X-Axis
+`yZoom`   | *boolean*    | `false`             | Zooming Allowed On Y-Axis
 `label`    | *string*    | `Label`*`[for non numeric]`* | Alias for both Axis
 `data`     | *array*     | `[]` | Data for chart
 `loading`  | *boolean*     | `false` | Toggle loading overlay on chart
@@ -80,8 +82,9 @@ Method       | Parameters           | Description
 `setData(data,z=0)`  | `Data Array`,`Series Index` | Replaces series data with the passed array
 `addData(x,y,z,drill)`  | `x`,`y`,`index`,`drillable?` | Appends to data [*efficient*]
 `pushData(x,y,z)` | `x`,`y`,`index` | Shifts and adds to data [*efficient*]
-`addSeries(name,data,colorByPoint)` | `String`,`Array`,`boolean`  | Adds a new Series to Plot
+`addSeries(name,data,colorByPoint,otherOptions)` | `String`,`Array`,`boolean`,`{}`  | Adds a new Series to Plot
 `addDrillSeries(point,data,name)` | `point`,`Array`,`String`   | Adds a series that is viewable when an Element is clicked into
+`updateSeries(k,v,z)` | `String`,`Mixed`,`0`   | Modifies an option by Key Value for series [given by `z`]
 `updateSeries(options,z)` | `{}`,`0`   | Modifies the options for series [given by `z`]
 `removeSeries(z)` | `index`  | Removes Series denoted by index
 `showLoading(t)` | `t [Text]` | Sets `Loading-Message` equal to `t` then turns on loading screen
@@ -100,6 +103,12 @@ Event      | Description             | Payload [*`e.detail`*]
 `drill-down` | Fired when drill down is triggered | `e`, `chart`
 `drill-up` | Fired when drill up is triggered | `e`, `chart`
 `drill-selection` | Fired when a range of points are selected | `e`, `chart`
+
+### Styling
+
+Mixin       | Description
+---         | ---
+`--highcharts-chart-container` | The container that directly contains the Chart SVG
 
 ## Contributing/Suggestions
 

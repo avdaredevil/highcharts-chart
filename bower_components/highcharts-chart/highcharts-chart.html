@@ -6,7 +6,10 @@
 
 <dom-module id="highcharts-chart">
     <template>
-        <style>:host {width: 100%;display: inline-block}</style>
+        <style>
+            :host {width: 100%;display: inline-block}
+            #Chart {@apply(--highcharts-chart-container);}
+        </style>
         <div id="Chart" width="100%" on-click="_checkSelected"></div>
     </template>
     <script>
@@ -22,10 +25,10 @@
                 credits: {type: Boolean, value: false, reflectToAttribute:true},
                 colorByPoint: {type: Boolean, value: false, reflectToAttribute:true},
                 legend: {type: Boolean, value: false, reflectToAttribute:true},
-                chartOptions: {type: Object, value: ()=>{return {}}, observer: "_xAxisUpdate"},
+                chartOptions: {type: Object, value: ()=>{return {}}},
                 xAxis: {type: Object, value: ()=>{return {}}, observer: "_xAxisUpdate"},
-                xLabel: {type: String, value: "X-Axis"},
-                yLabel: {type: String, value: "Y-Axis"},
+                xLabel: {type: String, value: "X-Axis", observer: "_xAxisTitleUpdate"},
+                yLabel: {type: String, value: "Y-Axis", observer: "_yAxisTitleUpdate"},
                 label: {type: String, value: ""},
                 data: {type: Array, value: ()=>{return []}, observer:"setData"},
                 vsTime: {type: Boolean, value: false},
@@ -102,18 +105,20 @@
                 if (typeof z=="boolean") {drillable = true;z=0}
                 this._chart.series[(z||0)].addPoint(drillable?{name:x,y:y,drilldown:true}:[x,y],true,!append)
             },
-            addSeries: function(name,data,colorByPoint) {this._chart.addSeries({name: name, data: (data||[]), colorByPoint: typeof colorByPoint=="undefined"?this.colorByPoint:colorByPoint},true)},
+            addSeries: function(name,data,colorByPoint,otherOptions) {this._chart.addSeries($.extend({name: name, data: (data||[]), colorByPoint: typeof colorByPoint=="undefined"?this.colorByPoint:colorByPoint},typeof otherOptions == "object"?otherOptions:{}),true)},
             addDrillSeries: function(point,data,name) {this._chart.addSeriesAsDrilldown(point, {name: name, data: data})},
             removeSeries: function(z) {this._getSeries(z).remove()},
-            updateSeries: function(k,v,z) {var NewEl = {};if(typeof k=="object"){NewEl = k}else{NewEl[k]=v};this._getSeries(z).update(NewEl)},
+            updateSeries: function(k,v,z) {var NewEl = {};if(typeof k=="object"){NewEl = k;z=v||z}else{NewEl[k]=v};this._getSeries(z).update(NewEl)},
             showLoading: function(d) {this.loadingMessage=d;this.loading=true},
-            resizeChart: function() {this._chart.setSize(this.offsetWidth,this.offsetHeight)},
+            resizeChart: function() {this._chart.setSize(this.$.Chart.offsetWidth,this.offsetHeight)},
             destroy: function() {this._chart.destroy()},
             _getSeries: function(z) {if(!this._chart){return this._returnDummySeries()};z=z||0;var s=this._chart.series;if(!s.length){this._warn("Chart is empty [no series]");return this._returnDummySeries()};if (z<s.length){return s[(z||0)]}else{this._warn("Index z out of bounds");return this._returnDummySeries()}},
             _warn: function(err) {console.warn("%c[highcharts-chart]","font-weight:bold;background-color:yellow",err)},
             _updateType: function(t) {this.updateSeries("type",t)},
             _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)},
             _xAxisUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update(this.xAxis)},
+            _xAxisTitleUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update({title: {text: this.xLabel}})},
+            _yAxisTitleUpdate: function() {if(!this._chart){return};this._chart.yAxis[0].update({title: {text: this.yLabel}})},
             _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})},
             _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
             _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})},
