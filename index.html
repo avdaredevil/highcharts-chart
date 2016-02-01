@@ -89,7 +89,7 @@
                 <div class="vertical center-justified layout">
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Spline Chart</h2>
-                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="Throughput" subtitle="[[splineSubtitle]]" title="Throughput Vs. Time" vs-time on-click="addSplineSeries"></highcharts-chart>
+                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="Throughput" subtitle="<b>Click on the Chart</b> to add <b>new series</b> [in <i>realtime mode</i> only]" title="Throughput Vs. Time" vs-time on-click="addSplineSeries"></highcharts-chart>
                     <section buttons class$="[[ternary(superThin,'','horizontal layout')]]">
                         <paper-button colored raised on-tap="addSplineDp">Add Data Point</paper-button>
                         <paper-button colored raised on-tap="toggleRealtime">Realtime: <span>[[ternary(realtime,"ON","OFF")]]</span></paper-button>
@@ -151,7 +151,7 @@
         <script>
             app = document.getElementById("app")
             app.person=app.inDrill=0;app.initTime = (new Date()).getTime();app.donationAmt = 5
-            app.birdAdded=app.helpLoaded=false;app.splineSubtitle = "Click to add new series [in realtime mode]"
+            app.birdAdded=app.helpLoaded=false
             app.or = function(a,b){return !!(a||b)}
             app.incr = function(a){return a+1}
             app.eq = function(a,b){return a==b}
