@@ -72,6 +72,8 @@
             @media screen and (max-width: 450px) {
                 .vertical-section {padding: 12px;margin: 5px 12px 20px}
                 paper-button {display: inline-block;width: 100%;margin: .125em 0;}
+                .donate-btn {width: 10em}
+                .donate-btn .fa {display:block}
             }
         </style>
     </head>
@@ -128,12 +130,12 @@
                     <section><small>It allows me allocate more time to make/improve useful open-source libraries/components</small></section>
                     <section class="layout horizontal around-justified center-center">
                         <section>Donation Amount:</section>
-                        <paper-slider class="flex" min="0" max="50" value="{{donationAmt}}" immediate-value="{{diagAmt}}" editable></paper-slider>
-                        <span>USD</span>
+                        <paper-slider class="flex" min="0" max="50" value="{{donationAmt}}" immediate-value="{{diagAmt}}" editable=[[!superThin]]></paper-slider>
+                        <span hidden$="[[superThin]]">USD</span>
                     </section>
                     <section class="layout horizontal around-justified center-center">
                         <aside quote>[[donationDialog(diagAmt)]]</aside>
-                        <div class="flex"></div><paper-button class="donate-btn" disabled="{{eq(donationAmt,'0')}}" colored raised on-tap="Donate">Donate: &nbsp; <span class="fa"><i class="fa-credit-card"></i> <i class="fa-bitcoin"></i></span></paper-button>
+                        <div class="flex"></div><paper-button class="donate-btn" disabled="[[eq(donationAmt,'0')]]" colored raised on-tap="Donate">Donate: <span hidden$="[[_notThinOrZero(superThin,diagAmt)]]">$[[diagAmt]]</span> <span class="fa"><i class="fa-credit-card"></i> <i class="fa-bitcoin"></i></span></paper-button>
                     </section>
                 </article>
             </div>
@@ -214,6 +216,7 @@
                     app.donationResult=token;token.card = undefined
                     app.$.API.body = JSON.stringify($.extend({amount: app.donationAmt*100},token));app.$.API.generateRequest()}
             });
+            app._notThinOrZero = (t,z) => !(!t||z)
             window.addEventListener('WebComponentsReady', function(e) {
                 app.async(()=>{$(window).resize(()=>{app.chartResize()})},1000)
                 app.async(app._populateRandomDataToSpline,250)
