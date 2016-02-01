@@ -105,7 +105,7 @@
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Pie Chart</h2>
                     <article rel>
-                        <highcharts-chart id="pieChart" type="pie" color-by-point data='[{"name":"Mary", "y": 36.3},{"name":"Davis", "y":60},{"name":"John", "y":13.6}]' label="Work" title="[[_computePieTitle(pieSelected)]]" selected="{{pieSelected}}" on-click="pieSelect"></highcharts-chart>
+                        <highcharts-chart id="pieChart" type="pie" color-by-point data='[{"name":"Mary", "y": 36.3},{"name":"Davis", "y":60},{"name":"John", "y":13.6}]' label="Work" title="[[_computePieTitle(pieSelected)]]" subtitle="Ctrl-Click to Select Multiple Elements" selected="{{pieSelected}}" on-click="pieSelect"></highcharts-chart>
                         <section id="PieHoverBox" class="layout vertical" hidden$="[[!pieSelected]]">
                             <h3>Selected Names:</h3>
                             <article class="Holder flex">

@@ -18,17 +18,17 @@
   ],
   "dependencies": {
     "jquery": "~2.1.4",
-    "paper-styles": "PolymerElements/paper-styles#~1.0.12",
-    "polymer": "Polymer/polymer#~1.2.0",
+    "paper-styles": "PolymerElements/paper-styles#^1.0.12",
+    "polymer": "Polymer/polymer#^1.2.0",
     "highcharts-chart": "*",
-    "paper-button": "PolymerElements/paper-button#~1.0.8",
-    "iron-media-query": "PolymerElements/iron-media-query#~1.0.6",
-    "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.0.5",
-    "paper-input": "PolymerElements/paper-input#~1.0.18",
-    "Trip.js": "trip.js#~3.1.0",
-    "paper-slider": "PolymerElements/paper-slider#~1.0.8",
-    "paper-dialog": "PolymerElements/paper-dialog#~1.0.3",
-    "iron-ajax": "PolymerElements/iron-ajax#~1.1.1"
+    "paper-button": "PolymerElements/paper-button#^1.0.8",
+    "iron-media-query": "PolymerElements/iron-media-query#^1.0.6",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.5",
+    "paper-input": "PolymerElements/paper-input#^1.0.18",
+    "Trip.js": "trip.js#^3.1.0",
+    "paper-slider": "PolymerElements/paper-slider#^1.0.8",
+    "paper-dialog": "PolymerElements/paper-dialog#^1.0.3",
+    "iron-ajax": "PolymerElements/iron-ajax#^1.1.1"
   },
   "resolutions": {
     "jquery": "~2.1.4"

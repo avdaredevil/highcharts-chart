@@ -39,6 +39,6 @@
     "commit": "6bcb0fe372d19af21da6845c02f3bae26ea8bf91"
   },
   "_source": "git://github.com/EragonJ/Trip.js.git",
-  "_target": "~3.1.0",
+  "_target": "^3.1.0",
   "_originalSource": "trip.js"
 }
