@@ -216,7 +216,7 @@
                     app.donationResult=token;token.card = undefined
                     app.$.API.body = JSON.stringify($.extend({amount: app.donationAmt*100},token));app.$.API.generateRequest()}
             });
-            app._notThinOrZero = (t,z) => !(!t||z)
+            app._notThinOrZero = (t,z) => !t||(t&&!z)
             window.addEventListener('WebComponentsReady', function(e) {
                 app.async(()=>{$(window).resize(()=>{app.chartResize()})},1000)
                 app.async(app._populateRandomDataToSpline,250)
