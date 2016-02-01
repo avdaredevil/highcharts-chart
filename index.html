@@ -89,7 +89,7 @@
                 <div class="vertical center-justified layout">
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Spline Chart</h2>
-                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="Throughput" subtitle="<b>Click on the Chart</b> to add <b>new series</b> [in <i>realtime mode</i> only]" title="Throughput Vs. Time" vs-time on-click="addSplineSeries"></highcharts-chart>
+                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="Throughput" subtitle="[[_getSplineSubtitle(superThin)]]" title="Throughput Vs. Time" vs-time on-click="addSplineSeries"></highcharts-chart>
                     <section buttons class$="[[ternary(superThin,'','horizontal layout')]]">
                         <paper-button colored raised on-tap="addSplineDp">Add Data Point</paper-button>
                         <paper-button colored raised on-tap="toggleRealtime">Realtime: <span>[[ternary(realtime,"ON","OFF")]]</span></paper-button>
@@ -151,7 +151,7 @@
         <script>
             app = document.getElementById("app")
             app.person=app.inDrill=0;app.initTime = (new Date()).getTime();app.donationAmt = 5
-            app.birdAdded=app.helpLoaded=false
+            app.birdAdded=app.helpLoaded=false;
             app.or = function(a,b){return !!(a||b)}
             app.incr = function(a){return a+1}
             app.eq = function(a,b){return a==b}
@@ -166,6 +166,7 @@
                     amount: app.donationAmt*100
                 })
             }
+            app._getSplineSubtitle = s_t => s_t?"Click Chart to add series in Realtime Mode":"<b>Click on the Chart</b> to add <b>new series</b> [in <i>realtime mode</i> only]"
             app.addInitData = function(e){app.async(()=>{[["Insects",5],["Reptiles",3]].forEach((el)=>{$("#barChart")[0].addData(el[0],el[1],true)})},450)}
             app.addBarBird = function(){if(app.birdAdded){return}app.$.barChart.addData("Birds",10,true);app.birdAdded=1}
             app.resetSpline = function(){app.$.splineChart.destroy();app.$.splineChart.ready();app._populateRandomDataToSpline()}
