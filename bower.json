@@ -28,7 +28,8 @@
     "Trip.js": "trip.js#^3.1.0",
     "paper-slider": "PolymerElements/paper-slider#^1.0.8",
     "paper-dialog": "PolymerElements/paper-dialog#^1.0.3",
-    "iron-ajax": "PolymerElements/iron-ajax#^1.1.1"
+    "iron-ajax": "PolymerElements/iron-ajax#^1.1.1",
+    "syntax-highlight": "^1.0.0"
   },
   "resolutions": {
     "jquery": "~2.1.4"

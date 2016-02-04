@@ -41,7 +41,6 @@
     "commit": "f401afa738df1dfcb919d155adf6b39249537c25"
   },
   "_source": "git://github.com/avdaredevil/highcharts-chart.git",
-  "_target": "^0.0.4",
-  "_originalSource": "highcharts-chart",
-  "_direct": true
+  "_target": "*",
+  "_originalSource": "highcharts-chart"
 }
