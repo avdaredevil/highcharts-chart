@@ -58,6 +58,7 @@
             .trip-next:hover,.trip-prev:hover {color: #EF4242}
             [tut-code] {color: #84B764}
             [mt] {margin-top: 1.5em;}
+            syntax-highlight {pointer-events: none}
             @media screen and (max-width: 700px) {
                 paper-input {width:100%}
                 body {padding:25px 0}
@@ -89,7 +90,25 @@
             <div class="vertical center-justified layout">
                 <article class="vertical-section" thin$="[[thin]]">
                     <highcharts-chart vs-time id="cvDilation" type="spline" title="Cervical Dilation" data='[[1442573315000,36],[1442917213000,36.6]]'></highcharts-chart>
-                    <syntax-highlight lang="html" theme="atelier-cave.light"><highcharts-chart vs-time id="cvDilation" type="spline" title="Cervical Dilation" data='[[1442573315000,36],[1442917213000,36.6]]'></highcharts-chart></syntax-highlight>
+                    <syntax-highlight lang="html" theme="atelier-cave.light"><highcharts-çhart vs-time id="cvDilation" type="spline" title="Cervical Dilation" data='[[1442573315000,36],[1442917213000,36.6]]'></highcharts-chart></syntax-highlight>
+                </article>
+                <article class="vertical-section" thin$="[[thin]]">
+                    <highcharts-chart vs-time id="BloodPressure" title="Blood Pressures" y-label="BPM [Maybe?]"></highcharts-chart>
+                    <syntax-highlight lang="html" theme="atelier-cave.light"><highcharts-çhart vs-time id="BloódPressure" title="Blood Pressures" y-label="BPM [Maybe?]" data='[[1442573315000,88],[1442917213000,90],[1443261111000,83.6]]'></highcharts-chart></syntax-highlight>
+                    <syntax-highlight lang="javascript" theme="atelier-cave.light">
+    app.Data = {
+        BP: [[1442573315000,88],[1442917213000,90],[1443261111000,83.6]],
+        Rand: [[1442573315000,100],[1443573315000,22],[1443917213000,28],[1444261111000,50]]
+    }
+    app.$.BloodPressure.setData(app.Data.BP)
+    app.$.BloodPressure.addSeries("Random Other thing",app.Data.Rand)
+    var av = app.Data.BP.map(i => i[1]).reduce((p,c) => p+c,0)/app.Data.BP.length
+    app.$.BloodPressure.addSeries("Average BP",[[app.Data.BP[0][0],av],[app.Data.BP.slice(-1)[0][0],av]])
+                    </syntax-highlight>
+                    <h3><small>NOTE: The i =&amp;gt; i[1] is actually i => i[1]</small></h3>
+                    <h3><small>NOTE: Last 2 lines dynamically calculate average of BP and plot it</small></h3>
+                    <hr>
+                    <h3><small>PS: DO NOT COPY THIS Code, just type it yourself, as my syntax highlighter runs the code inside for some reason, so I subbed a few characters with frech alternatives</small></h3>
                 </article>
             </div>
             <iron-media-query query="(max-width: 700px)" query-matches="{{thin}}"></iron-media-query>
@@ -97,6 +116,17 @@
         </template>
         <script>
             app = document.getElementById("app")
+            app.Data = {
+                BP: [[1442573315000,88],[1442917213000,90],[1443261111000,83.6],[1443605009000,40]],
+                Rand: [[1442573315000,100],[1443573315000,22],[1443917213000,28],[1444261111000,50]]
+            }
+            window.addEventListener('WebComponentsReady', function(e) {
+                app.$.BloodPressure.setData(app.Data.BP)
+                app.$.BloodPressure.addSeries("Random Other thing",app.Data.Rand)
+                var av = app.Data.BP.map(i => i[1]).reduce((p,c) => p+c,0)/app.Data.BP.length
+                app.$.BloodPressure.addSeries("Average BP",[[app.Data.BP[0][0],av],[app.Data.BP.slice(-1)[0][0],av]])
+            })
         </script>
+        <style>h3 {font-style: italic;font-weight: 400}</style>
     </body>
 </html>
