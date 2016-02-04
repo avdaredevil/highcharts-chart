@@ -46,7 +46,7 @@
             [top-hover] {top: 10px;position: absolute;cursor:pointer;font-size: 3em;color: #676767;text-decoration: none;transition:color .25s}
             [top-hover]:hover {color: #313131}
             #GH {right: 10px}
-            #Help-Me {top: 52px;right: 10px}
+            #Home {top: 52px;right: 10px}
             #SubLine {font-size: .85em;text-align: center;border: 0;font-style: italic;margin-bottom:2em}
             [donate] {width: 4em}
                 .donate-btn {padding: .5em 1.25em}
@@ -85,6 +85,7 @@
                 <span hidden itemprop="affiliation">Zelco Solutions</span>
                 <span hidden itemprop="email">avdaredevil@gmail.com</span>
                 <a id="GH" top-hover title="@avdaredevil on Github" href="https://github.com/avdaredevil" on-tap="_trackGH" itemprop="url"><i class="fa fa-github"></i></a>
+                <a id="Home" top-hover title="Go Home" href="/avdaredevil/highcharts-chart" itemprop="url"><i class="fa fa-home"></i></a>
                 <h2 id="SubLine">Demo Page for Issues</h2>
             </header>
             <div class="vertical center-justified layout">
@@ -105,10 +106,10 @@
     var av = app.Data.BP.map(i => i[1]).reduce((p,c) => p+c,0)/app.Data.BP.length
     app.$.BloodPressure.addSeries("Average BP",[[app.Data.BP[0][0],av],[app.Data.BP.slice(-1)[0][0],av]])
                     </syntax-highlight>
-                    <h3><small>NOTE: The i =&amp;gt; i[1] is actually i => i[1]</small></h3>
+                    <h3><small>NOTE: The <code>i =&amp;gt; i[1]</code> is actually <code>i => i[1]</code></small></h3>
                     <h3><small>NOTE: Last 2 lines dynamically calculate average of BP and plot it</small></h3>
                     <hr>
-                    <h3><small>PS: DO NOT COPY THIS Code, just type it yourself, as my syntax highlighter runs the code inside for some reason, so I subbed a few characters with frech alternatives</small></h3>
+                    <h3><small>WARNING: DO NOT COPY THIS Code, just type it yourself, as the syntax highlighter runs the code inside for some reason, so I subbed a few characters with frech alternatives</small></h3>
                 </article>
             </div>
             <iron-media-query query="(max-width: 700px)" query-matches="{{thin}}"></iron-media-query>
