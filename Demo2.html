@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+        <meta name="msvalidate.01" content="584E4C88D647DC4FA9B293FF69489757">
+        <title>Highcharts-Chart Element for Polymer 1.0 - Apoorv Verma [AP]</title>
+        <meta name="description" content="Highcharts Element wrapper for polymer 1.0 using webcomponents, with data binding">
+        <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script>if (window.location.host.indexOf('github.io') > -1 && window.location.protocol != "https:"){window.location.protocol = "https";}</script>
+        <link rel="icon" type="image/ico" href="favicon.ico">
+        <link rel="import" href="bower_components/highcharts-chart/highcharts-chart.html">
+        <link rel="import" href="bower_components/paper-input/paper-input.html">
+        <link rel="import" href="bower_components/paper-styles/demo-pages.html">
+        <link rel="import" href="bower_components/paper-button/paper-button.html">
+        <link rel="import" href="bower_components/paper-dialog/paper-dialog.html">
+        <link rel="import" href="bower_components/paper-slider/paper-slider.html">
+        <link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
+        <link rel="import" href="bower_components/iron-media-query/iron-media-query.html">
+        <link rel="import" href="bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+        <link rel="stylesheet" href="assets/gmail-scrollbar.css">
+        <link rel="stylesheet" href="bower_components/Trip.js/dist/trip.min.css">
+        <link rel='import' href='bower_components/syntax-highlight/syntax-highlight.html'>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+        <style is="custom-style">
+            body {padding: 40px;}
+            h1 {text-align: center;font-family: 'Poiret One', cursive;}
+            h1>a {color: #989898}
+            [rel] {position: relative}
+            paper-button[red] {background-color: #E86D6D;color:white}
+            paper-button[colored] {background-color: #7070D8;color:white}
+            paper-button[disabled] {background-color: #848486 !important;color:white}
+            h2 {font-weight: 400;margin: 0 0 .5em;padding: 0 0 .5em;border-bottom: 1px solid rgba(0, 0, 0, 0.13);}
+            #PieHoverBox {width: 12em;right: 0;top: 0;position: absolute;background-color: rgba(0,0,0,.29);color: white;border-radius: 5px;transition: background-color .25s}
+            #PieHoverBox:hover {background-color: rgba(0,0,0,.69)}
+            #PieHoverBox>h3 {display:block;font-size:1.3em;margin: 0 0 .45em;padding: .35em;border-bottom: 1px solid rgba(255, 255, 255, 0.52);}
+            #PieHoverBox>.Holder {max-height: 24em;overflow: auto;transition: height .25s;padding:0 .65em .5em}
+            #PieHoverBox>.Holder span:first-child {display: inline-block;min-width: 1.3em;text-align:right;margin-right: .25em}
+            #PieHoverBox>.Holder span:first-child:after {content:"."}
+            #PieHoverBox>.Holder span:nth-child(2) {font-style: italic}
+            highcharts-chart {height: 400px}
+            paper-input {width:49.5%;display:inline-block}
+            [top-hover] {top: 10px;position: absolute;cursor:pointer;font-size: 3em;color: #676767;text-decoration: none;transition:color .25s}
+            [top-hover]:hover {color: #313131}
+            #GH {right: 10px}
+            #Help-Me {top: 52px;right: 10px}
+            #SubLine {font-size: .85em;text-align: center;border: 0;font-style: italic;margin-bottom:2em}
+            [donate] {width: 4em}
+                .donate-btn {padding: .5em 1.25em}
+                .donate-btn .fa>* {margin-right:.35em}
+                [prefix] {margin-right: .1em}
+                [quote] {font-style: italic;font-size:.85em}
+            .trip-exposed {box-shadow: 0px 0px 18px -3px inset}
+            .trip-next,.trip-prev {color: #848484;transition: color .25s}
+            .trip-next:hover,.trip-prev:hover {color: #EF4242}
+            [tut-code] {color: #84B764}
+            [mt] {margin-top: 1.5em;}
+            @media screen and (max-width: 700px) {
+                paper-input {width:100%}
+                body {padding:25px 0}
+                highcharts-chart {height: 20em}
+                #Fork {display: none}
+                #PieHoverBox>.Holder {max-height: 18em;overflow: auto}
+                [top-hover] {top: 0}
+                #Help-Me {top: 0;right: 20px;transform: translateX(-100%)}
+            }
+            @media screen and (max-width: 450px) {
+                .vertical-section {padding: 12px;margin: 5px 12px 20px}
+                paper-button {display: inline-block;width: 100%;margin: .125em 0;}
+                .donate-btn {width: 10em}
+                .donate-btn .fa {display:block}
+            }
+        </style>
+    </head>
+    <body unresolved>
+        <template is="dom-bind" id="app">
+            <header itemscope itemtype="http://schema.org/Person">
+                <h1>Highcharts-Chart by <a target=_blank title="Apoorv Verma [AP] on LinkedIn" on-tap="_trackLinkedIn" href="https://www.linkedin.com/in/apoorvverma" itemprop="url"><span itemprop="name">Apoorv Verma</span> [<span itemprop="additionalName">AP</span>]</a></h1>
+                <span hidden itemprop="alumniOf">Rutgers University</span>
+                <span hidden itemprop="affiliation">Goldman Sachs</span>
+                <span hidden itemprop="affiliation">Zelco Solutions</span>
+                <span hidden itemprop="email">avdaredevil@gmail.com</span>
+                <a id="GH" top-hover title="@avdaredevil on Github" href="https://github.com/avdaredevil" on-tap="_trackGH" itemprop="url"><i class="fa fa-github"></i></a>
+                <h2 id="SubLine">Demo Page for Issues</h2>
+            </header>
+            <div class="vertical center-justified layout">
+                <article class="vertical-section" thin$="[[thin]]">
+                    <highcharts-chart vs-time id="cvDilation" type="spline" title="Cervical Dilation" data='[[1442573315000,36],[1442917213000,36.6]]'></highcharts-chart>
+                    <syntax-highlight><highcharts-chart vs-time id="cvDilation" type="spline" title="Cervical Dilation" data='[[1442573315000,36],[1442917213000,36.6]]'></highcharts-chart></syntax-highlight>
+                </article>
+            </div>
+            <iron-media-query query="(max-width: 700px)" query-matches="{{thin}}"></iron-media-query>
+            <iron-media-query query="(max-width: 450px)" query-matches="{{superThin}}"></iron-media-query>
+        </template>
+        <script>
+            app = document.getElementById("app")
+        </script>
+    </body>
+</html>
