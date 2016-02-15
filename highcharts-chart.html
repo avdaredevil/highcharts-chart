@@ -27,6 +27,7 @@
                 legend: {type: Boolean, value: false, reflectToAttribute:true},
                 chartOptions: {type: Object, value: ()=>{return {}}},
                 xAxis: {type: Object, value: ()=>{return {}}, observer: "_xAxisUpdate"},
+                yAxis: {type: Object, value: ()=>{return {}}, observer: "_yAxisUpdate"},
                 xLabel: {type: String, value: "X-Axis", observer: "_xAxisTitleUpdate"},
                 yLabel: {type: String, value: "Y-Axis", observer: "_yAxisTitleUpdate"},
                 label: {type: String, value: ""},
@@ -71,6 +72,7 @@
                     title: {text: this.title},
                     subtitle: {text: this.subtitle},
                     xAxis: xAxis,
+                    yAxis: this.yAxis,
                     credits: this.credits,
                     plotOptions: $.extend({
                         pie: {
@@ -83,10 +85,6 @@
                             }
                         }
                     }, this.chartOptions),
-                    yAxis: {
-                        title: {text: (this.label||this.yLabel)},
-                        plotLines: [{value: 0,width: 1,color: '#808080'}]
-                    },
                     tooltip: $.extend(this.vsTime?{formatter: function () {
                             return '<b>' + this.series.name + '</b><br/>' +
                                 Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
@@ -117,6 +115,7 @@
             _updateType: function(t) {this.updateSeries("type",t)},
             _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)},
             _xAxisUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update(this.xAxis)},
+            _yAxisUpdate: function() {if(!this._chart){return};this._chart.yAxis[0].update(this.yAxis)},
             _xAxisTitleUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update({title: {text: this.xLabel}})},
             _yAxisTitleUpdate: function() {if(!this._chart){return};this._chart.yAxis[0].update({title: {text: this.yLabel}})},
             _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})},
