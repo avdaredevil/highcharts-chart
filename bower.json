@@ -1,6 +1,6 @@
 {
   "name": "highcharts-chart",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "authors": [
     "Apoorv Verma [AP] <avdaredevil@gmail.com>"
   ],
@@ -14,8 +14,10 @@
     "highcharts",
     "graphing",
     "pie",
-    "spline",
     "web-components",
+    "spline",
+    "pie",
+    "donut",
     "charts"
   ],
   "repository": {
@@ -23,7 +25,6 @@
     "url": "git://github.com/avdaredevil/highcharts-chart.git"
   },
   "license": "MIT",
-  "homepage": "https://www.linkedin.com/in/apoorvverma",
   "ignore": [
     "**/.*",
     "node_modules",
