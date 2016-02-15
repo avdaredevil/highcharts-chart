@@ -4,6 +4,7 @@
   "authors": [
     "Apoorv Verma [AP] <avdaredevil@gmail.com>"
   ],
+  "homepage": "https://avdaredevil.github.io/highcharts-chart/",
   "description": "Polymer Element wrapper for highcharts library. Seamlessly create various types of charts from one element.",
   "main": "highcharts-chart.html",
   "moduleType": [],
