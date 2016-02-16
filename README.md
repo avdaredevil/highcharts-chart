@@ -52,6 +52,7 @@ Attribute  | Options     | Default              | Description
 `subtitle` | *string*    | `""`                 | Subtitle of Chart
 `showAxes` | *array*     | `['bottom','left']`  | Pick the axes to show.
 `xAxis`    | *object*    | `{}` OR *`Time based`* | Specifies the configuration for the X-Axis.
+`yAxis`    | *object*    | `{}` | Specifies the configuration for the Y-Axis.
 `xLabel`   | *string*    | `X-Axis`             | Label for X-Axis
 `yLabel`   | *string*    | `Y-Axis`             | Label for Y-Axis
 `xZoom`   | *boolean*    | `false`             | Zooming Allowed On X-Axis
