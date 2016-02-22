@@ -90,6 +90,7 @@ Method       | Parameters           | Description
 `removeSeries(z)` | `index`  | Removes Series denoted by index
 `showLoading(t)` | `t [Text]` | Sets `Loading-Message` equal to `t` then turns on loading screen
 `resizeChart()` | `none`   | Adjust graph to the size of the parent [*for bi-directional responsive design*]
+`reRender()` | `none`   | Will force a complete re-render of the Highchart [*use it when binding is not possible*]
 `destroy()` | `none`   | Free's up the memory used by the chart [*prevents __memory leaks__*]
 
 ### Events
