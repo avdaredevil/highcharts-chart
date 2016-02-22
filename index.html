@@ -91,7 +91,7 @@
                 <div class="vertical center-justified layout">
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Spline Chart</h2>
-                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="[[splineYLabel]]" subtitle="[[_getSplineSubtitle(superThin)]]" title="[[splineTitle]]" vs-time on-click="addSplineSeries"></highcharts-chart>
+                    <highcharts-chart id="splineChart" loading$="{{splineLoading}}" loading-message="{{splineLMsg}}" type="spline" y-label="[[splineYLabel]]" x-label="Time" subtitle="[[_getSplineSubtitle(superThin)]]" title="[[splineTitle]]" vs-time on-click="addSplineSeries"></highcharts-chart>
                     <section buttons class$="[[ternary(superThin,'','horizontal layout')]]">
                         <paper-button colored raised on-tap="addSplineDp">Add Data Point</paper-button>
                         <paper-button colored raised on-tap="toggleRealtime">Realtime: <span>[[ternary(realtime,"ON","OFF")]]</span></paper-button>
@@ -121,7 +121,7 @@
                 </article>
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Bar/Column Chart</h2>
-                    <highcharts-chart id="barChart" type="column" color-by-point x-label='Animals' x-axis='{"type": "category"}' y-label="Count" subtitle="Drillable Bar Chart" title="Animals" on-chart-load="addInitData" on-drill-down="barDrill" on-drill-up="unDrill"></highcharts-chart>
+                    <highcharts-chart id="barChart" type="column" color-by-point x-axis='{"type": "category"}' y-label="Count" subtitle="Drillable Bar Chart" title="Animals" x-label=" " label="Animal" on-chart-load="addInitData" on-drill-down="barDrill" on-drill-up="unDrill"></highcharts-chart>
                     <section buttons class="layout horizontal">
                         <paper-button colored raised on-tap="addBarBird" disabled="[[or(birdAdded,inDrill)]]">Add Birds</paper-button>
                     </section>

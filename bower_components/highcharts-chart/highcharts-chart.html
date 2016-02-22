@@ -27,7 +27,7 @@
                 chartOptions: {type: Object, value: ()=>{return {}}, observer: "_chartUpdate"},
                 xAxis: {type: Object, value: ()=>{return {}}, observer: "_xAxisUpdate"},
                 yAxis: {type: Object, value: ()=>{return {}}, observer: "_yAxisUpdate"},
-                xLabel: {type: String, value: "X-Axis", observer: "_xAxisTitleUpdate"},
+                xLabel: {type: String, value: "", observer: "_xAxisTitleUpdate"},
                 yLabel: {type: String, value: "Y-Axis", observer: "_yAxisTitleUpdate"},
                 label: {type: String, value: "", observer: "_labelUpdate"},
                 data: {type: Array, value: ()=>{return []}, observer:"setData"},
@@ -47,8 +47,8 @@
                 tooltipOptions: {type: Object, value: ()=>{return {}}},
                 _chart: {type: Object, readOnly: true}},
             ready: function() {
-                var xAxis = $.extend(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis);
-                var yAxis = $.extend(this.yAxis, {title: {text: this.label||this.yLabel}});
+                var xAxis = $.extend(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis, {title: {text: this._getAxisLabel('X')}});
+                var yAxis = $.extend(this.yAxis, {title: {text: this._getAxisLabel('Y')}});
                 var Series = [{name: (this.label||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}]
                 var __app = this
                 this._set_chart(new Highcharts.Chart({
@@ -122,12 +122,13 @@
             _yAxisUpdate: function() {if(!this._chart){return};this._chart.yAxis[0].update(this.yAxis)},
             _xZoomUpdate: function() {if(!this._chart){return};var pt=this._chart.pointer;pt.zoomX=pt.zoomHor=this.xZoom},
             _yZoomUpdate: function() {if(!this._chart){return};var pt=this._chart.pointer;pt.zoomY=pt.zoomVert=this.yZoom},
-            _xAxisTitleUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update({title: {text: this.label||this.xLabel}})},
-            _yAxisTitleUpdate: function() {if(!this._chart){return};this._chart.yAxis[0].update({title: {text: this.label||this.yLabel}})},
+            _xAxisTitleUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update({title: {text: this._getAxisLabel('X')}})},
+            _yAxisTitleUpdate: function() {if(!this._chart){return};this._chart.yAxis[0].update({title: {text: this._getAxisLabel('Y')}})},
             _labelUpdate: function() {if(!this._chart){return};this._xAxisTitleUpdate();this._yAxisTitleUpdate()},
             _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})},
             _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
             _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})},
+            _getAxisLabel: function(dim) {var l = dim.toLowerCase(),u = dim.toUpperCase(),lab = this[l+"Label"]||this.label;if(lab==u+"-Axis"){lab=this.label||lab};return lab},
             _returnDummySeries: ()=>{return {update: ()=>{},remove: ()=>{}}}
         });
     </script>
