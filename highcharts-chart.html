@@ -48,6 +48,7 @@
                 _chart: {type: Object, readOnly: true}},
             ready: function() {
                 var xAxis = $.extend(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis);
+                var yAxis = $.extend(this.yAxis, {title: {text: this.label||this.yLabel}});
                 var Series = [{name: (this.label||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}]
                 var __app = this
                 this._set_chart(new Highcharts.Chart({
@@ -71,7 +72,7 @@
                     title: {text: this.title},
                     subtitle: {text: this.subtitle},
                     xAxis: xAxis,
-                    yAxis: this.yAxis,
+                    yAxis: yAxis,
                     credits: this.credits,
                     plotOptions: $.extend({
                         pie: {
@@ -123,7 +124,7 @@
             _yZoomUpdate: function() {if(!this._chart){return};var pt=this._chart.pointer;pt.zoomY=pt.zoomVert=this.yZoom},
             _xAxisTitleUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update({title: {text: this.label||this.xLabel}})},
             _yAxisTitleUpdate: function() {if(!this._chart){return};this._chart.yAxis[0].update({title: {text: this.label||this.yLabel}})},
-            _labelUpdate: function() {this._xAxisTitleUpdate();this._yAxisTitleUpdate()},
+            _labelUpdate: function() {if(!this._chart){return};this._xAxisTitleUpdate();this._yAxisTitleUpdate()},
             _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})},
             _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
             _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})},
