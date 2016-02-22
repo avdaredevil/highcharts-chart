@@ -1,5 +1,5 @@
 {
-    "Version":  "0.0.1",
+    "Version":  "v1.0.1",
     "Name":  "highcharts-chart docs site",
     "Authors":  [
                     "Apoorv Verma [AP] \u003cavdaredevil@gmail.com\u003e"
@@ -11,9 +11,9 @@
                    "DBName":  "test"
                },
     "DateUpdated":  {
-                        "value":  "\/Date(1453753257843)\/",
+                        "value":  "\/Date(1456181374617)\/",
                         "DisplayHint":  2,
-                        "DateTime":  "Monday, January 25, 2016 3:20:57 PM"
+                        "DateTime":  "Monday, February 22, 2016 5:49:34 PM"
                     },
     "Port":  1235
 }

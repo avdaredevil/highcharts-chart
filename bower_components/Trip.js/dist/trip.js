@@ -4,7 +4,7 @@
  *  This is a jQuery plugin that can help you customize your tutorial trip
  *  with full flexibilities.
  *
- *  Version: 3.1.3
+ *  Version: 3.1.5
  *
  *  Author: EragonJ <eragonj@eragonj.me>
  *  Blog: http://eragonj.me
@@ -307,7 +307,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        .addClass('trip-exposed');
 	    }
 
-	    this.$overlay.show();
+	    this.$overlay.fadeIn();
 	  },
 
 	  /**
@@ -331,7 +331,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        .removeClass('trip-exposed');
 	    }
 
-	    this.$overlay.hide();
+	    this.$overlay.fadeOut();
 	  },
 
 	  /**
@@ -1382,6 +1382,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var tripIndex = node.dataset.tripIndex;
 	    var tripContent = node.dataset.tripContent;
 	    var tripDelay = node.dataset.tripDelay;
+	    var tripExpose = node.dataset.tripExpose === 'true' ?
+	      true : (node.dataset.tripExpose || false);
 	    var tripPosition =
 	      node.dataset.tripPosition || this._DEFAULT_TRIP_POSITION;
 	    var tripAnimation =
@@ -1405,6 +1407,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      tripObject._index = tripIndex;
 	      tripObject.position = tripPosition;
 	      tripObject.content = tripContent;
+	      tripObject.expose = tripExpose;
 
 	      if (tripDelay && !isNaN(tripDelay)) {
 	        tripObject.delay = tripDelay;

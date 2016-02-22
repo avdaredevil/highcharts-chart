@@ -52,6 +52,7 @@ Attribute  | Options     | Default              | Description
 `subtitle` | *string*    | `""`                 | Subtitle of Chart
 `showAxes` | *array*     | `['bottom','left']`  | Pick the axes to show.
 `xAxis`    | *object*    | `{}` OR *`Time based`* | Specifies the configuration for the X-Axis.
+`yAxis`    | *object*    | `{}` | Specifies the configuration for the Y-Axis.
 `xLabel`   | *string*    | `X-Axis`             | Label for X-Axis
 `yLabel`   | *string*    | `Y-Axis`             | Label for Y-Axis
 `xZoom`   | *boolean*    | `false`             | Zooming Allowed On X-Axis
@@ -89,6 +90,7 @@ Method       | Parameters           | Description
 `removeSeries(z)` | `index`  | Removes Series denoted by index
 `showLoading(t)` | `t [Text]` | Sets `Loading-Message` equal to `t` then turns on loading screen
 `resizeChart()` | `none`   | Adjust graph to the size of the parent [*for bi-directional responsive design*]
+`reRender()` | `none`   | Will force a complete re-render of the Highchart [*use it when binding is not possible*]
 `destroy()` | `none`   | Free's up the memory used by the chart [*prevents __memory leaks__*]
 
 ### Events
