@@ -35,6 +35,5 @@
   },
   "_source": "git://github.com/1000ch/syntax-highlight.git",
   "_target": "^1.0.0",
-  "_originalSource": "syntax-highlight",
-  "_direct": true
+  "_originalSource": "syntax-highlight"
 }

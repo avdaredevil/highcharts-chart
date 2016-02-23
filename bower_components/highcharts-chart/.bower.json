@@ -40,7 +40,7 @@
   "_resolution": {
     "type": "version",
     "tag": "v1.0.1",
-    "commit": "9daf11299a25706c8ff6f4de01097f7ea4cfea43"
+    "commit": "1b982e30062e9584463e0f2b0f3d81de59094ba3"
   },
   "_source": "git://github.com/avdaredevil/highcharts-chart.git",
   "_target": "*",
