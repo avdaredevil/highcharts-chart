@@ -100,7 +100,7 @@
             },
             setData: function(x,z,ign) {if (!z && this.data!=x){this.data=x;return}
                 var __app = this
-                if (x.length && x[0].data instanceof Array) {
+                if (x && x.length && x[0].data instanceof Array) {
                     while (__app._chart.series.length) {__app.removeSeries()}
                     x.forEach(function(d){__app._chart.addSeries(d)})
                 } else {__app._getSeries(z).setData(x)}
