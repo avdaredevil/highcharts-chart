@@ -24,13 +24,13 @@
                 credits: {type: Boolean, value: false, reflectToAttribute:true},
                 colorByPoint: {type: Boolean, value: false, reflectToAttribute:true},
                 legend: {type: Boolean, value: false, reflectToAttribute:true, observer: "_legendUpdate"},
-                chartOptions: {type: Object, value: ()=>{return {}}, observer: "_chartUpdate"},
-                xAxis: {type: Object, value: ()=>{return {}}, observer: "_xAxisUpdate"},
-                yAxis: {type: Object, value: ()=>{return {}}, observer: "_yAxisUpdate"},
+                chartOptions: {type: Object, value: function(){return {}}, observer: "_chartUpdate"},
+                xAxis: {type: Object, value: function(){return {}}, observer: "_xAxisUpdate"},
+                yAxis: {type: Object, value: function(){return {}}, observer: "_yAxisUpdate"},
                 xLabel: {type: String, value: "", observer: "_xAxisTitleUpdate"},
                 yLabel: {type: String, value: "Y-Axis", observer: "_yAxisTitleUpdate"},
                 label: {type: String, value: "", observer: "_labelUpdate"},
-                data: {type: Array, value: ()=>{return []}, observer:"setData"},
+                data: {type: Array, value: function(){return []}, observer:"setData"},
                 vsTime: {type: Boolean, value: false},
                 loading: {type: Boolean, value: false, observer: "_loadingUpdate", reflectToAttribute:true},
                 loadingMessage: {type: String, value: ""},
@@ -42,9 +42,9 @@
                 //Custom Chart Declarations
                 legendHorizAlign: {type: String, value: "right"},
                 legendVertAlign: {type: String, value: "top"},
-                legendPos: {type: Object, value: ()=>{return {x: -40,y: 80}}},
-                legendOptions: {type: Object, value: ()=>{return {}}},
-                tooltipOptions: {type: Object, value: ()=>{return {}}},
+                legendPos: {type: Object, value: function(){return {x: -40,y: 80}}},
+                legendOptions: {type: Object, value: function(){return {}}},
+                tooltipOptions: {type: Object, value: function(){return {}}},
                 _chart: {type: Object, readOnly: true}},
             ready: function() {
                 var xAxis = $.extend(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis, {title: {text: this._getAxisLabel('X')}});
@@ -95,7 +95,7 @@
                     series: Series,
                     drilldown: {series: []}
                 }))
-                this.async(()=>{this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
+                this.async(function(){this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
             },
             setData: function(x,z) {if(!this._chart){return};if (typeof z != "number"){z=0}this._chart.series[z].setData(x)},
             addData: function(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)},
@@ -130,7 +130,7 @@
             _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
             _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})},
             _getAxisLabel: function(dim) {var l = dim.toLowerCase(),u = dim.toUpperCase(),lab = this[l+"Label"]||this.label;if(lab==u+"-Axis"){lab=this.label||lab};return lab},
-            _returnDummySeries: ()=>{return {update: ()=>{},remove: ()=>{}}}
+            _returnDummySeries: function(){return {update: function(){},remove: function(){}}}
         });
     </script>
 </dom-module>
