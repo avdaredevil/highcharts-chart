@@ -95,7 +95,7 @@
                     series: Series,
                     drilldown: {series: []}
                 }))
-                this.data = this.data.slice(0)
+                this.setData(this.data.slice())
                 this.async(function(){this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
             },
             setData: function(x,z,ign) {if (!z && this.data!=x){this.data=x;return}
