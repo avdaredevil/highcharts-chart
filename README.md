@@ -76,7 +76,7 @@ Attribute  | Options     | Default              | Description
 `tooltipOptions` | *object* | `{}` | Override/Add Options to your tooltip
 `_chart` | *object `[readonly]`* | `{}` | HighCharts exposed object
 
-**Note:** If you bind a bunch of series objects to data instead of data for a single series, it will perform series level binding as well.
+**Note:** If you bind a bunch of series objects to the `data` __property__ instead of data for a __single series__, it will perform series level binding
 
 ### Methods
 
