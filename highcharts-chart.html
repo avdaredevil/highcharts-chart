@@ -81,7 +81,7 @@
                             dataLabels: {
                                 enabled: true,
                                 format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                                style: {color: (Highcharts.theme && Highcharts.theme.contrastTextColor)||'black'}
+                                style: {color: (Highcharts.theme||[]).contrastTextColor||'black'}
                             }
                         }
                     }, this.chartOptions),
@@ -92,9 +92,10 @@
                         }}:{},this.tooltipOptions),
                     legend: $.extend({enabled: this.legend, layout: "vertical", verticalAlign: this.legendVertAlign, align: this.legendHorizAlign, x: this.legendPos.x, y: this.legendPos.y, backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'), shadow: true},this.legendOptions),
                     exporting: {enabled: this.export},
-                    series: Series,
+                    series: [],
                     drilldown: {series: []}
                 }))
+                this.data = Series
                 this.async(function(){this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
             },
             setData: function(x,z,ign) {if (!z && this.data!=x){this.data=x;return}
