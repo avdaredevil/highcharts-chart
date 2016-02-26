@@ -91,6 +91,7 @@ Method       | Parameters           | Description
 `showLoading(t)` | `t [Text]` | Sets `Loading-Message` equal to `t` then turns on loading screen
 `resizeChart()` | `none`   | Adjust graph to the size of the parent [*for bi-directional responsive design*]
 `reRender()` | `none`   | Will force a complete re-render of the Highchart [*use it when binding is not possible*]
+`downloadAs(name,options)` | `chart`,`{}` | Download/Export the chart as a file
 `destroy()` | `none`   | Free's up the memory used by the chart [*prevents __memory leaks__*]
 
 ### Events
@@ -110,6 +111,7 @@ Event      | Description             | Payload [*`e.detail`*]
 
 Mixin       | Description
 ---         | ---
+`--highcharts-chart-min-height` | Min Height for Highcharts-Chart container [default: *20em*]
 `--highcharts-chart-container` | The container that directly contains the Chart SVG
 
 ## Contributing/Suggestions

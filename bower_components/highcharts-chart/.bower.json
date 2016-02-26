@@ -1,6 +1,5 @@
 {
   "name": "highcharts-chart",
-  "version": "1.0.1",
   "authors": [
     "Apoorv Verma [AP] <avdaredevil@gmail.com>"
   ],
@@ -33,16 +32,17 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#~1.2.3",
-    "jquery": "~2.1.4"
+    "polymer": "Polymer/polymer#^1.3.0",
+    "jquery": "^2.1.4"
   },
-  "_release": "1.0.1",
+  "_release": "4f9d35ee06",
   "_resolution": {
-    "type": "version",
-    "tag": "v1.0.1",
-    "commit": "1b982e30062e9584463e0f2b0f3d81de59094ba3"
+    "type": "branch",
+    "branch": "master",
+    "commit": "4f9d35ee06e47f263665512d2709d094c3c70641"
   },
   "_source": "git://github.com/avdaredevil/highcharts-chart.git",
-  "_target": "*",
-  "_originalSource": "highcharts-chart"
+  "_target": "master",
+  "_originalSource": "highcharts-chart",
+  "_direct": true
 }
