@@ -49,7 +49,7 @@
             ready: function() {
                 var xAxis = $.extend(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis, {title: {text: this._getAxisLabel('X')}});
                 var yAxis = $.extend(this.yAxis, {title: {text: this._getAxisLabel('Y')}});
-                var Series = [{name: (this.label||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}]
+                var Series = [{name: (this.label||this.yLabel||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}]
                 var __app = this
                 this._set_chart(new Highcharts.Chart({
                     chart: $.extend({
@@ -110,6 +110,7 @@
             showLoading: function(d) {this.loadingMessage=d;this.loading=true},
             resizeChart: function() {if(!this._chart){return}this._chart.setSize(this.$.Chart.offsetWidth,this.offsetHeight)},
             reRender: function() {if(!this._chart){return}this._set_chart(new Highcharts.Chart(this._chart.options))},
+            downloadAs: function(name,otherOptions) {if(!this._chart){return}this._chart.exportChart($.extend({filename: name},otherOptions))},
             destroy: function() {if(!this._chart){return}this._chart.destroy()},
             _getSeries: function(z) {if(!this._chart){return this._returnDummySeries()};z=z||0;var s=this._chart.series;if(!s.length){this._warn("Chart is empty [no series]");return this._returnDummySeries()};if (z<s.length){return s[(z||0)]}else{this._warn("Index z out of bounds");return this._returnDummySeries()}},
             _warn: function(err) {console.warn("%c[highcharts-chart]","font-weight:bold;background-color:yellow",err)},
