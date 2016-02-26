@@ -111,6 +111,7 @@ Event      | Description             | Payload [*`e.detail`*]
 
 Mixin       | Description
 ---         | ---
+`--highcharts-chart-min-height` | Min Height for Highcharts-Chart container [default: *20em*]
 `--highcharts-chart-container` | The container that directly contains the Chart SVG
 
 ## Contributing/Suggestions
