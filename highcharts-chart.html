@@ -49,7 +49,7 @@
             ready: function() {
                 var xAxis = $.extend(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis, {title: {text: this._getAxisLabel('X')}});
                 var yAxis = $.extend(this.yAxis, {title: {text: this._getAxisLabel('Y')}});
-                var Series = [{name: (this.label||this.yLabel||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}]
+                var Series = this.data.length && this.data[0].data instanceof Array?this.data:[{name: (this.label||this.yLabel||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}]
                 var __app = this
                 this._set_chart(new Highcharts.Chart({
                     chart: $.extend({
@@ -95,7 +95,6 @@
                     series: Series,
                     drilldown: {series: []}
                 }))
-                this.setData(this.data.slice())
                 this.async(function(){this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
             },
             setData: function(x,z,ign) {if (!z && this.data!=x){this.data=x;return}
