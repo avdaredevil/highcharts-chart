@@ -105,9 +105,9 @@
                 } else {__app._getSeries(z).setData(x)}
             },
             addData: function(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)},
-            pushData: function(x,y,z,append,drillable) {if(!this._chart){return}
+            pushData: function(x,y,z,append,drillable) {
                 if (typeof z=="boolean") {drillable = z;z=0}
-                this._chart.series[(z||0)].addPoint(drillable?{name:x,y:y,drilldown:true}:[x,y],true,!append)
+                this._getSeries(z).addPoint(drillable?{name:x,y:y,drilldown:true}:[x,y],true,!append)
             },
             addSeries: function(name,data,colorByPoint,otherOptions) {this._chart.addSeries($.extend({name: name, data: (data||[]), colorByPoint: typeof colorByPoint=="undefined"?this.colorByPoint:colorByPoint},typeof otherOptions == "object"?otherOptions:{}),true)},
             addDrillSeries: function(point,data,name) {this._chart.addSeriesAsDrilldown(point, {name: name, data: data})},
@@ -136,7 +136,7 @@
             _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
             _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})},
             _getAxisLabel: function(dim) {var l = dim.toLowerCase(),u = dim.toUpperCase(),lab = this[l+"Label"]||this.label;if(lab==u+"-Axis"){lab=this.label||lab};return lab},
-            _returnDummySeries: function(){return {isDummy: true, setData: function(){}, update: function(){},remove: function(){}}}
+            _returnDummySeries: function(){var f=function(){};return {isDummy: true, setData: f, addPoint: f, update: f,remove: f}}
         });
     </script>
 </dom-module>
