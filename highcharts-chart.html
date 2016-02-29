@@ -45,7 +45,8 @@
                 legendPos: {type: Object, value: function(){return {x: -40,y: 80}}},
                 legendOptions: {type: Object, value: function(){return {}}},
                 tooltipOptions: {type: Object, value: function(){return {}}},
-                _chart: {type: Object, readOnly: true}},
+                _chart: {type: Object, readOnly: true},
+                __microTaskDelaySetData: {type: Number, value: 25}},
             ready: function() {
                 var xAxis = $.extend(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis, {title: {text: this._getAxisLabel('X')}});
                 var yAxis = $.extend(this.yAxis, {title: {text: this._getAxisLabel('Y')}});
@@ -101,7 +102,7 @@
                 var __app = this
                 if (x && x.length && x[0].data instanceof Array) {
                     while (__app._chart.series.length) {__app.removeSeries(0,false)}
-                    x.forEach(function(d){__app._chart.addSeries(d)})
+                    __app.async(function(){x.forEach(function(d){__app._chart.addSeries(d)})},__app.__microTaskDelaySetData)
                 } else {__app._getSeries(z).setData(x)}
             },
             addData: function(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)},
