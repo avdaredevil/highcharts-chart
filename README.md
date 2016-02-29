@@ -89,7 +89,7 @@ Method       | Parameters           | Description
 `addDrillSeries(point,data,name)` | `point`,`Array`,`String`   | Adds a series that is viewable when an Element is clicked into
 `updateSeries(k,v,z)` | `String`,`Mixed`,`0`   | Modifies an option by Key Value for series [given by `z`]
 `updateSeries(options,z)` | `{}`,`0`   | Modifies the options for series [given by `z`]
-`removeSeries(z)` | `index`  | Removes Series denoted by index
+`removeSeries(z,redraw)` | `index`,`true`  | Removes Series denoted by index [should redraw after remove]
 `showLoading(t)` | `t [Text]` | Sets `Loading-Message` equal to `t` then turns on loading screen
 `resizeChart()` | `none`   | Adjust graph to the size of the parent [*for bi-directional responsive design*]
 `reRender()` | `none`   | Will force a complete re-render of the Highchart [*use it when binding is not possible*]
