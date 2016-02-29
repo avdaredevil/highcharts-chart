@@ -101,8 +101,7 @@
             setData: function(x,z,ign) {if (!z && this.data!=x){this.data=x.slice();return}
                 var __app = this
                 if (x && x.length && x[0].data instanceof Array) {
-                    while (__app._chart.series.length) {__app.removeSeries(0,false)}
-                    __app.async(function(){x.forEach(function(d){__app._chart.addSeries(d)})},__app.__microTaskDelaySetData)
+                    __app.async(function(){while (__app._chart.series.length) {__app.removeSeries(0,false)};x.forEach(function(d){__app._chart.addSeries(d)})},__app.__microTaskDelaySetData)
                 } else {__app._getSeries(z).setData(x)}
             },
             addData: function(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)},
