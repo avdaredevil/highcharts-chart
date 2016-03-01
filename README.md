@@ -74,6 +74,7 @@ Attribute  | Options     | Default              | Description
 `legendPos`  | *object*     | `{x:-40, y: 80}` | Legend Offset
 `legendOptions` | *object* | `{}` | Override/Add Options to your legend
 `tooltipOptions` | *object* | `{}` | Override/Add Options to your tooltip
+`highchartOptions` | *object* | `{}` | Override/Add Options to the chart initalization code [useful for custom charts]
 `_chart` | *object `[readonly]`* | `{}` | HighCharts exposed object
 
 **Note:** If you bind a bunch of series objects to the `data` _property_ instead of data for a _single series_, it will perform series level binding

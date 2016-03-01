@@ -45,6 +45,7 @@
                 legendPos: {type: Object, value: function(){return {x: -40,y: 80}}},
                 legendOptions: {type: Object, value: function(){return {}}},
                 tooltipOptions: {type: Object, value: function(){return {}}},
+                highchartOptions: {type: Object, value: function(){return {}}},
                 _chart: {type: Object, readOnly: true},
                 __microTaskDelaySetData: {type: Number, value: 25}},
             ready: function() {
@@ -52,7 +53,7 @@
                 var yAxis = $.extend(this.yAxis, {title: {text: this._getAxisLabel('Y')}});
                 var Series = this.data.length && this.data[0].data instanceof Array?this.data:[{name: (this.label||this.yLabel||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}]
                 var __app = this
-                this._set_chart(new Highcharts.Chart({
+                this._set_chart(new Highcharts.Chart($.extend({
                     chart: $.extend({
                         renderTo: this.$.Chart,
                         defaultSeriesType: this.type,
@@ -95,7 +96,7 @@
                     exporting: {enabled: this.export},
                     series: Series,
                     drilldown: {series: []}
-                }))
+                },this.highchartOptions)))
                 this.async(function(){this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
             },
             setData: function(x,z,ign) {if (!z && this.data!=x){this.data=x.slice();return}
