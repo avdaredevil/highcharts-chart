@@ -22,8 +22,7 @@
                 selected: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
                 selectedPoints: {type: Array, readOnly: true, notify: true}},
             ready: function() {
-                this.__createChart()
-                this.async(function(){this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
+                this.__createChart();this.async(this._loadingUpdate,50)
             },
             showLoading: function(d) {this.loadingMessage=d;this.loading=true},
             _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
