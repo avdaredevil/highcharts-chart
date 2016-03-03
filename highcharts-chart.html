@@ -3,8 +3,8 @@
 <dom-module id="highcharts-chart">
     <template>
         <style>
-            :host {width: 100%;display: inline-block;min-height: var(--highcharts-chart-min-height, 26em)}
-            #Chart {@apply(--highcharts-chart-container);}
+            :host {width: 100%;display: inline-block;min-height: var(--highcharts-min-height, 26em)}
+            #Chart {@apply(--highcharts-container);}
         </style>
         <div id="Chart" width="100%" on-click="_checkSelected"></div>
     </template>
