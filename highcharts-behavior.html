@@ -18,6 +18,7 @@
         properties: {
             title: {type: String, value: "Highcharts Chart", observer: "_titleUpdate"},
             subtitle: {type: String, value: "", observer: "_subtitleUpdate"},
+            colorByPoint: {type: Boolean, value: false, reflectToAttribute:true},
             credits: {type: Boolean, value: false, reflectToAttribute:true},
             legend: {type: Boolean, value: false, reflectToAttribute:true, observer: "_legendUpdate"},
             chartOptions: {type: Object, value: function(){return {}}, observer: "_chartUpdate"},

@@ -1,5 +1,5 @@
 <link rel="import" href="highcharts-behavior.html">
-<link rel="import" href="../highcharts/modules/map.js">
+<script src="../highcharts/modules/map.js"></script>
 
 <dom-module id="highcharts-map">
     <template>
@@ -17,7 +17,7 @@
             properties: {
                 type: {type: String, value: 'map', observer: '_updateType'},
                 title: {type: String, value: "Highcharts Map", observer: "_titleUpdate"}},
-            ready: function() {this.__createChart("map")},
+            ready: function() {this.__createChart("Map")},
             showLoading: function(d) {this.loadingMessage=d;this.loading=true},
             _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
         });
