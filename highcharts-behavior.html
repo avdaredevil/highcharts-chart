@@ -46,7 +46,7 @@
             var __app = this
             this._set_chart(new Highcharts[namespace||"Chart"]($.extend({
                 chart: $.extend({
-                    renderTo: this.$.Chart,
+                    renderTo: __app.$.Chart,
                     defaultSeriesType: this.type,
                     animation: Highcharts.svg, // don't animate in old IE
                     marginRight: 10,
