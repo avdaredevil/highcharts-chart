@@ -1,0 +1,24 @@
+<link rel="import" href="highcharts-behavior.html">
+<link rel="import" href="../highcharts/modules/map.js">
+
+<dom-module id="highcharts-chart">
+    <template>
+        <style>
+            :host {width: 100%;display: inline-block;min-height: var(--highcharts-chart-min-height, 26em)}
+            #Chart {@apply(--highcharts-chart-container);}
+        </style>
+        <div id="Chart" width="100%" on-click="_checkSelected"></div>
+    </template>
+    <script>
+        'use strict';
+        Polymer({
+            is: "highcharts-map",
+            behaviors: [Highcharts.HighchartsPolymerBehavior],
+            properties: {
+                type: {type: String, value: 'map', observer: '_updateType'},
+            ready: function() {this.__createChart("Map")},
+            showLoading: function(d) {this.loadingMessage=d;this.loading=true},
+            _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
+        });
+    </script>
+</dom-module>
