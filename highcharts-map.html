@@ -15,7 +15,7 @@
             is: "highcharts-map",
             behaviors: [Highcharts.HighchartsPolymerBehavior],
             properties: {
-                type: {type: String, value: 'map', observer: '_updateType'}
+                type: {type: String, value: 'map', observer: '_updateType'},
                 title: {type: String, value: "Highcharts Map", observer: "_titleUpdate"}},
             ready: function() {this.__createChart("Map")},
             showLoading: function(d) {this.loadingMessage=d;this.loading=true},
