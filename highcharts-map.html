@@ -17,7 +17,7 @@
             properties: {
                 type: {type: String, value: 'map', observer: '_updateType'},
                 title: {type: String, value: "Highcharts Map", observer: "_titleUpdate"}},
-            ready: function() {this.__createChart("Map")},
+            ready: function() {this.__createChart("map")},
             showLoading: function(d) {this.loadingMessage=d;this.loading=true},
             _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
         });
