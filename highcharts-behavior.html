@@ -93,6 +93,7 @@
                 drilldown: {series: []}
             },this.highchartOptions)))
             this.async(function(){window.dispatchEvent(new Event('resize'))},50)
+            this.async(this.__lateBinders,50)
         },
         setData: function(x,z,ign) {if (!z && this.data!=x){this.data=x.slice();return}
             var __app = this
@@ -118,7 +119,7 @@
         _warn: function(err) {console.warn("%c[highcharts-chart]","font-weight:bold;background-color:yellow",err)},
         _legendUpdate: function(s) {if(!this._chart){return};this._chart.options.legend.enabled = s;this.reRender()},
         _chartUpdate: function(o) {if(!this._chart){return};this._chart.options = $.extend(this._chart.options,opt);this.reRender()},
-        _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)}
+        _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
         _exportingUpdate: function(x) {if(!this._chart){return};this._chart.options.exporting.enabled=x;this.reRender()},
         _updateType: function() {this.updateSeries("type",this.type)},
         _xAxisUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update(this.xAxis)},
@@ -140,7 +141,6 @@
             vsTime: {type: Boolean, value: false},
             selected: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
             selectedPoints: {type: Array, readOnly: true, notify: true}},
-        created: function() {this.async(this._loadingUpdate,50)},
         _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)}
     };
 </script>
