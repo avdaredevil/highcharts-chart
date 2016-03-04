@@ -99,7 +99,8 @@ Method       | Parameters           | Description
 `updateSeries(options,z)` | `{}`,`0`   | Modifies the options for series [given by `z`]
 `removeSeries(z,redraw)` | `index`,`true`  | Removes Series denoted by index [should redraw after remove]
 `showLoading(t)`__\*__ | `t [Text]` | Sets `Loading-Message` equal to `t` then turns on loading screen
-`resizeChart()` | `none`   | Adjust graph to the size of the parent [*for bi-directional responsive design*]
+`resizeChart()` | `none`   | Efficient reflow of the chart to parent [*can be attached to a parent resize*]
+`resizeChartFixed()` | `none`   | Fixed Adjustment of chart [*use if chart should not fluctuate over minor size changes*]
 `reRender()` | `none`   | Will force a complete re-render of the Highchart [*use it when binding is not possible*]
 `downloadAs(name,options)` | `chart`,`{}` | Download/Export the chart as a file
 `destroy()` | `none`   | Free's up the memory used by the chart [*prevents __memory leaks__*]
