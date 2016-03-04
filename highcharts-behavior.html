@@ -14,7 +14,7 @@
 <script>
     'use strict';
     Highcharts.setOptions({global: {useUTC: false}});
-    Highcharts.HighchartsPolymerBehavior = {
+    Highcharts.Polymer_BaseBehavior = {
         properties: {
             title: {type: String, value: "Highcharts Chart", observer: "_titleUpdate"},
             subtitle: {type: String, value: "", observer: "_subtitleUpdate"},
@@ -129,5 +129,16 @@
         _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})},
         _getAxisLabel: function(dim) {var l = dim.toLowerCase(),u = dim.toUpperCase(),lab = this[l+"Label"]||this.label;if(lab==u+"-Axis"){lab=this.label||lab};return lab},
         _returnDummySeries: function(){var f=function(){};return {isDummy: true, setData: f, addPoint: f, update: f,remove: f}}
+    };
+    Highcharts.Polymer_ChartBehavior = {
+        properties: {
+            loading: {type: Boolean, value: false, observer: "_loadingUpdate", reflectToAttribute:true},
+            loadingMessage: {type: String, value: ""},
+            selected: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
+            selectedPoints: {type: Array, readOnly: true, notify: true}},
+        created: function() {this.async(this._loadingUpdate,50)},
+        showLoading: function(d) {this.loadingMessage=d;this.loading=true},
+        _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)},
+        _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)}
     };
 </script>
