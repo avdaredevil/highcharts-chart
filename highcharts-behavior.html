@@ -92,7 +92,7 @@
                 series: Series,
                 drilldown: {series: []}
             },this.highchartOptions)))
-            this.async(function(){window.dispatchEvent(new Event('resize'))},50)
+            this.async(this.resizeChart,50)
             this.async(this.__lateBinders,50)
         },
         setData: function(x,z,ign) {if (!z && this.data!=x){this.data=x.slice();return}
@@ -110,7 +110,8 @@
         addDrillSeries: function(point,data,name) {this._chart.addSeriesAsDrilldown(point, {name: name, data: data})},
         removeSeries: function(z,redraw) {var s = this._getSeries(z);s.remove(redraw);return s},
         updateSeries: function(k,v,z) {var NewEl = {};if(typeof k=="object"){NewEl = k;z=v||z}else{NewEl[k]=v};this._getSeries(z).update(NewEl)},
-        resizeChart: function() {if(!this._chart){return}this._chart.setSize(this.$.Chart.offsetWidth,this.offsetHeight)},
+        resizeChart: function() {if(!this._chart){return}this._chart.reflow()},
+        resizeChartFixed: function() {if(!this._chart){return}this._chart.setSize(this.$.Chart.offsetWidth,this.offsetHeight)},
         reRender: function() {if(!this._chart){return}this._set_chart(new Highcharts.Chart(this._chart.options));this.__lateBinders()},
         downloadAs: function(name,otherOptions) {if(!this._chart){return}this._chart.exportChart($.extend({filename: name},otherOptions))},
         destroy: function() {if(!this._chart){return}this._chart.destroy()},
