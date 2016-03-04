@@ -28,10 +28,10 @@ Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/mas
 
     ```html
     <link rel="import" href="bower_components/highcharts-chart/highcharts-chart.html">
-    ```
-    OR
-    ```html
+        OR
     <link rel="import" href="bower_components/highcharts-chart/highcharts-map.html">
+        OR
+    <link rel="import" href="bower_components/highcharts-chart/highcharts-stock.html">
     ```
 
 3. Start using it!
@@ -40,7 +40,8 @@ Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/mas
     <highcharts-chart type="spline"></highcharts-chart>
     <highcharts-chart type="pie"></highcharts-chart>
     <highcharts-chart type="column"></highcharts-chart>
-    <highcharts-map type="map"></highcharts-map>
+    <highcharts-map></highcharts-map>
+    <highcharts-stock></highcharts-stock>
     ```
 
 ## &lt;highcharts-chart&gt;
@@ -63,8 +64,8 @@ Attribute  | Options     | Default              | Description
 `yZoom`   | *boolean*    | `false`             | Zooming Allowed On Y-Axis
 `label`    | *string*    | `Label`*`[for non numeric]`* | Alias for both Axis
 `data`     | *array*     | `[]` | Data for chart
-`loading`__\*__  | *boolean*     | `false` | Toggle loading overlay on chart
-`loadingMessage`__\*__ | *string* | `Loading...` | Loading Text Display
+`loading`  | *boolean*     | `false` | Toggle loading overlay on chart
+`loadingMessage` | *string* | `Loading...` | Loading Text Display
 `selected` | *boolean `[readonly]`*     | `false` | Is any element selected on graph
 `selectedPoints` | *array `[readonly]`* | `[]` | Which elements are selected
 `vsTime`   | *boolean*     | `false` | Set all options appropriate for a time chart

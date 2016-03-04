@@ -16,7 +16,8 @@
     Highcharts.setOptions({global: {useUTC: false}});
     Highcharts.Polymer_BaseBehavior = {
         properties: {
-            title: {type: String, value: "Highcharts Chart", observer: "_titleUpdate"},
+            type: {type: String, observer: '_updateType'},
+            title: {type: String, observer: "_titleUpdate"},
             subtitle: {type: String, value: "", observer: "_subtitleUpdate"},
             colorByPoint: {type: Boolean, value: false, reflectToAttribute:true},
             credits: {type: Boolean, value: false, reflectToAttribute:true},
@@ -31,6 +32,8 @@
             export: {type: Boolean, value: false, reflectToAttribute: true, observer: "_exportingUpdate"},
             xZoom: {type: Boolean, value: false, reflectToAttribute: true, observer: "_xZoomUpdate"},
             yZoom: {type: Boolean, value: false, reflectToAttribute: true, observer: "_yZoomUpdate"},
+            loading: {type: Boolean, value: false, observer: "_loadingUpdate", reflectToAttribute:true},
+            loadingMessage: {type: String, value: ""},
             //Custom Chart Declarations
             legendHorizAlign: {type: String, value: "right"},
             legendVertAlign: {type: String, value: "top"},
@@ -107,16 +110,17 @@
         removeSeries: function(z,redraw) {var s = this._getSeries(z);s.remove(redraw);return s},
         updateSeries: function(k,v,z) {var NewEl = {};if(typeof k=="object"){NewEl = k;z=v||z}else{NewEl[k]=v};this._getSeries(z).update(NewEl)},
         resizeChart: function() {if(!this._chart){return}this._chart.setSize(this.$.Chart.offsetWidth,this.offsetHeight)},
-        reRender: function() {if(!this._chart){return}this._set_chart(new Highcharts.Chart(this._chart.options))},
+        reRender: function() {if(!this._chart){return}this._set_chart(new Highcharts.Chart(this._chart.options));this.__lateBinders()},
         downloadAs: function(name,otherOptions) {if(!this._chart){return}this._chart.exportChart($.extend({filename: name},otherOptions))},
         destroy: function() {if(!this._chart){return}this._chart.destroy()},
+        showLoading: function(d) {this.loadingMessage=d;this.loading=true},
         _getSeries: function(z) {if(!this._chart){return this._returnDummySeries()};z=typeof z != "number"?0:z;var s=this._chart.series;if(!s.length){this._warn("Chart is empty [no series]");return this._returnDummySeries()};if (z<s.length){return s[(z||0)]}else{this._warn("Index z out of bounds");return this._returnDummySeries()}},
         _warn: function(err) {console.warn("%c[highcharts-chart]","font-weight:bold;background-color:yellow",err)},
         _legendUpdate: function(s) {if(!this._chart){return};this._chart.options.legend.enabled = s;this.reRender()},
         _chartUpdate: function(o) {if(!this._chart){return};this._chart.options = $.extend(this._chart.options,opt);this.reRender()},
+        _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)}
         _exportingUpdate: function(x) {if(!this._chart){return};this._chart.options.exporting.enabled=x;this.reRender()},
-        _updateType: function(t) {this.updateSeries("type",t)},
-        _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)},
+        _updateType: function() {this.updateSeries("type",this.type)},
         _xAxisUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update(this.xAxis)},
         _yAxisUpdate: function() {if(!this._chart){return};this._chart.yAxis[0].update(this.yAxis)},
         _xZoomUpdate: function() {if(!this._chart){return};var pt=this._chart.pointer;pt.zoomX=pt.zoomHor=this.xZoom},
@@ -128,17 +132,15 @@
         _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
         _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})},
         _getAxisLabel: function(dim) {var l = dim.toLowerCase(),u = dim.toUpperCase(),lab = this[l+"Label"]||this.label;if(lab==u+"-Axis"){lab=this.label||lab};return lab},
-        _returnDummySeries: function(){var f=function(){};return {isDummy: true, setData: f, addPoint: f, update: f,remove: f}}
+        _returnDummySeries: function(){var f=function(){};return {isDummy: true, setData: f, addPoint: f, update: f,remove: f}},
+        __lateBinders: function(){this._updateType();this._loadingUpdate()}
     };
     Highcharts.Polymer_ChartBehavior = {
         properties: {
-            loading: {type: Boolean, value: false, observer: "_loadingUpdate", reflectToAttribute:true},
-            loadingMessage: {type: String, value: ""},
+            vsTime: {type: Boolean, value: false},
             selected: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
             selectedPoints: {type: Array, readOnly: true, notify: true}},
         created: function() {this.async(this._loadingUpdate,50)},
-        showLoading: function(d) {this.loadingMessage=d;this.loading=true},
-        _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)},
-        _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)}
+        _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)}
     };
 </script>

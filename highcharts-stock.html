@@ -13,7 +13,8 @@
         Polymer({
             is: "highcharts-stock",
             behaviors: [Highcharts.Polymer_BaseBehavior, Highcharts.Polymer_ChartBehavior],
-            properties: {type: {type: String, observer: '_updateType'}},
+            properties: {
+                title: {type: String, value: "Highcharts Stock", observer: "_titleUpdate"}},
             ready: function() {this.__createChart("StockChart")}
         });
     </script>
