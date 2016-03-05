@@ -13,7 +13,7 @@
         'use strict';
         Polymer({
             is: "highcharts-map",
-            behaviors: [Highcharts.HighchartsPolymerBehavior],
+            behaviors: [Highcharts.Polymer_BaseBehavior],
             properties: {
                 type: {type: String, value: 'map', observer: '_updateType'},
                 title: {type: String, value: "Highcharts Map", observer: "_titleUpdate"}},
