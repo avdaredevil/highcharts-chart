@@ -48,7 +48,7 @@
             var yAxis = $.extend(this.yAxis, {title: {text: this._getAxisLabel('Y')}});
             var Series = this.data.length && this.data[0].data instanceof Array?this.data:[{name: (this.label||this.yLabel||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}]
             var __app = this
-            this._set_chart(new Highcharts[namespace||"Chart"]($.extend({
+            this._set_chart(new Highcharts[namespace||"Chart"]($.extend(true,{},{
                 chart: $.extend({
                     renderTo: __app.$.Chart,
                     defaultSeriesType: this.type,
@@ -133,7 +133,7 @@
         _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})},
         _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
         _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})},
-        _getAxisLabel: function(dim) {var l = dim.toLowerCase(),u = dim.toUpperCase(),lab = this[l+"Label"]||this.label;if(lab==u+"-Axis"){lab=this.label||lab};return lab},
+        _getAxisLabel: function(dim) {var l = dim.toLowerCase(),u = dim.toUpperCase(),lab = this[l+"Label"]||this.label;if(lab==u+"-Axis"){lab=this.label||lab};return lab.trim()},
         _returnDummySeries: function(){var f=function(){};return {isDummy: true, setData: f, addPoint: f, update: f,remove: f}},
         __lateBinders: function(){this._updateType();this._loadingUpdate()}
     };
