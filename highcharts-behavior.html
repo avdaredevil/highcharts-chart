@@ -55,14 +55,14 @@
                     animation: Highcharts.svg, // don't animate in old IE
                     marginRight: 10,
                     events: {
-                        click: function(e){__app.fire("chart-click",{e: e,chart: this})},
-                        load: function(e){__app.fire("chart-load",{e: e,chart: this})},
-                        beforePrint: function(e){__app.fire("before-print",{e: e,chart: this})},
-                        afterPrint: function(e){__app.fire("after-print",{e: e,chart: this})},
-                        addSeries: function(e){__app.fire("series-added",{e: e,chart: this})},
-                        drilldown: function(e){__app.fire("drill-down",{e: e,chart: this})},
-                        drillup: function(e){__app.fire("drill-up",{e: e,chart: this})},
-                        selection: function(e){__app.fire("selection",{e: e,chart: this})},
+                        click: function(e){__app.fire("chart-click",{e: e,chart: this,component:__app})},
+                        load: function(e){__app.fire("chart-load",{e: e,chart: this,component:__app})},
+                        beforePrint: function(e){__app.fire("before-print",{e: e,chart: this,component:__app})},
+                        afterPrint: function(e){__app.fire("after-print",{e: e,chart: this,component:__app})},
+                        addSeries: function(e){__app.fire("series-added",{e: e,chart: this,component:__app})},
+                        drilldown: function(e){__app.fire("drill-down",{e: e,chart: this,component:__app})},
+                        drillup: function(e){__app.fire("drill-up",{e: e,chart: this,component:__app})},
+                        selection: function(e){__app.fire("selection",{e: e,chart: this,component:__app})},
                     }
                 },this.xZoom||this.yZoom?{zoomType: (this.xZoom&&"x")+(this.yZoom&&"y")}:{}),
                 //Properties

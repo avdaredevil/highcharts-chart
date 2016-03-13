@@ -111,14 +111,14 @@ Method       | Parameters           | Description
 
 Event      | Description             | Payload [*`e.detail`*]
 ---        | ---                     | ---
-`chart-click` | Click event on chart | `e` [*original event*], `chart` [*chart object*]
-`chart-load` | Fired when chart loaded | `e`, `chart`
-`before-print` | Fired before chart print | `e`, `chart`
-`after-print` | Fired after chart print | `e`, `chart`
-`series-added` | Fired when series added | `e`, `chart`
-`drill-down` | Fired when drill down is triggered | `e`, `chart`
-`drill-up` | Fired when drill up is triggered | `e`, `chart`
-`drill-selection` | Fired when a range of points are selected | `e`, `chart`
+`chart-click` | Click event on chart | `e` [*original event*], `chart` [*chart object*], `component` [*self*]
+`chart-load` | Fired when chart loaded | `e`, `chart`, `component`
+`before-print` | Fired before chart print | `e`, `chart`, `component`
+`after-print` | Fired after chart print | `e`, `chart`, `component`
+`series-added` | Fired when series added | `e`, `chart`, `component`
+`drill-down` | Fired when drill down is triggered | `e`, `chart`, `component`
+`drill-up` | Fired when drill up is triggered | `e`, `chart`, `component`
+`drill-selection` | Fired when a range of points are selected | `e`, `chart`, `component`
 
 ### Styling
 
