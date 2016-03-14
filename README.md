@@ -63,7 +63,7 @@ Attribute  | Options     | Default              | Description
 `xZoom`   | *boolean*    | `false`             | Zooming Allowed On X-Axis
 `yZoom`   | *boolean*    | `false`             | Zooming Allowed On Y-Axis
 `label`    | *string*    | `Label`*`[for non numeric]`* | Alias for both Axis
-`data`     | *array*     | `[]` | Data for chart
+`data`     | *array*     | `[]` | Data for chart [*data for Series 1* OR *array of series*]
 `loading`  | *boolean*     | `false` | Toggle loading overlay on chart
 `loadingMessage` | *string* | `Loading...` | Loading Text Display
 `selected` | *boolean `[readonly]`*     | `false` | Is any element selected on graph
