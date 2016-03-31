@@ -43,6 +43,7 @@
             highchartOptions: {type: Object, value: function(){return {}}},
             _chart: {type: Object, readOnly: true},
             __microTaskDelaySetData: {type: Number, value: 25}},
+        created: function() {this.__lateBindCallbacks = $.extend({}, this.__lateBindCallbacks, {_updateType:1,_loadingUpdate:1})},
         __createChart: function(namespace) {
             var xAxis = $.extend(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis, {title: {text: this._getAxisLabel('X')}});
             var yAxis = $.extend(this.yAxis, {title: {text: this._getAxisLabel('Y')}});
@@ -122,7 +123,7 @@
         _chartUpdate: function(o) {if(!this._chart){return};this._chart.options = $.extend(this._chart.options,opt);this.reRender()},
         _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
         _exportingUpdate: function(x) {if(!this._chart){return};this._chart.options.exporting.enabled=x;this.reRender()},
-        _updateType: function() {this.updateSeries("type",this.type)},
+        _updateType: function() {if(!this.type){return};this.updateSeries("type",this.type)},
         _xAxisUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update(this.xAxis)},
         _yAxisUpdate: function() {if(!this._chart){return};this._chart.yAxis[0].update(this.yAxis)},
         _xZoomUpdate: function() {if(!this._chart){return};var pt=this._chart.pointer;pt.zoomX=pt.zoomHor=this.xZoom},
@@ -135,13 +136,16 @@
         _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})},
         _getAxisLabel: function(dim) {var l = dim.toLowerCase(),u = dim.toUpperCase(),lab = this[l+"Label"]||this.label;if(lab==u+"-Axis"){lab=this.label||lab};return lab.trim()},
         _returnDummySeries: function(){var f=function(){};return {isDummy: true, setData: f, addPoint: f, update: f,remove: f}},
-        __lateBinders: function(){this._updateType();this._loadingUpdate()}
+        __lateBinders: function(){var me = this;Object.keys(this.__lateBindCallbacks||{}).forEach(function(cb){me[cb]()})},
+        __addLateBinder: function(cb){if (!(cb instanceof Array)){cb = [cb]};if(!this.__lateBindCallbacks){this.__lateBindCallbacks={}};var me = this;cb.forEach(function(c){me.__lateBindCallbacks[c]=1})},
     };
     Highcharts.Polymer_ChartBehavior = {
         properties: {
-            vsTime: {type: Boolean, value: false},
+            vsTime: {type: Boolean, value: false, reflectToAttribute: true, observer: "_vsTimeUpdate"},
             selected: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
             selectedPoints: {type: Array, readOnly: true, notify: true}},
+        created: function(){this.__addLateBinder("_vsTimeUpdate")},
+        _vsTimeUpdate: function(a) {if(!this._chart || typeof a == "undefined"){return};this.destroy();this.ready()},
         _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)}
     };
 </script>
