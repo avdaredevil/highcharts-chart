@@ -1,6 +1,6 @@
 <script>/*======================================================================|
     Highcharts-Chart Made By Apoorv Verma [AP] for Polymer 1.0
-    
+
     Repo:     https://github.com/avdaredevil/highcharts-chart
     Website:  https://avdaredevil.github.io/highcharts-chart/
     LinkedIn: https://www.linkedin.com/in/apoorvverma
@@ -8,6 +8,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <script src="../jquery/dist/jquery.min.js"></script>
 <script src="../highcharts/highstock.js"></script>
+<script src="../highcharts/highcharts-3d.js"></script>
 <script src="../highcharts/modules/exporting.js"></script>
 <script src="../highcharts/modules/drilldown.js"></script>
 
@@ -19,6 +20,12 @@
             type: {type: String, observer: '_updateType'},
             title: {type: String, observer: "_titleUpdate"},
             subtitle: {type: String, value: "", observer: "_subtitleUpdate"},
+            show3d: {type: Boolean, value: false },
+            rotationX: {type: Number, value: 0},
+            rotationY: {type: Number, value: 0},
+            depth: {type: Number, value: 100},
+            viewDistance: {type: Number, value: 100},
+            fitToPlot: {type: Boolean, value: true},
             colorByPoint: {type: Boolean, value: false, reflectToAttribute:true},
             credits: {type: Boolean, value: false, reflectToAttribute:true},
             legend: {type: Boolean, value: false, reflectToAttribute:true, observer: "_legendUpdate"},
@@ -55,6 +62,14 @@
                     defaultSeriesType: this.type,
                     animation: Highcharts.svg, // don't animate in old IE
                     marginRight: 10,
+                    options3d: {
+                        enabled: this.show3d,
+                        alpha: this.rotationX,
+                        beta: this.rotationY,
+                        depth: this.depth,
+                        viewDistance: this.viewDistance,
+                        fitToPlot: this.fitToPlot
+                    },
                     events: {
                         click: function(e){__app.fire("chart-click",{e: e,chart: this,component:__app})},
                         load: function(e){__app.fire("chart-load",{e: e,chart: this,component:__app})},
