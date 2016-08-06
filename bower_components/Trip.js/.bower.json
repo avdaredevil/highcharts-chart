@@ -1,6 +1,6 @@
 {
   "name": "Trip.js",
-  "version": "3.1.5",
+  "version": "3.3.3",
   "homepage": "https://github.com/EragonJ/Trip.js",
   "authors": [
     "EragonJ <eragonj@eragonj.me> (http://eragonj.me)"
@@ -32,13 +32,13 @@
   "dependencies": {
     "jquery": "~1.11.3"
   },
-  "_release": "3.1.5",
+  "_release": "3.3.3",
   "_resolution": {
     "type": "version",
-    "tag": "v3.1.5",
-    "commit": "143b48d203925948c2fc7ad1265bd974aa998ea1"
+    "tag": "v3.3.3",
+    "commit": "81df55ebda004d782ca0e9fefaafab832e93ac39"
   },
-  "_source": "git://github.com/EragonJ/Trip.js.git",
+  "_source": "https://github.com/EragonJ/Trip.js.git",
   "_target": "^3.1.0",
   "_originalSource": "trip.js"
 }

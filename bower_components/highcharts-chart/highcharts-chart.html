@@ -1,143 +1,20 @@
-<link rel="import" href="../polymer/polymer.html">
-<script src="../jquery/dist/jquery.min.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+<link rel="import" href="highcharts-behavior.html">
 
 <dom-module id="highcharts-chart">
     <template>
         <style>
-            :host {width: 100%;display: inline-block;min-height: var(--highcharts-chart-min-height, 26em)}
-            #Chart {@apply(--highcharts-chart-container);}
+            :host {width: 100%;display: inline-block;min-height: var(--highcharts-min-height, 26em)}
+            #Chart {@apply(--highcharts-container);}
         </style>
         <div id="Chart" width="100%" on-click="_checkSelected"></div>
     </template>
     <script>
         'use strict';
-        Highcharts.setOptions({global: {useUTC: false}});
         Polymer({
             is: "highcharts-chart",
-            properties: {
-                type: {type: String, value: 'spline', observer: '_updateType'},
-                title: {type: String, value: "Highcharts Chart", observer: "_titleUpdate"},
-                subtitle: {type: String, value: "", observer: "_subtitleUpdate"},
-                credits: {type: Boolean, value: false, reflectToAttribute:true},
-                colorByPoint: {type: Boolean, value: false, reflectToAttribute:true},
-                legend: {type: Boolean, value: false, reflectToAttribute:true, observer: "_legendUpdate"},
-                chartOptions: {type: Object, value: function(){return {}}, observer: "_chartUpdate"},
-                xAxis: {type: Object, value: function(){return {}}, observer: "_xAxisUpdate"},
-                yAxis: {type: Object, value: function(){return {}}, observer: "_yAxisUpdate"},
-                xLabel: {type: String, value: "", observer: "_xAxisTitleUpdate"},
-                yLabel: {type: String, value: "Y-Axis", observer: "_yAxisTitleUpdate"},
-                label: {type: String, value: "", observer: "_labelUpdate"},
-                data: {type: Array, value: function(){return []}, observer:"setData"},
-                vsTime: {type: Boolean, value: false},
-                loading: {type: Boolean, value: false, observer: "_loadingUpdate", reflectToAttribute:true},
-                loadingMessage: {type: String, value: ""},
-                selected: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
-                selectedPoints: {type: Array, readOnly: true, notify: true},
-                export: {type: Boolean, value: false, reflectToAttribute: true, observer: "_exportingUpdate"},
-                xZoom: {type: Boolean, value: false, reflectToAttribute: true, observer: "_xZoomUpdate"},
-                yZoom: {type: Boolean, value: false, reflectToAttribute: true, observer: "_yZoomUpdate"},
-                //Custom Chart Declarations
-                legendHorizAlign: {type: String, value: "right"},
-                legendVertAlign: {type: String, value: "top"},
-                legendPos: {type: Object, value: function(){return {x: -40,y: 80}}},
-                legendOptions: {type: Object, value: function(){return {}}},
-                tooltipOptions: {type: Object, value: function(){return {}}},
-                _chart: {type: Object, readOnly: true}},
-            ready: function() {
-                var xAxis = $.extend(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis, {title: {text: this._getAxisLabel('X')}});
-                var yAxis = $.extend(this.yAxis, {title: {text: this._getAxisLabel('Y')}});
-                var Series = this.data.length && this.data[0].data instanceof Array?this.data:[{name: (this.label||this.yLabel||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}]
-                this.data.series && (this.data = (this.data.series||[])[0])
-                var __app = this
-                this._set_chart(new Highcharts.Chart({
-                    chart: $.extend({
-                        renderTo: this.$.Chart,
-                        defaultSeriesType: this.type,
-                        animation: Highcharts.svg, // don't animate in old IE
-                        marginRight: 10,
-                        events: {
-                            click: function(e){__app.fire("chart-click",{e: e,chart: this})},
-                            load: function(e){__app.fire("chart-load",{e: e,chart: this})},
-                            beforePrint: function(e){__app.fire("before-print",{e: e,chart: this})},
-                            afterPrint: function(e){__app.fire("after-print",{e: e,chart: this})},
-                            addSeries: function(e){__app.fire("series-added",{e: e,chart: this})},
-                            drilldown: function(e){__app.fire("drill-down",{e: e,chart: this})},
-                            drillup: function(e){__app.fire("drill-up",{e: e,chart: this})},
-                            selection: function(e){__app.fire("selection",{e: e,chart: this})},
-                        }
-                    },this.xZoom||this.yZoom?{zoomType: (this.xZoom&&"x")+(this.yZoom&&"y")}:{}),
-                    //Properties
-                    title: {text: this.title},
-                    subtitle: {text: this.subtitle},
-                    xAxis: xAxis,
-                    yAxis: yAxis,
-                    credits: this.credits,
-                    plotOptions: $.extend({
-                        pie: {
-                            allowPointSelect: true,
-                            cursor: 'pointer',
-                            dataLabels: {
-                                enabled: true,
-                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                                style: {color: (Highcharts.theme && Highcharts.theme.contrastTextColor)||'black'}
-                            }
-                        }
-                    }, this.chartOptions),
-                    tooltip: $.extend(this.vsTime?{formatter: function () {
-                            return '<b>' + this.series.name + '</b><br/>' +
-                                Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                                Highcharts.numberFormat(this.y, 2);
-                        }}:{},this.tooltipOptions),
-                    legend: $.extend({enabled: this.legend, layout: "vertical", verticalAlign: this.legendVertAlign, align: this.legendHorizAlign, x: this.legendPos.x, y: this.legendPos.y, backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'), shadow: true},this.legendOptions),
-                    exporting: {enabled: this.export},
-                    series: Series,
-                    drilldown: {series: []}
-                }))
-                this.async(function(){this._loadingUpdate();window.dispatchEvent(new Event('resize'))},50)
-            },
-            setData: function(x,z,ign) {if (!z && this.data!=x){this.data=x;return}
-                var __app = this
-                if (x.length && x[0].data instanceof Array) {
-                    while (__app._chart.series.length) {__app.removeSeries()}
-                    x.forEach(function(d){__app._chart.addSeries(d)})
-                } else {__app._getSeries(z).setData(x)}
-            },
-            addData: function(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)},
-            pushData: function(x,y,z,append,drillable) {if(!this._chart){return}
-                if (typeof z=="boolean") {drillable = z;z=0}
-                this._chart.series[(z||0)].addPoint(drillable?{name:x,y:y,drilldown:true}:[x,y],true,!append)
-            },
-            addSeries: function(name,data,colorByPoint,otherOptions) {this._chart.addSeries($.extend({name: name, data: (data||[]), colorByPoint: typeof colorByPoint=="undefined"?this.colorByPoint:colorByPoint},typeof otherOptions == "object"?otherOptions:{}),true)},
-            addDrillSeries: function(point,data,name) {this._chart.addSeriesAsDrilldown(point, {name: name, data: data})},
-            removeSeries: function(z) {var s = this._getSeries(z);s.remove();return s},
-            updateSeries: function(k,v,z) {var NewEl = {};if(typeof k=="object"){NewEl = k;z=v||z}else{NewEl[k]=v};this._getSeries(z).update(NewEl)},
-            showLoading: function(d) {this.loadingMessage=d;this.loading=true},
-            resizeChart: function() {if(!this._chart){return}this._chart.setSize(this.$.Chart.offsetWidth,this.offsetHeight)},
-            reRender: function() {if(!this._chart){return}this._set_chart(new Highcharts.Chart(this._chart.options))},
-            downloadAs: function(name,otherOptions) {if(!this._chart){return}this._chart.exportChart($.extend({filename: name},otherOptions))},
-            destroy: function() {if(!this._chart){return}this._chart.destroy()},
-            _getSeries: function(z) {if(!this._chart){return this._returnDummySeries()};z=typeof z != "number"?0:z;var s=this._chart.series;if(!s.length){this._warn("Chart is empty [no series]");return this._returnDummySeries()};if (z<s.length){return s[(z||0)]}else{this._warn("Index z out of bounds");return this._returnDummySeries()}},
-            _warn: function(err) {console.warn("%c[highcharts-chart]","font-weight:bold;background-color:yellow",err)},
-            _legendUpdate: function(s) {if(!this._chart){return};this._chart.options.legend.enabled = s;this.reRender()},
-            _chartUpdate: function(o) {if(!this._chart){return};this._chart.options = $.extend(this._chart.options,opt);this.reRender()},
-            _exportingUpdate: function(x) {if(!this._chart){return};this._chart.options.exporting.enabled=x;this.reRender()},
-            _updateType: function(t) {this.updateSeries("type",t)},
-            _checkSelected: function() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)},
-            _xAxisUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update(this.xAxis)},
-            _yAxisUpdate: function() {if(!this._chart){return};this._chart.yAxis[0].update(this.yAxis)},
-            _xZoomUpdate: function() {if(!this._chart){return};var pt=this._chart.pointer;pt.zoomX=pt.zoomHor=this.xZoom},
-            _yZoomUpdate: function() {if(!this._chart){return};var pt=this._chart.pointer;pt.zoomY=pt.zoomVert=this.yZoom},
-            _xAxisTitleUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update({title: {text: this._getAxisLabel('X')}})},
-            _yAxisTitleUpdate: function() {if(!this._chart){return};this._chart.yAxis[0].update({title: {text: this._getAxisLabel('Y')}})},
-            _labelUpdate: function() {if(!this._chart){return};this._xAxisTitleUpdate();this._yAxisTitleUpdate()},
-            _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})},
-            _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
-            _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})},
-            _getAxisLabel: function(dim) {var l = dim.toLowerCase(),u = dim.toUpperCase(),lab = this[l+"Label"]||this.label;if(lab==u+"-Axis"){lab=this.label||lab};return lab},
-            _returnDummySeries: function(){return {isDummy: true, setData: function(){}, update: function(){},remove: function(){}}}
+            behaviors: [Highcharts.Polymer_BaseBehavior, Highcharts.Polymer_ChartBehavior],
+            properties: {type: {type: String, value: 'spline', observer: '_updateType'}},
+            ready: function() {this.__createChart()},
         });
     </script>
 </dom-module>

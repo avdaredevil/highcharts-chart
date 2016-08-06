@@ -1,6 +1,6 @@
 {
   "name": "highcharts-chart",
-  "version": "v1.0.2",
+  "version": "v1.1.0",
   "authors": [
     "Apoorv Verma [AP] <avdaredevil@gmail.com>"
   ],
@@ -34,6 +34,7 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.3.0",
-    "jquery": "^2.1.4"
+    "jquery": "^2.1.4",
+    "highcharts": "^4.2.3"
   }
 }

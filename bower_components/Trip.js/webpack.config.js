@@ -9,10 +9,16 @@ module.exports = {
     path: './dist',
     filename: 'trip.js',
     library: 'Trip',
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
   externals: {
-    'jquery': 'jQuery'
+    'jquery': {
+      amd: 'jquery',
+      root: 'jQuery',
+      commonjs: 'jquery',
+      commonjs2: 'jquery'
+    }
   },
   plugins: [
     new webpack.BannerPlugin(tripLicenseInfo, {

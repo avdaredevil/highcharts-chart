@@ -1,6 +1,6 @@
 # &lt;highcharts-chart&gt; [![Bower version](https://badge.fury.io/bo/highcharts-chart.svg)](http://badge.fury.io/bo/highcharts-chart)
 
-> Web Component wrapper to the [Highcharts Graphing Library](http://www.highcharts.com/), to create a multitude of graphs (spline, pie, and more) using [Polymer 1.0](http://www.polymer-project.org/1.0/).
+> Web Component wrapper to the [Highcharts Graphing Library](http://www.highcharts.com/), to create a multitude of graphs/maps (spline, pie, and more) using [Polymer 1.0](http://www.polymer-project.org/1.0/).
 
 ## Demo
 
@@ -28,6 +28,10 @@ Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/mas
 
     ```html
     <link rel="import" href="bower_components/highcharts-chart/highcharts-chart.html">
+        OR
+    <link rel="import" href="bower_components/highcharts-chart/highcharts-map.html">
+        OR
+    <link rel="import" href="bower_components/highcharts-chart/highcharts-stock.html">
     ```
 
 3. Start using it!
@@ -36,11 +40,13 @@ Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/mas
     <highcharts-chart type="spline"></highcharts-chart>
     <highcharts-chart type="pie"></highcharts-chart>
     <highcharts-chart type="column"></highcharts-chart>
+    <highcharts-map></highcharts-map>
+    <highcharts-stock></highcharts-stock>
     ```
 
 ## &lt;highcharts-chart&gt;
 
-Provides you a simple interface to interact with the HighCharts API, with Data Binding.
+Provides you a simple interface to interact with the HighCharts API, with extensive Data Binding.
 The charting is also responsive.
 
 ### Options
@@ -50,7 +56,6 @@ Attribute  | Options     | Default              | Description
 `type`     | `spline`,`pie`,`column` | `spline` | Pick type of chart
 `title`    | *string*    | `Highcharts Chart`   | Title of Chart
 `subtitle` | *string*    | `""`                 | Subtitle of Chart
-`showAxes` | *array*     | `['bottom','left']`  | Pick the axes to show.
 `xAxis`    | *object*    | `{}` OR *`Time based`* | Specifies the configuration for the X-Axis.
 `yAxis`    | *object*    | `{}` | Specifies the configuration for the Y-Axis.
 `xLabel`   | *string*    | `X-Axis`             | Label for X-Axis
@@ -58,7 +63,7 @@ Attribute  | Options     | Default              | Description
 `xZoom`   | *boolean*    | `false`             | Zooming Allowed On X-Axis
 `yZoom`   | *boolean*    | `false`             | Zooming Allowed On Y-Axis
 `label`    | *string*    | `Label`*`[for non numeric]`* | Alias for both Axis
-`data`     | *array*     | `[]` | Data for chart
+`data`     | *array*     | `[]` | Data for chart [*data for Series 1* OR *array of series*]
 `loading`  | *boolean*     | `false` | Toggle loading overlay on chart
 `loadingMessage` | *string* | `Loading...` | Loading Text Display
 `selected` | *boolean `[readonly]`*     | `false` | Is any element selected on graph
@@ -67,14 +72,19 @@ Attribute  | Options     | Default              | Description
 `chartOptions` | *object*  | `{}` | Override/Add Properties for your type of chart
 `export`   | *boolean*     | `false` | Enable exporting of chart
 `legend`   | *boolean*     | `false` | Display the legend
-`colorByPoint` | *boolean* | `false` | Every point treated/colored uniquely
+`colorByPoint`__\*__ | *boolean* | `false` | Every point treated/colored uniquely
 `credits`  | *boolean*     | `false` | Wish to thank/credit HighCharts?
 `legendHorizAlign` | *string*     | `right` | Horizontal Alignment of Legend
 `legendVertAlign`  | *string*     | `top`   | Vertical Alignment of Legend
 `legendPos`  | *object*     | `{x:-40, y: 80}` | Legend Offset
 `legendOptions` | *object* | `{}` | Override/Add Options to your legend
 `tooltipOptions` | *object* | `{}` | Override/Add Options to your tooltip
+`highchartOptions` | *object* | `{}` | Override/Add Options to the chart initalization code [useful for custom charts]
 `_chart` | *object `[readonly]`* | `{}` | HighCharts exposed object
+
+**Note:** 
+- The __\*__ annotated properties above are not available in the `highcharts-map` element
+- If you bind a bunch of series objects to the `data` _property_ instead of data for a _single series_, it will perform series level binding
 
 ### Methods
 
@@ -87,32 +97,35 @@ Method       | Parameters           | Description
 `addDrillSeries(point,data,name)` | `point`,`Array`,`String`   | Adds a series that is viewable when an Element is clicked into
 `updateSeries(k,v,z)` | `String`,`Mixed`,`0`   | Modifies an option by Key Value for series [given by `z`]
 `updateSeries(options,z)` | `{}`,`0`   | Modifies the options for series [given by `z`]
-`removeSeries(z)` | `index`  | Removes Series denoted by index
-`showLoading(t)` | `t [Text]` | Sets `Loading-Message` equal to `t` then turns on loading screen
-`resizeChart()` | `none`   | Adjust graph to the size of the parent [*for bi-directional responsive design*]
+`removeSeries(z,redraw)` | `index`,`true`  | Removes Series denoted by index [should redraw after remove]
+`showLoading(t)`__\*__ | `t [Text]` | Sets `Loading-Message` equal to `t` then turns on loading screen
+`resizeChart()` | `none`   | Efficient reflow of the chart to parent [*can be attached to a parent resize*]
+`resizeChartFixed()` | `none`   | Fixed Adjustment of chart [*use if chart should not fluctuate over minor size changes*]
 `reRender()` | `none`   | Will force a complete re-render of the Highchart [*use it when binding is not possible*]
 `downloadAs(name,options)` | `chart`,`{}` | Download/Export the chart as a file
 `destroy()` | `none`   | Free's up the memory used by the chart [*prevents __memory leaks__*]
+
+**Note:** The __\*__ annotated methods above are not available in the `highcharts-map` element
 
 ### Events
 
 Event      | Description             | Payload [*`e.detail`*]
 ---        | ---                     | ---
-`chart-click` | Click event on chart | `e` [*original event*], `chart` [*chart object*]
-`chart-load` | Fired when chart loaded | `e`, `chart`
-`before-print` | Fired before chart print | `e`, `chart`
-`after-print` | Fired after chart print | `e`, `chart`
-`series-added` | Fired when series added | `e`, `chart`
-`drill-down` | Fired when drill down is triggered | `e`, `chart`
-`drill-up` | Fired when drill up is triggered | `e`, `chart`
-`drill-selection` | Fired when a range of points are selected | `e`, `chart`
+`chart-click` | Click event on chart | `e` [*original event*], `chart` [*chart object*], `component` [*self*]
+`chart-load` | Fired when chart loaded | `e`, `chart`, `component`
+`before-print` | Fired before chart print | `e`, `chart`, `component`
+`after-print` | Fired after chart print | `e`, `chart`, `component`
+`series-added` | Fired when series added | `e`, `chart`, `component`
+`drill-down` | Fired when drill down is triggered | `e`, `chart`, `component`
+`drill-up` | Fired when drill up is triggered | `e`, `chart`, `component`
+`drill-selection` | Fired when a range of points are selected | `e`, `chart`, `component`
 
 ### Styling
 
 Mixin       | Description
 ---         | ---
-`--highcharts-chart-min-height` | Min Height for Highcharts-Chart container [default: *20em*]
-`--highcharts-chart-container` | The container that directly contains the Chart SVG
+`--highcharts-min-height` | Min Height for Highcharts-Chart container [default: *26em*]
+`--highcharts-container` | The container that directly contains the Chart SVG
 
 ## Contributing/Suggestions
 

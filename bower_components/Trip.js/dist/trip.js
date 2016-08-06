@@ -4,7 +4,7 @@
  *  This is a jQuery plugin that can help you customize your tutorial trip
  *  with full flexibilities.
  *
- *  Version: 3.1.5
+ *  Version: 3.3.3
  *
  *  Author: EragonJ <eragonj@eragonj.me>
  *  Blog: http://eragonj.me
@@ -14,11 +14,11 @@
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("jQuery"));
+		module.exports = factory(require("jquery"));
 	else if(typeof define === 'function' && define.amd)
-		define(["jQuery"], factory);
+		define("Trip", ["jquery"], factory);
 	else if(typeof exports === 'object')
-		exports["Trip"] = factory(require("jQuery"));
+		exports["Trip"] = factory(require("jquery"));
 	else
 		root["Trip"] = factory(root["jQuery"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
@@ -73,16 +73,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var $ = __webpack_require__(1);
 	var TripParser = __webpack_require__(2);
 	var TripUtils = __webpack_require__(3);
-
-	var CHECKED_ANIMATIONS = [
-	  'flash', 'bounce', 'shake', 'tada',
-	  'fadeIn', 'fadeInUp', 'fadeInDown',
-	  'fadeInLeft', 'fadeInRight', 'fadeInUpBig', 'fadeInDownBig',
-	  'fadeInLeftBig', 'fadeInRightBig', 'bounceIn', 'bounceInDown',
-	  'bounceInUp', 'bounceInLeft', 'bounceInRight', 'rotateIn',
-	  'rotateInDownLeft', 'rotateInDownRight', 'rotateInUpLeft',
-	  'rotateInUpRight'
-	];
+	var TripAnimation = __webpack_require__(4);
+	var TripTheme = __webpack_require__(5);
+	var TripConstant = __webpack_require__(9);
 
 	/**
 	 * Trip
@@ -92,8 +85,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {Object} userOptions
 	 */
 	function Trip() {
-	  var tripData;
+	  var noop = function() {};
 	  var userOptions;
+	  var tripData;
 	  var tripParser = new TripParser();
 
 	  // () - default parser mode without configurations
@@ -144,6 +138,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  this.settings = $.extend({
 	    // basic config
+	    tripClass: '',
 	    tripIndex: 0,
 	    tripTheme: 'black',
 	    backToTopWhenEnded: false,
@@ -152,6 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    delay: 1000,
 	    enableKeyBinding: true,
 	    enableAnimation: true,
+	    showSteps: false,
 	    showCloseBox: false,
 	    showHeader: false,
 	    skipUndefinedTrip: false,
@@ -166,38 +162,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	    prevLabel: 'Back',
 	    finishLabel: 'Dismiss',
 	    closeBoxLabel: '&#215;',
+	    skipLabel: 'Skip',
 	    header: 'Step {{tripIndex}}',
 
 	    // callbacks for whole process
-	    onStart: $.noop,
-	    onEnd: $.noop,
+	    onStart: noop,
+	    onEnd: noop,
 
 	    // callbacks for each trip
-	    onTripStart: $.noop,
-	    onTripEnd: $.noop,
-	    onTripStop: $.noop,
-	    onTripPause: $.noop,
-	    onTripResume: $.noop,
-	    onTripChange: $.noop,
-	    onTripClose: $.noop,
+	    onTripStart: noop,
+	    onTripEnd: noop,
+	    onTripStop: noop,
+	    onTripPause: noop,
+	    onTripResume: noop,
+	    onTripChange: noop,
+	    onTripClose: noop,
 
 	    // animation
-	    animation: 'tada',
-
-	    // customizable HTML
-	    tripBlockHTML: [
-	      '<div class="trip-block">',
-	        '<a href="#" class="trip-close"></a>',
-	        '<div class="trip-header"></div>',
-	        '<div class="trip-content"></div>',
-	        '<div class="trip-progress-wrapper">',
-	          '<div class="trip-progress-bar"></div>',
-	          '<a href="#" class="trip-prev"></a>',
-	          '<a href="#" class="trip-next"></a>',
-	        '</div>',
-	      '</div>'
-	    ]
+	    animation: 'fadeIn'
 	  }, userOptions);
+
+	  if (!this.settings.tripBlockHTML) {
+	    var html = TripTheme.get(this.settings.tripTheme);
+	    if (!html) {
+	      html = TripTheme.get('default');
+	    }
+	    this.settings.tripBlockHTML = html;
+	  }
 
 	  this.tripData = tripData;
 
@@ -205,59 +196,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.$tripBlock = null;
 	  this.$overlay = null;
 	  this.$bar = null;
-	  this.$root = $('body, html');
+	  this.$root = $('body');
 
 	  // save the current trip index
-	  this.tripIndex = this.settings.tripIndex;
 	  this.tripDirection = 'next';
 	  this.timer = null;
 	  this.progressing = false;
+	  this.hasExposedElements = false;
 
-	  // about expose
-	  this.hasExpose = false;
-
-	  // contants
-	  this.CONSTANTS = {
-	    LEFT_ARROW: 37,
-	    UP_ARROW: 38,
-	    RIGHT_ARROW: 39,
-	    DOWN_ARROW: 40,
-	    ESC: 27,
-	    SPACE: 32,
-	    TRIP_BLOCK_OFFSET_VERTICAL: 10,
-	    TRIP_BLOCK_OFFSET_HORIZONTAL: 10,
-	    RESIZE_TIMEOUT: 200
-	  };
-
-	  this.console = window.console || {};
+	  // for testing
+	  this.CONSTANT = TripConstant;
 	}
 
 	Trip.prototype = {
 	  /**
-	   * This is used to preInit Trip.js. For current use, we will try to
-	   * override this.console if there is no window.console like IE.
-	   *
-	   * @memberOf Trip
-	   * @type {Function}
-	   */
-	  preInit: function() {
-	    if (typeof this.console === 'undefined') {
-	      var that = this;
-	      var methods = ['log', 'warn', 'debug', 'info', 'error'];
-
-	      $.each(methods, function(i, methodName) {
-	        that.console[methodName] = $.noop;
-	      });
-	    }
-	  },
-
-	  /**
-	   * Expose element which has hasExpose property.
+	   * Expose element which has hasExposedElements property.
 	   *
 	   * @memberOf Trip
 	   * @type {Funtion}
 	   */
-	  showExpose: function() {
+	  showExposedElements: function() {
 	    var o = this.getCurrentTripObject();
 	    var oldCSS;
 	    var newCSS;
@@ -273,7 +231,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      $sel = $(o.sel);
 	    }
 
-	    this.hasExpose = true;
+	    this.hasExposedElements = true;
 
 	    // NOTE: issue #68
 	    // we have to make sure $sel does exist because we may have no
@@ -306,8 +264,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        .css(newCSS)
 	        .addClass('trip-exposed');
 	    }
-
-	    this.$overlay.fadeIn();
 	  },
 
 	  /**
@@ -316,9 +272,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @memberOf Trip
 	   * @type {Funtion}
 	   */
-	  hideExpose: function() {
+	  hideExposedElements: function() {
 	    var $exposedSel = $('.trip-exposed');
-	    this.hasExpose = false;
+	    this.hasExposedElements = false;
 
 	    // NOTE: issue #68
 	    // we have to make sure $sel does exist because we may have no
@@ -330,8 +286,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        .css(oldCSS)
 	        .removeClass('trip-exposed');
 	    }
-
-	    this.$overlay.fadeOut();
 	  },
 
 	  /**
@@ -349,7 +303,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      window.clearTimeout(timer);
 	      timer = window.setTimeout(function() {
 	        that.run();
-	      }, that.CONSTANTS.RESIZE_TIMEOUT);
+	      }, TripConstant.RESIZE_TIMEOUT);
 	    });
 	  },
 
@@ -399,23 +353,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  keyEvent: function(e) {
 	    switch (e.which) {
-	      case this.CONSTANTS.ESC:
+	      case TripConstant.ESC:
 	        this.stop();
 	        break;
 
-	      case this.CONSTANTS.SPACE:
+	      case TripConstant.SPACE:
 	        // space will make the page jump
 	        e.preventDefault();
 	        this.pause();
 	        break;
 
-	      case this.CONSTANTS.LEFT_ARROW:
-	      case this.CONSTANTS.UP_ARROW:
+	      case TripConstant.LEFT_ARROW:
+	      case TripConstant.UP_ARROW:
 	        this.prev();
 	        break;
 
-	      case this.CONSTANTS.RIGHT_ARROW:
-	      case this.CONSTANTS.DOWN_ARROW:
+	      case TripConstant.RIGHT_ARROW:
+	      case TripConstant.DOWN_ARROW:
 	        this.next();
 	        break;
 	    }
@@ -431,10 +385,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  stop: function() {
 	    if (this.timer) {
 	      this.timer.stop();
+	      this.timer = null;
 	    }
 
-	    if (this.hasExpose) {
-	      this.hideExpose();
+	    if (this.hasExposedElements) {
+	      this.hideExposedElements();
+	      this.toggleExposedOverlay(false);
 	    }
 
 	    this.hideTripBlock();
@@ -442,13 +398,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.unbindResizeEvents();
 
 	    var tripObject = this.getCurrentTripObject();
+	    if (tripObject.nextClickSelector) {
+	      $(tripObject.nextClickSelector).off('click.Trip');
+	    }
+
 	    var tripStop = tripObject.onTripStop || this.settings.onTripStop;
-	    tripStop(this.tripIndex, tripObject);
+	    tripStop.call(this, this.tripIndex, tripObject);
 
 	    this.settings.onEnd(this.tripIndex, tripObject);
 
-	    // We have to reset tripIndex in stop action too
-	    this.tripIndex = this.settings.tripIndex;
+	    // reset tripIndex when stopped
+	    this.setIndex(this.settings.tripIndex);
 	  },
 
 	  /**
@@ -458,6 +418,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @type {Function}
 	   */
 	  pauseOrResume: function() {
+	    if (!this.timer) {
+	      return;
+	    }
+
 	    if (this.progressing) {
 	      this.timer.pause();
 	      this.pauseProgressBar();
@@ -466,6 +430,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var remainingTime = this.timer.resume();
 	      this.resumeProgressBar(remainingTime);
 	    }
+
 	    this.progressing = !this.progressing;
 	  },
 
@@ -480,7 +445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.pauseOrResume();
 	    var tripObject = this.getCurrentTripObject();
 	    var tripPause = tripObject.onTripPause || this.settings.onTripPause;
-	    tripPause(this.tripIndex, tripObject);
+	    tripPause.call(this, this.tripIndex, tripObject);
 	  },
 
 	  /**
@@ -494,22 +459,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.pauseOrResume();
 	    var tripObject = this.getCurrentTripObject();
 	    var tripResume = tripObject.onTripResume || this.settings.onTripResume;
-	    tripResume(this.tripIndex, tripObject);
+	    tripResume.call(this, this.tripIndex, tripObject);
 	  },
 
 	  /**
 	   * next API, which will jump to next the trip.
 	   *
 	   * @memberOf Trip
+	   * @param {Number} tripIndex
 	   * @type {Function}
 	   * @public
 	   */
-	  next: function() {
+	  next: function(tripIndex) {
 	    var that = this;
-	    // We have to make sure we can go next first,
-	    // if not, let's just re-run
-	    if (!this.canGoNext()) {
-	      return this.run();
+	    var useDifferentIndex = !isNaN(tripIndex);
+
+	    // If we do give `tripIndex` here, it means that we want to directly jump
+	    // to that index no matter how. So in that case, ignore `canGoNext` check.
+	    if (!useDifferentIndex && !this.canGoNext()) {
+	      return;
 	    }
 
 	    this.tripDirection = 'next';
@@ -519,9 +487,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // all be here.
 	    var tripObject = this.getCurrentTripObject();
 	    var tripEnd = tripObject.onTripEnd || this.settings.onTripEnd;
-	    var tripEndDefer = tripEnd(this.tripIndex, tripObject);
+	    var tripEndDefer = tripEnd.call(this, this.tripIndex, tripObject);
 
 	    $.when(tripEndDefer).then(function() {
+	      if (useDifferentIndex) {
+	        if (that.timer) {
+	          that.timer.stop();
+	        }
+	        that.setIndex(tripIndex);
+	        that.run();
+	        return;
+	      }
+
 	      if (that.isLast()) {
 	        that.doLastOperation();
 	      }
@@ -541,6 +518,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  prev: function() {
 	    var that = this;
+
+	    if (!this.canGoPrev()) {
+	      return;
+	    }
+
 	    this.tripDirection = 'prev';
 
 	    // When this is executed, it means users click on the arrow key to
@@ -551,7 +533,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var tripEndDefer = tripEnd(this.tripIndex, tripObject);
 
 	    $.when(tripEndDefer).then(function() {
-	      if (!that.isFirst() && that.canGoPrev()) {
+	      if (!that.isFirst()) {
 	        that.decreaseIndex();
 	      }
 	      that.run();
@@ -574,10 +556,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // preprocess when we have to show trip block
 	    if (this.timer) {
 	      this.timer.stop();
+	      this.timer = null;
 	    }
 
-	    if (this.hasExpose) {
-	      this.hideExpose();
+	    if (this.hasExposedElements) {
+	      this.hideExposedElements();
+
+	      if (!o.expose) {
+	        this.toggleExposedOverlay(false);
+	      }
 	    }
 
 	    if (this.progressing) {
@@ -595,7 +582,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (o.expose) {
-	      this.showExpose();
+	      this.showExposedElements();
+	      this.toggleExposedOverlay(true);
 	    }
 	  },
 
@@ -609,6 +597,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  doLastOperation: function() {
 	    if (this.timer) {
 	      this.timer.stop();
+	      this.timer = null;
 	    }
 
 	    if (this.settings.enableKeyBinding) {
@@ -618,8 +607,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.hideTripBlock();
 	    this.unbindResizeEvents();
 
-	    if (this.hasExpose) {
-	      this.hideExpose();
+	    if (this.hasExposedElements) {
+	      this.hideExposedElements();
+	      this.toggleExposedOverlay(false);
 	    }
 
 	    if (this.settings.backToTopWhenEnded) {
@@ -629,9 +619,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var tripObject = this.getCurrentTripObject();
 	    this.settings.onEnd(this.tripIndex, tripObject);
 
-	    // We have to reset tripIndex when trip got finished
-	    this.tripIndex = this.settings.tripIndex;
-	    return false;
+	    // reset tripIndex when finished
+	    this.setIndex(this.settings.tripIndex);
 	  },
 
 	  /**
@@ -703,8 +692,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!this.isTripDataValid(tripObject)) {
 	      // force developers to double check tripData again
 	      if (this.settings.skipUndefinedTrip === false) {
-	        this.console.error(
-	          'Your tripData is not valid at index: ' + this.tripIndex);
+	        TripUtils.log('Your tripData is not valid at index: ' + this.tripIndex);
 	        this.stop();
 	        return false;
 	      }
@@ -718,8 +706,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.showProgressBar(delay);
 	    this.progressing = true;
 
-	    tripChange(this.tripIndex, tripObject);
-	    tripStart(this.tripIndex, tripObject);
+	    tripChange.call(this, this.tripIndex, tripObject);
+	    tripStart.call(this, this.tripIndex, tripObject);
 
 	    // set timer to show next, if the timer is less than zero we expect
 	    // it to be manually advanced
@@ -815,15 +803,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {Boolean} whether we can go to previous trip
 	   */
 	  canGoPrev: function() {
-	    var trip = this.tripData[this.tripIndex];
-	    var canGoPrev = trip.canGoPrev;
+	    var tripObject = this.getCurrentTripObject();
+	    var canGoPrev = tripObject.canGoPrev;
 
 	    if (typeof canGoPrev === 'undefined') {
 	      canGoPrev = this.settings.canGoPrev;
 	    }
 
 	    if (typeof canGoPrev === 'function') {
-	      canGoPrev = canGoPrev.call(trip);
+	      canGoPrev = canGoPrev.call(this, this.tripIndex, tripObject);
+	    }
+
+	    // For this special case, there is no need to let users go back to previous
+	    // state.
+	    if (this.tripIndex === 0) {
+	      canGoPrev = false;
 	    }
 
 	    return canGoPrev;
@@ -837,18 +831,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {Boolean} whether we can go to next trip
 	   */
 	  canGoNext: function() {
-	    var trip = this.tripData[this.tripIndex];
-	    var canGoNext = trip.canGoNext;
+	    var tripObject = this.getCurrentTripObject();
+	    var canGoNext = tripObject.canGoNext;
 
 	    if (typeof canGoNext === 'undefined') {
 	      canGoNext = this.settings.canGoNext;
 	    }
 
 	    if (typeof canGoNext === 'function') {
-	      canGoNext = canGoNext.call(trip);
+	      canGoNext = canGoNext.call(this, this.tripIndex, tripObject);
 	    }
 
 	    return canGoNext;
+	  },
+
+	  setIndex: function(tripIndex) {
+	    tripIndex = Math.max(0, Math.min(tripIndex, this.tripData.length - 1));
+	    this.tripIndex = tripIndex;
+
+	    // reflect the trip information on UI
+	    this.$tripBlock.attr('data-trip-step', this.tripIndex);
 	  },
 
 	  /**
@@ -859,13 +861,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @type {Function}
 	   */
 	  increaseIndex: function() {
-	    if (this.tripIndex >= this.tripData.length - 1) {
-	      // how about hitting the last item ?
-	      // do nothing
-	    }
-	    else {
-	      this.tripIndex += 1;
-	    }
+	    this.setIndex(this.tripIndex + 1);
 	  },
 
 	  /**
@@ -876,13 +872,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @type {Function}
 	   */
 	  decreaseIndex: function() {
-	    if (this.tripIndex <= 0) {
-	      // how about hitting the first item ?
-	      // do nothing
-	    }
-	    else {
-	      this.tripIndex -= 1;
-	    }
+	    this.setIndex(this.tripIndex - 1);
 	  },
 
 	  /**
@@ -931,39 +921,58 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var showCloseBox = o.showCloseBox || this.settings.showCloseBox;
 	    var showNavigation = o.showNavigation || this.settings.showNavigation;
 	    var showHeader = o.showHeader || this.settings.showHeader;
+	    var showSteps = o.showSteps || this.settings.showSteps;
 
 	    // labels
 	    var closeBoxLabel = o.closeBoxLabel || this.settings.closeBoxLabel;
 	    var prevLabel = o.prevLabel || this.settings.prevLabel;
 	    var nextLabel = o.nextLabel || this.settings.nextLabel;
 	    var finishLabel = o.finishLabel || this.settings.finishLabel;
+	    var skipLabel = o.skipLabel || this.settings.skipLabel;
 
 	    // other user customized contents
 	    var header = o.header || this.settings.header;
 
 	    $tripBlock
 	      .find('.trip-header')
-	      .html(this.getReplacedTripContent(header))
-	      .toggle(showHeader);
+	        .html(this.getReplacedTripContent(header))
+	        .toggle(showHeader);
 
 	    $tripBlock
 	      .find('.trip-content')
-	      .html(this.getReplacedTripContent(o.content));
+	        .html(this.getReplacedTripContent(o.content));
 
 	    $tripBlock
 	      .find('.trip-prev')
-	      .html(prevLabel)
-	      .toggle(showNavigation && !this.isFirst());
+	        .toggleClass('disabled', !this.canGoPrev())
+	        .html(prevLabel)
+	        .toggle(showNavigation);
 
 	    $tripBlock
 	      .find('.trip-next')
-	      .html(this.isLast() ? finishLabel : nextLabel)
-	      .toggle(showNavigation && !o.nextClickSelector);
+	        .toggleClass('disabled', !this.canGoNext())
+	        .html(this.isLast() ? finishLabel : nextLabel)
+	        .toggle(showNavigation && !o.nextClickSelector);
+
+	    $tripBlock
+	      .find('.trip-skip')
+	        .html(skipLabel)
+	        .toggle(showNavigation);
 
 	    $tripBlock
 	      .find('.trip-close')
-	      .html(closeBoxLabel)
-	      .toggle(showCloseBox);
+	        .html(closeBoxLabel)
+	        .toggle(showCloseBox);
+
+	    $tripBlock
+	      .find('.trip-progress-steps')
+	        .toggle(showSteps)
+	      .find('.trip-progress-step')
+	        .not(':eq(' + this.tripIndex + ')')
+	          .removeClass('selected')
+	          .end()
+	        .eq(this.tripIndex)
+	          .addClass('selected');
 
 	    // remove old styles then add new one
 	    $tripBlock.removeClass(
@@ -973,6 +982,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // if we have a nextClickSelector use that as the trigger for
 	    // the next button
 	    if (o.nextClickSelector) {
+	      $(o.nextClickSelector).off('click.Trip');
 	      $(o.nextClickSelector).one('click.Trip', function(e) {
 	        e.preventDefault();
 	        // Force IE/FF to lose focus
@@ -1041,8 +1051,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      case 'screen-se':
 	      case 'screen-nw':
 	      case 'screen-sw':
-	        cssHorizontal = this.CONSTANTS.TRIP_BLOCK_OFFSET_HORIZONTAL;
-	        cssVertical = this.CONSTANTS.TRIP_BLOCK_OFFSET_VERTICAL;
+	        cssHorizontal = TripConstant.TRIP_BLOCK_OFFSET_HORIZONTAL;
+	        cssVertical = TripConstant.TRIP_BLOCK_OFFSET_VERTICAL;
 	        break;
 	      case 'e':
 	        cssHorizontal = $sel.offset().left + selWidth + arrowWidth;
@@ -1132,7 +1142,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  addAnimation: function(o) {
 	    var animation = o.animation || this.settings.animation;
-	    if ($.inArray(animation, CHECKED_ANIMATIONS) >= 0) {
+	    if (TripAnimation.has(animation)) {
 	      this.$tripBlock.addClass('animated');
 	      this.$tripBlock.addClass(animation);
 	    }
@@ -1145,7 +1155,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @type {Function}
 	   */
 	  removeAnimation: function() {
-	    this.$tripBlock.removeClass(CHECKED_ANIMATIONS.join(' '));
+	    this.$tripBlock.removeClass(TripAnimation.getAllInString());
 	    this.$tripBlock.removeClass('animated');
 	  },
 
@@ -1215,32 +1225,73 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // make sure the element doesn't exist in the DOM tree
 	    if (typeof $('.trip-block').get(0) === 'undefined') {
 	      var that = this;
-	      var tripBlockHTML = this.settings.tripBlockHTML.join('');
-	      var $tripBlock = $(tripBlockHTML).addClass(this.settings.tripTheme);
+	      var tripBlockHTML = this.settings.tripBlockHTML;
+	      var $tripBlock = $(tripBlockHTML);
+
+	      $tripBlock
+	        .addClass(this.settings.tripTheme)
+	        .addClass(this.settings.tripClass)
+	        .addClass('tripjs');
 
 	      $('body').append($tripBlock);
 
-	      $tripBlock.find('.trip-close').on('click', function(e) {
-	        e.preventDefault();
-	        var tripObject = that.getCurrentTripObject();
-	        var tripClose = tripObject.onTripClose || that.settings.onTripClose;
-	        tripClose(that.tripIndex, tripObject);
-	        that.stop();
-	      });
+	      var $progressSteps = $tripBlock.find('.trip-progress-steps');
+	      if ($progressSteps) {
+	        var stepCache = [];
+	        var $step = $('<div class="trip-progress-step"></div>');
 
-	      $tripBlock.find('.trip-prev').on('click', function(e) {
-	        e.preventDefault();
-	        // Force IE/FF to lose focus
-	        $(this).blur();
-	        that.prev();
-	      });
+	        for (var i = 0; i < this.tripData.length; i++) {
+	          stepCache.push($step.clone());
+	        }
 
-	      $tripBlock.find('.trip-next').on('click', function(e) {
-	        e.preventDefault();
-	        // Force IE/FF to lose focus
-	        $(this).blur();
-	        that.next();
-	      });
+	        $progressSteps.append(stepCache);
+	      }
+
+	      var $closeButton = $tripBlock.find('.trip-close');
+	      if ($closeButton) {
+	        $closeButton.off('click.Trip');
+	        $closeButton.on('click.Trip', function(e) {
+	          e.preventDefault();
+	          var tripObject = that.getCurrentTripObject();
+	          var tripClose = tripObject.onTripClose || that.settings.onTripClose;
+	          tripClose.call(that, that.tripIndex, tripObject);
+	          that.stop();
+	        });
+	      }
+
+	      var $skipButton = $tripBlock.find('.trip-skip');
+	      if ($skipButton) {
+	        $skipButton.off('click.Trip');
+	        $skipButton.on('click.Trip', function(e) {
+	          e.preventDefault();
+	          var tripObject = that.getCurrentTripObject();
+	          var tripClose = tripObject.onTripClose || that.settings.onTripClose;
+	          tripClose.call(that, that.tripIndex, tripObject);
+	          that.stop();
+	        });
+	      }
+
+	      var $prevButton = $tripBlock.find('.trip-prev');
+	      if ($prevButton) {
+	        $prevButton.off('click.Trip');
+	        $prevButton.on('click', function(e) {
+	          e.preventDefault();
+	          // Force IE/FF to lose focus
+	          $(this).blur();
+	          that.prev();
+	        });
+	      }
+
+	      var $nextButton = $tripBlock.find('.trip-next');
+	      if ($nextButton) {
+	        $nextButton.off('click.Trip');
+	        $nextButton.on('click', function(e) {
+	          e.preventDefault();
+	          // Force IE/FF to lose focus
+	          $(this).blur();
+	          that.next();
+	        });
+	      }
 	    }
 	  },
 
@@ -1271,6 +1322,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  /**
+	   * This is the handy function to toggle overlay.
+	   *
+	   * @memberOf Trip
+	   * @type {Function}
+	   */
+	  toggleExposedOverlay: function(toShow) {
+	    if (toShow) {
+	      this.$overlay.fadeIn();
+	    }
+	    else {
+	      this.$overlay.fadeOut();
+	    }
+	  },
+
+	  /**
 	   * Clean up all stuffs when we are going to start / restart a trip, so we
 	   * can make we won't mess up with old stuffs.
 	   *
@@ -1288,8 +1354,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @type {Function}
 	   */
 	  init: function() {
-	    this.preInit();
-
 	    if (this.settings.enableKeyBinding) {
 	      this.bindKeyEvents();
 	    }
@@ -1300,6 +1364,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.$tripBlock = $('.trip-block');
 	    this.$bar = $('.trip-progress-bar');
 	    this.$overlay = $('.trip-overlay');
+
+	    this.setIndex(this.settings.tripIndex);
 	  },
 
 	  /**
@@ -1313,7 +1379,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.cleanup();
 
 	    // we will call this before initializing all stuffs
-	    this.settings.onStart();
+	    this.settings.onStart.call(this);
 
 	    // create some necessary DOM elements at the first time like jQuery UI
 	    this.create();
@@ -1480,6 +1546,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * @memberOf TripUtils
 	   * @type {Function}
+	   * @param {*} target
 	   * @return {Boolean}
 	   */
 	  isArray: function(target) {
@@ -1491,6 +1558,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * @memberOf TripUtils
 	   * @type {Function}
+	   * @param {*} target
 	   * @return {Boolean}
 	   */
 	  isObject: function(target) {
@@ -1502,10 +1570,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * @memberOf TripUtils
 	   * @type {Function}
+	   * @param {*} target
 	   * @return {Boolean}
 	   */
 	  isString: function(target) {
 	    return (typeof target === 'string');
+	  },
+
+	  /**
+	   * Handy wrapper of console.log
+	   *
+	   * @memberOf TripUtils
+	   * @type {Function}
+	   */
+	  log: function() {
+	    var console = window.console;
+	    if (typeof console !== 'undefined' && console.log) {
+	      console.log.apply(console, arguments);
+	    }
 	  },
 
 	  /**
@@ -1519,6 +1601,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * @memberOf TripUtils
 	   * @type {Function}
+	   * @param {Function} callback
+	   * @param {Number} delay
 	   * @return {Timer}
 	   */
 	  Timer: function(callback, delay) {
@@ -1546,6 +1630,124 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = TripUtils;
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	module.exports = TripAnimation;
+
+	function TripAnimation() {
+
+	}
+
+	var animations = [
+	  'flash', 'bounce', 'shake', 'tada',
+	  'fadeIn', 'fadeInUp', 'fadeInDown',
+	  'fadeInLeft', 'fadeInRight', 'fadeInUpBig', 'fadeInDownBig',
+	  'fadeInLeftBig', 'fadeInRightBig', 'bounceIn', 'bounceInDown',
+	  'bounceInUp', 'bounceInLeft', 'bounceInRight', 'rotateIn',
+	  'rotateInDownLeft', 'rotateInDownRight', 'rotateInUpLeft',
+	  'rotateInUpRight'
+	];
+
+	TripAnimation.has = function(name) {
+	  return animations.indexOf(name) >= 0;
+	};
+
+	TripAnimation.getAllInString = function() {
+	  return animations.join(' ');
+	};
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = TripTheme;
+
+	var Themes = __webpack_require__(6);
+
+	function TripTheme() {
+
+	}
+
+	TripTheme.get = function(name) {
+	  var theme = Themes[name];
+	  return theme;
+	};
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	  black: __webpack_require__(7),
+	  dark: __webpack_require__(7),
+	  white: __webpack_require__(7),
+	  yeti: __webpack_require__(7),
+	  default: __webpack_require__(7),
+	  minimalism: __webpack_require__(8)
+	};
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	module.exports = [
+	  '<div class="trip-block">',
+	    '<a href="#" class="trip-close"></a>',
+	    '<div class="trip-header"></div>',
+	    '<div class="trip-content"></div>',
+	    '<div class="trip-progress-steps"></div>',
+	    '<div class="trip-navigation">',
+	      '<a href="#" class="trip-prev"></a>',
+	      '<a href="#" class="trip-skip"></a>',
+	      '<a href="#" class="trip-next"></a>',
+	    '</div>',
+	    '<div class="trip-progress-bar"></div>',
+	  '</div>'
+	].join('');
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	module.exports = [
+	  '<div class="trip-block">',
+	    '<a href="#" class="trip-close"></a>',
+	    '<div class="trip-header"></div>',
+	    '<div class="trip-content"></div>',
+	    '<div class="trip-progress-steps"></div>',
+	    '<div class="trip-navigation">',
+	      '<a href="#" class="trip-prev"></a>',
+	      '<a href="#" class="trip-next"></a>',
+	      '<a href="#" class="trip-skip"></a>',
+	    '</div>',
+	    '<div class="trip-progress-bar"></div>',
+	  '</div>'
+	].join('');
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  LEFT_ARROW: 37,
+	  UP_ARROW: 38,
+	  RIGHT_ARROW: 39,
+	  DOWN_ARROW: 40,
+	  ESC: 27,
+	  SPACE: 32,
+	  TRIP_BLOCK_OFFSET_VERTICAL: 10,
+	  TRIP_BLOCK_OFFSET_HORIZONTAL: 10,
+	  RESIZE_TIMEOUT: 200
+	};
 
 
 /***/ }
