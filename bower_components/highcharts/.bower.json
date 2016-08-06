@@ -1,0 +1,19 @@
+{
+  "name": "highcharts",
+  "version": "4.2.6",
+  "main": [
+    "highcharts.js",
+    "highcharts-more.js",
+    "modules/exporting.js"
+  ],
+  "homepage": "https://github.com/highcharts/highcharts-dist",
+  "_release": "4.2.6",
+  "_resolution": {
+    "type": "version",
+    "tag": "v4.2.6",
+    "commit": "3a32067f19641ff0f2f828d7b4bbcac8dc1c4f03"
+  },
+  "_source": "https://github.com/highcharts/highcharts-dist.git",
+  "_target": "^4.2.3",
+  "_originalSource": "highcharts"
+}
