@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v4.2.6 (2016-08-02)
+ * @license Highcharts JS v4.2.5 (2016-05-06)
  * Exporting module
  *
  * (c) 2010-2016 Torstein Honsi
@@ -102,10 +102,10 @@ defaultOptions.exporting = {
 	//enabled: true,
 	//filename: 'chart',
 	type: 'image/png',
-	url: 'https://export.highcharts.com/',
+	url: 'http://export.highcharts.com/',
 	//width: undefined,
 	printMaxWidth: 780,
-	scale: 2,
+	//scale: 2
 	buttons: {
 		contextButton: {
 			menuClassName: PREFIX + 'contextmenu',
@@ -409,7 +409,7 @@ extend(Chart.prototype, {
 			filename: options.filename || 'chart',
 			type: options.type,
 			width: options.width || 0, // IE8 fails to post undefined correctly, so use 0
-			scale: options.scale,
+			scale: options.scale || 2,
 			svg: svg
 		}, options.formAttributes);
 
@@ -427,6 +427,7 @@ extend(Chart.prototype, {
 			body = doc.body,
 			childNodes = body.childNodes,
 			printMaxWidth = chart.options.exporting.printMaxWidth,
+			hasUserSize,
 			resetParams,
 			handleMaxWidth;
 
@@ -442,8 +443,9 @@ extend(Chart.prototype, {
 		// Handle printMaxWidth
 		handleMaxWidth = printMaxWidth && chart.chartWidth > printMaxWidth;
 		if (handleMaxWidth) {
-			resetParams = [chart.options.chart.width, undefined, false];
-			chart.setSize(printMaxWidth, undefined, false);
+			hasUserSize = chart.hasUserSize;
+			resetParams = [chart.chartWidth, chart.chartHeight, false];
+			chart.setSize(printMaxWidth, chart.chartHeight, false);
 		}
 
 		// hide all body content
@@ -479,6 +481,7 @@ extend(Chart.prototype, {
 			// Reset printMaxWidth
 			if (handleMaxWidth) {
 				chart.setSize.apply(chart, resetParams);
+				chart.hasUserSize = hasUserSize;
 			}
 
 			fireEvent(chart, 'afterPrint');

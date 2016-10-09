@@ -110,9 +110,9 @@
                     <h2>Pie Chart</h2>
                     <article rel>
                         <highcharts-chart id="pieChart" type="pie" color-by-point data='[{"name":"Mary", "y": 36.3},{"name":"Davis", "y":60},{"name":"John", "y":13.6}]' label="Work" title="[[_computePieTitle(pieSelected)]]" subtitle="Ctrl-Click to Select Multiple Elements" selected="{{pieSelected}}" on-click="pieSelect"></highcharts-chart>
-                        <section id="PieHoverBox" class="layout vertical" hidden$="[[!pieSelected]]">
+                        <section id="PieHoverBox" hidden$="[[!pieSelected]]">
                             <h3>Selected Names:</h3>
-                            <article class="Holder flex">
+                            <article class="Holder">
                             <template is="dom-repeat" items="[[piePoints]]">
                                 <article><span>[[incr(index)]]</span><span>[[item.name]]</span></article>
                             </template></article>
@@ -145,7 +145,7 @@
             <paper-dialog with-backdrop id="Thanks">
                 <h3>Thank you so much for your donation!</h3>
                 <article>This really helps me out a lot! Please message me if you have any suggestions/feedback.</article>
-                <article>Email: <a href="mailto:[[_apEmail()]]">[[_apEmail()]]</span></article>
+                <article>Email: <a href="mailto:[[_apEmail()]]">[[_apEmail()]]</a></article>
             </paper-dialog>
             <iron-media-query query="(max-width: 700px)" query-matches="{{thin}}"></iron-media-query>
             <iron-media-query query="(max-width: 450px)" query-matches="{{superThin}}"></iron-media-query>

@@ -307,6 +307,14 @@ context. You should place this element as a child of `<body>` whenever possible.
       this.opened = false;
     },
 
+    /**
+     * Invalidates the cached tabbable nodes. To be called when any of the focusable
+     * content changes (e.g. a button is disabled).
+     */
+    invalidateTabbables: function() {
+      this.__firstFocusableNode = this.__lastFocusableNode = null;
+    },
+
     _ensureSetup: function() {
       if (this._overlaySetup) {
         return;
@@ -404,11 +412,6 @@ context. You should place this element as a child of `<body>` whenever possible.
     _finishRenderOpened: function() {
       this.notifyResize();
       this.__isAnimating = false;
-
-      // Store it so we don't query too much.
-      var focusableNodes = this._focusableNodes;
-      this.__firstFocusableNode = focusableNodes[0];
-      this.__lastFocusableNode = focusableNodes[focusableNodes.length - 1];
 
       this.fire('iron-overlay-opened');
     },
@@ -526,6 +529,7 @@ context. You should place this element as a child of `<body>` whenever possible.
       if (!this.withBackdrop) {
         return;
       }
+      this.__ensureFirstLastFocusables();
       // TAB wraps from last to first focusable.
       // Shift + TAB wraps from first to last focusable.
       var shift = event.shiftKey;
@@ -582,7 +586,21 @@ context. You should place this element as a child of `<body>` whenever possible.
      */
     _onNodesChange: function() {
       if (this.opened && !this.__isAnimating) {
+        // It might have added focusable nodes, so invalidate cached values.
+        this.invalidateTabbables();
         this.notifyResize();
+      }
+    },
+
+    /**
+     * Will set first and last focusable nodes if any of them is not set.
+     * @private
+     */
+    __ensureFirstLastFocusables: function() {
+      if (!this.__firstFocusableNode || !this.__lastFocusableNode) {
+        var focusableNodes = this._focusableNodes;
+        this.__firstFocusableNode = focusableNodes[0];
+        this.__lastFocusableNode = focusableNodes[focusableNodes.length - 1];
       }
     },
 

@@ -2,7 +2,7 @@
 // @compilation_level SIMPLE_OPTIMIZATIONS
 
 /**
- * @license Highcharts JS v4.2.6 (2016-08-02)
+ * @license Highcharts JS v4.2.5 (2016-05-06)
  *
  * (c) 2009-2016 Torstein Honsi
  *
@@ -364,7 +364,6 @@ var arrayMin = Highcharts.arrayMin,
                     options.innerRadius,
                     pick(options.thickness, 10)
                 ],
-                offset = Math.min(this.offset, 0),
                 percentRegex = /%$/,
                 start,
                 end,
@@ -407,8 +406,6 @@ var arrayMin = Highcharts.arrayMin,
                     end = startAngleRad + this.translate(to);
                 }
 
-                radii[0] -= offset; // #5283
-                radii[2] -= offset; // #5283
 
                 ret = this.chart.renderer.symbols.arc(
                     this.left + center[0],
@@ -825,15 +822,7 @@ var arrayMin = Highcharts.arrayMin,
             if (!this.chart.polar && higherAreaPath[0] === 'M') {
                 higherAreaPath[0] = 'L'; // this probably doesn't work for spline        
             }
-
-            this.graphPath = linePath;
             this.areaPath = this.areaPath.concat(lowerPath, higherAreaPath);
-
-            // Prepare for sideways animation
-            linePath.isArea = true;
-            linePath.xMap = lowerPath.xMap;
-            this.areaPath.xMap = lowerPath.xMap;
-
             return linePath;
         },
 
@@ -1131,7 +1120,6 @@ var arrayMin = Highcharts.arrayMin,
         drawGraph: noop,
         fixedBox: true,
         forceDL: true,
-        noSharedTooltip: true,
         trackerGroups: ['group', 'dataLabelsGroup'],
 
         /**
@@ -1814,7 +1802,7 @@ var arrayMin = Highcharts.arrayMin,
                 options = series.options,
                 stateOptions = options.states,
                 upColor = options.upColor || series.color,
-                hoverColor = Highcharts.Color(upColor).brighten(options.states.hover.brightness).get(),
+                hoverColor = Highcharts.Color(upColor).brighten(0.1).get(),
                 seriesDownPointAttr = merge(series.pointAttr),
                 upColorProp = series.upColorProp;
 
@@ -1892,19 +1880,8 @@ var arrayMin = Highcharts.arrayMin,
      */
     defaultPlotOptions.polygon = merge(defaultPlotOptions.scatter, {
         marker: {
-            enabled: false,
-            states: {
-                hover: {
-                    enabled: false
-                }
-            }
-        },
-        stickyTracking: false,
-        tooltip: {
-            followPointer: true,
-            pointFormat: ''
-        },
-        trackByArea: true
+            enabled: false
+        }
     });
 
     /**
@@ -1912,28 +1889,13 @@ var arrayMin = Highcharts.arrayMin,
      */
     seriesTypes.polygon = extendClass(seriesTypes.scatter, {
         type: 'polygon',
-        getGraphPath: function () {
-
-            var graphPath = Series.prototype.getGraphPath.call(this),
-                i = graphPath.length + 1;
-
-            // Close all segments
-            while (i--) {
-                if (i === graphPath.length || (graphPath[i] === 'M' && i > 0)) {
-                    graphPath.splice(i, 0, 'z');
-                }
-            }
-
-            this.areaPath = graphPath;
-            return graphPath;
+        fillGraph: true,
+        // Close all segments
+        getSegmentPath: function (segment) {
+            return Series.prototype.getSegmentPath.call(this, segment).concat('z');
         },
-        drawGraph: function () {
-            this.options.fillColor = this.color; // Hack into the fill logic in area.drawGraph
-            seriesTypes.area.prototype.drawGraph.call(this);
-        },
-        drawLegendSymbol: Highcharts.LegendSymbolMixin.drawRectangle,
-        drawTracker: Series.prototype.drawTracker,
-        setStackedPoints: noop // No stacking points on polygons (#5310)
+        drawGraph: Series.prototype.drawGraph,
+        drawLegendSymbol: Highcharts.LegendSymbolMixin.drawRectangle
     });
     /* ****************************************************************************
      * Start Bubble series code                                                      *
@@ -2494,24 +2456,15 @@ var arrayMin = Highcharts.arrayMin,
          * line-like series.
          */
         wrap(seriesProto, 'getGraphPath', function (proceed, points) {
-            var series = this,
-                i,
-                firstValid;
+            var series = this;
         
             // Connect the path
             if (this.chart.polar) {
                 points = points || this.points;
 
-                // Append first valid point in order to connect the ends
-                for (i = 0; i < points.length; i++) {
-                    if (!points[i].isNull) {
-                        firstValid = i;
-                        break;
-                    }
-                }
-                if (this.options.connectEnds !== false && firstValid !== undefined) {
+                if (this.options.connectEnds !== false && points[0] && points[0].y !== null) {
                     this.connectEnds = true; // re-used in splines
-                    points.splice(points.length, 0, points[firstValid]);
+                    points.splice(points.length, 0, points[0]);
                 }
 
                 // For area charts, pseudo points are added to the graph, now we need to translate these

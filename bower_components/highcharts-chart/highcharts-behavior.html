@@ -12,7 +12,6 @@
 <script src="../highcharts/modules/drilldown.js"></script>
 
 <script>
-    'use strict';
     Highcharts.setOptions({global: {useUTC: false}});
     Highcharts.Polymer_BaseBehavior = {
         properties: {
@@ -139,6 +138,9 @@
         __lateBinders: function(){var me = this;Object.keys(this.__lateBindCallbacks||{}).forEach(function(cb){me[cb]()})},
         __addLateBinder: function(cb){if (!(cb instanceof Array)){cb = [cb]};if(!this.__lateBindCallbacks){this.__lateBindCallbacks={}};var me = this;cb.forEach(function(c){me.__lateBindCallbacks[c]=1})},
     };
+</script>
+<script>
+    'use strict';
     Highcharts.Polymer_ChartBehavior = {
         properties: {
             vsTime: {type: Boolean, value: false, reflectToAttribute: true, observer: "_vsTimeUpdate"},

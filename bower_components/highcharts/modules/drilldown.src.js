@@ -21,7 +21,6 @@
 		each = H.each,
 		extend = H.extend,
 		format = H.format,
-		merge = H.merge,
 		pick = H.pick,
 		wrap = H.wrap,
 		Chart = H.Chart,
@@ -147,11 +146,11 @@
 			last = undefined;
 		}
 		
-		if (!ddOptions.color) {
-			ddOptions.color = color;
-		}
-		ddOptions._ddSeriesId = ddSeriesId++;
-
+			
+		ddOptions = extend({
+			color: color,
+			_ddSeriesId: ddSeriesId++
+		}, ddOptions);
 		pointIndex = inArray(point, oldSeries.points);
 
 		// Record options for all current series
@@ -441,7 +440,7 @@
 					point.graphic
 						.attr(animateFrom)
 						.animate(
-							extend(point.shapeArgs, { fill: point.color || series.color }), 
+							extend(point.shapeArgs, { fill: point.color }), 
 							animationOptions
 						);
 				}
@@ -688,23 +687,17 @@
 	});
 
 	wrap(H.Series.prototype, 'drawDataLabels', function (proceed) {
-		var series = this,
-			css = series.chart.options.drilldown.activeDataLabelStyle,
-			renderer = series.chart.renderer;
+		var css = this.chart.options.drilldown.activeDataLabelStyle;
 
-		proceed.call(series);
+		proceed.call(this);
 
-		each(series.points, function (point) {
-			var pointCss = {};
+		each(this.points, function (point) {
 			if (point.drilldown && point.dataLabel) {
-				if (css.color === 'contrast') {
-					pointCss.color = renderer.getContrast(point.color || series.color);
-				}
 				point.dataLabel
 					.attr({
 						'class': 'highcharts-drilldown-data-label'
 					})
-					.css(merge(css, pointCss));
+					.css(css);
 			}
 		});
 	});

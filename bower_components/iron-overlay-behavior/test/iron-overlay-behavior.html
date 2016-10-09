@@ -663,6 +663,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           });
         });
 
+        test('with-backdrop: after open, update last focusable node and then Shift+TAB', function(done) {
+          overlay.withBackdrop = true;
+          var focusableNodes = overlay._focusableNodes;
+          runAfterOpen(overlay, function() {
+            // 1ms timeout needed by IE10 to have proper focus switching.
+            Polymer.Base.async(function() {
+              // Before tabbing, make lastFocusable non-tabbable. This will make
+              // the one before it (focusableNodes.length - 2), the new last focusable node.
+              focusableNodes[focusableNodes.length-1].setAttribute('tabindex', '-1');
+              overlay.invalidateTabbables();
+              // Simulate Shift+TAB.
+              MockInteractions.pressAndReleaseKeyOn(document, 9, ['shift']);
+              assert.equal(focusableNodes[focusableNodes.length-2], document.activeElement, 'focus wrapped correctly');
+              done();
+            }, 1);
+          });
+        });
+
         test('with-backdrop: Shift+TAB wrap focus in shadowDOM', function(done) {
           overlayFocusableNodes.withBackdrop = true;
           runAfterOpen(overlayFocusableNodes, function() {
