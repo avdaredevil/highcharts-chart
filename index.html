@@ -104,7 +104,7 @@
                         <paper-input value="{{splineLMsg}}" label="Loading Message" disabled="[[splineLoading]]"></paper-input>
                         <paper-input value="{{splineTitle}}" label="Title For Chart"></paper-input>
                         <paper-input value="{{splineYLabel}}" label="Y-Label For Chart" hidden$="[[!thin]]"></paper-input>
-                    <section>
+                    </section>
                 </article>
                 <article class="vertical-section" thin$="[[thin]]">
                     <h2>Pie Chart</h2>
@@ -171,8 +171,8 @@
                     amount: app.donationAmt*100
                 })
             }
-            app._getSplineSubtitle = s_t => s_t?"Click Chart to add series in Realtime Mode":"<b>Click on the Chart</b> to add <b>new series</b> [in <i>realtime mode</i> only]"
-            app.addInitData = function(e){app.async(()=>{[["Insects",5],["Reptiles",3]].forEach((el)=>{$("#barChart")[0].addData(el[0],el[1],true)})},450)}
+            app._getSplineSubtitle = function(s_t) {return s_t?"Click Chart to add series in Realtime Mode":"<b>Click on the Chart</b> to add <b>new series</b> [in <i>realtime mode</i> only]"}
+            app.addInitData = function(e){app.async(function(){[["Insects",5],["Reptiles",3]].forEach(function(el){$("#barChart")[0].addData(el[0],el[1],true)})},450)}
             app.addBarBird = function(){if(app.birdAdded){return}app.$.barChart.addData("Birds",10,true);app.birdAdded=1}
             app.resetSpline = function(){app.$.splineChart.destroy();app.$.splineChart.ready();app._populateRandomDataToSpline()}
             app.unDrill = function(){app.inDrill--}
@@ -201,16 +201,16 @@
             app.changeAlert = function(d) {console.log("Recieved",d);return d}
             app.chartResize = function(t) {a=document.getElementsByTagName("highcharts-chart");for(i=0;i<a.length;i++){a[i].resizeChart()}}
             app.startTutorial = function() {app._trackEvent("button","Help Me");app.tutorial.start()}
-            app.thankYou = ()=>{app._trackEvent("e-commerce","Donations","Stripe",app.donationAmt);app.$.Thanks.open()}
-            app.donationError = e=>{alert("There was an error processing transaction: "+(e.detail.error.message || "Server is offline [Thank you for your consideration]"));app._trackEvent("e-commerce","Donations","FAILED",0)}
-            app._trackGH = ()=>{app._trackEvent("navigate","Github")}
-            app._trackLinkedIn = ()=>{app._trackEvent("navigate","LinkedIn")}
-            app._trackFork = ()=>{app._trackEvent("navigate","Fork Repo")}
-            app._trackEvent = (a,b,c,v)=>{ga('send', {hitType: 'event',eventCategory: a,eventAction: b, eventLabel: c, eventValue: v});}
-            app._realtime = setInterval(()=>{app.realtime && app.addSplineDp(true)},1000)
+            app.thankYou = function(){app._trackEvent("e-commerce","Donations","Stripe",app.donationAmt);app.$.Thanks.open()}
+            app.donationError = function(e){alert("There was an error processing transaction: "+(e.detail.error.message || "Server is offline [Thank you for your consideration]"));app._trackEvent("e-commerce","Donations","FAILED",0)}
+            app._trackGH = function(){app._trackEvent("navigate","Github")}
+            app._trackLinkedIn = function(){app._trackEvent("navigate","LinkedIn")}
+            app._trackFork = function(){app._trackEvent("navigate","Fork Repo")}
+            app._trackEvent = function(a,b,c,v){ga('send', {hitType: 'event',eventCategory: a,eventAction: b, eventLabel: c, eventValue: v});}
+            app._realtime = setInterval(function(){app.realtime && app.addSplineDp(true)},1000)
             app._computePieTitle = function(s) {return "Work Distribution"+(s?" [Selected]":"")}
-            app._populateRandomDataToSpline = ()=>{dp=[];for(i=0;i<5;i++){dp.push([app.initTime+=1000,Math.random()*10])}app.$.splineChart.setData(dp)}
-            app._apEmail = ()=>{return "avdaredevil"+"@"+"gmail"+".com"}
+            app._populateRandomDataToSpline = function(){dp=[];for(i=0;i<5;i++){dp.push([app.initTime+=1000,Math.random()*10])}app.$.splineChart.setData(dp)}
+            app._apEmail = function(){return "avdaredevil"+"@"+"gmail"+".com"}
             app._stripe = StripeCheckout.configure({
                 key: 'pk_live_PadFjfqm95D0vleE32EJy6ZM',
                 image: 'https://avatars2.githubusercontent.com/u/5303018?v=3&s=460',
@@ -219,12 +219,12 @@
                     app.donationResult=token;token.card = undefined
                     app.$.API.body = JSON.stringify($.extend({amount: app.donationAmt*100},token));app.$.API.generateRequest()}
             });
-            app._notThinOrZero = (t,z) => !t||(t&&!z)
+            app._notThinOrZero = function(t,z) {return !t||(t&&!z)}
             window.addEventListener('WebComponentsReady', function(e) {
-                app.async(()=>{$(window).resize(()=>{app.chartResize()})},1000)
+                app.async(function(){$(window).resize(function(){app.chartResize()})},1000)
                 app.async(app._populateRandomDataToSpline,250)
-                app.async(()=>{app.splineLoading=false},500)
-                app.async(()=>{
+                app.async(function(){app.splineLoading=false},500)
+                app.async(function(){
                     app.tutorial = new Trip([
                         {sel: $("h1:first"), position: "s", animation: 'tada', content: "This is a Polymer element to replace the pains of the Highcharts library."},
                         {sel: $("h1:first"), delay: -1, showNavigation: true, position: "s", content: "You can press <span style='color:#BBA400'>Escape</span> at any time to close this tutorial."},
@@ -239,7 +239,7 @@
                         {sel: $(".vertical-section:nth-of-type(3)"), content: "This is a <i><span tut-code>Drillable</span> Column Chart</i>"},
                         {sel: $(".vertical-section:nth-of-type(3)"), delay: 2500, content: "That means all elements can be clicked into"},
                         {sel: $(".vertical-section:nth-of-type(3) paper-button"), position: "e", delay: 5000, content: "<section>Use this button to dynamically insert birds into the Animals chart</section>[sub charts are not permitted in this example]", onTripEnd: function(){app._trackEvent("behavior","Tutorial","Complete")}},
-                    ].map((el)=>{return $.extend({delay: 3000, expose: true, animation: 'bounce'},el)}),{backToTopWhenEnded : true});app.helpLoaded=true;
+                    ].map(function(el){return $.extend({delay: 3000, expose: true, animation: 'bounce'},el)}),{backToTopWhenEnded : true});app.helpLoaded=true;
                 }, 1000)
             });
             console.log("%cHey, you're a rebel! I like you.","color:orange;font-size:1.3em;text-decoration:underline")
