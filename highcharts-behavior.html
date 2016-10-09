@@ -120,7 +120,7 @@
         _getSeries: function(z) {if(!this._chart){return this._returnDummySeries()};z=typeof z != "number"?0:z;var s=this._chart.series;if(!s.length){this._warn("Chart is empty [no series]");return this._returnDummySeries()};if (z<s.length){return s[(z||0)]}else{this._warn("Index z out of bounds");return this._returnDummySeries()}},
         _warn: function(err) {console.warn("%c[highcharts-chart]","font-weight:bold;background-color:yellow",err)},
         _legendUpdate: function(s) {if(!this._chart){return};this._chart.options.legend.enabled = s;this.reRender()},
-        _chartUpdate: function(o) {if(!this._chart){return};this._chart.options = $.extend(this._chart.options,opt);this.reRender()},
+        _chartUpdate: function(o) {if(!this._chart){return};this._chart.options = $.extend(this._chart.options,o);this.reRender()},
         _exportingUpdate: function(x) {if(!this._chart){return};this._chart.options.exporting.enabled=x;this.reRender()},
         _updateType: function() {if(!this.type){return};this.updateSeries("type",this.type)},
         _xAxisUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update(this.xAxis)},
