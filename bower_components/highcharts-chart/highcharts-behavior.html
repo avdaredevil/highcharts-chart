@@ -12,6 +12,7 @@
 <script src="../highcharts/modules/drilldown.js"></script>
 
 <script>
+    'use strict';
     Highcharts.setOptions({global: {useUTC: false}});
     Highcharts.Polymer_BaseBehavior = {
         properties: {
@@ -120,7 +121,6 @@
         _warn: function(err) {console.warn("%c[highcharts-chart]","font-weight:bold;background-color:yellow",err)},
         _legendUpdate: function(s) {if(!this._chart){return};this._chart.options.legend.enabled = s;this.reRender()},
         _chartUpdate: function(o) {if(!this._chart){return};this._chart.options = $.extend(this._chart.options,o);this.reRender()},
-        _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
         _exportingUpdate: function(x) {if(!this._chart){return};this._chart.options.exporting.enabled=x;this.reRender()},
         _updateType: function() {if(!this.type){return};this.updateSeries("type",this.type)},
         _xAxisUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update(this.xAxis)},
@@ -138,9 +138,6 @@
         __lateBinders: function(){var me = this;Object.keys(this.__lateBindCallbacks||{}).forEach(function(cb){me[cb]()})},
         __addLateBinder: function(cb){if (!(cb instanceof Array)){cb = [cb]};if(!this.__lateBindCallbacks){this.__lateBindCallbacks={}};var me = this;cb.forEach(function(c){me.__lateBindCallbacks[c]=1})},
     };
-</script>
-<script>
-    'use strict';
     Highcharts.Polymer_ChartBehavior = {
         properties: {
             vsTime: {type: Boolean, value: false, reflectToAttribute: true, observer: "_vsTimeUpdate"},
