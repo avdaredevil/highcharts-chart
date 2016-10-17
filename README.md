@@ -138,3 +138,5 @@ Mixin       | Description
 ## License
 
 [MIT License](http://avdaredevil.mit-license.org/) © Apoorv Verma
+
+[![LinkedIn](https://img.shields.io/badge/Linked-In-blue.svg)](https://www.linkedin.com/in/apoorvverma)
