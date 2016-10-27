@@ -36,11 +36,11 @@
     "jquery": "^2.1.4",
     "highcharts": "^4.2.3"
   },
-  "_release": "015efb7926",
+  "_release": "e8f2e2aa6b",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "015efb7926e0d2081cea3a960928a7d2e4f2261b"
+    "commit": "e8f2e2aa6b84ad0a1f975c1d0037aab07400fc09"
   },
   "_source": "https://github.com/avdaredevil/highcharts-chart.git",
   "_target": "master",

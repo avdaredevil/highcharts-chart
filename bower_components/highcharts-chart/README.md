@@ -138,4 +138,5 @@ Mixin       | Description
 ## License
 
 [MIT License](http://avdaredevil.mit-license.org/) © Apoorv Verma
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/avdaredevil/highcharts-chart/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
+[![LinkedIn](https://img.shields.io/badge/Linked-In-blue.svg)](https://www.linkedin.com/in/apoorvverma)
