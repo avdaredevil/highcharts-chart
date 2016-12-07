@@ -96,7 +96,7 @@
         },
         setData: function(x,z,ign) {if (!z && this.data!=x){this.data=x.slice();return}
             var __app = this, isArr = x instanceof Array;
-            if (isArr) {x = $.extend({type: this.type},x)}
+            if (!isArr) {x = $.extend({name: (this.label||this.yLabel||this.xLabel),colorByPoint: this.colorByPoint},x)}
             if (x && x.length && x[0].data instanceof Array) {
                 __app.async(function(){while (__app._chart.series.length) {__app.removeSeries(0,false)};x.forEach(function(d){__app._chart.addSeries(d)})},__app.__microTaskDelaySetData)
             } else {__app._getSeries(z)[isArr?"setData":"update"](x)}
