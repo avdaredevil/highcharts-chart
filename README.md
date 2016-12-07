@@ -93,7 +93,7 @@ Method       | Parameters           | Description
 `pushData(x,y,z)` | `x`,`y`,`index` | Shifts and adds to data [*efficient*]
 `addSeries(name,data,colorByPoint,otherOptions)` | `String`,`Array`,`boolean`,`{}`  | Adds a new Series to Plot
 `addDrillSeries(point,data,name)` | `point`,`Array`,`String`   | Adds a series that is viewable when an Element is clicked into
-`getSeries(z)` | `index=0`   | Fetch a series [given by `z`], else return a dummy object
+`getSeries(z=0)` | `index`   | Fetch a series [given by `z`], else return a dummy object
 `updateSeries(k,v,z)` | `String`,`Mixed`,`0`   | Modifies an option by Key Value for series [given by `z`]
 `updateSeries(options,z)` | `{}`,`0`   | Modifies the options for series [given by `z`]
 `removeSeries(z,redraw)` | `index`,`true`  | Removes Series denoted by index [should redraw after remove]
