@@ -29,7 +29,7 @@
             xLabel: {type: String, value: "", observer: "_xAxisTitleUpdate"},
             yLabel: {type: String, value: "", observer: "_yAxisTitleUpdate"},
             label: {type: String, value: "", observer: "_labelUpdate"},
-            data: {type: Array, value: function(){return []}, observer:"setData"},
+            data: {type: Array, value: function(){return []}, observer:"_dataUpdate"},
             export: {type: Boolean, value: false, reflectToAttribute: true, observer: "_exportingUpdate"},
             xZoom: {type: Boolean, value: false, reflectToAttribute: true, observer: "_zoomUpdate"},
             yZoom: {type: Boolean, value: false, reflectToAttribute: true, observer: "_zoomUpdate"},
@@ -94,7 +94,7 @@
             this.async(this.resizeChart,50)
             this.async(this.__lateBinders,50)
         },
-        setData: function(x,z,ign) {if (!z && this.data!=x){this.data=x.slice();return}
+        setData: function(x,z) {if (!z && this.data!=x){this.data=x;return}
             var __app = this, isArr = x instanceof Array;
             if (!isArr) {x = $.extend({name: (this.label||this.yLabel||this.xLabel),colorByPoint: this.colorByPoint},x)}
             if (x && x.length && x[0].data instanceof Array) {
@@ -119,6 +119,7 @@
         zoomOut: function() {if(!this._chart){return};this._chart.zoomOut()},
         getSeries: function(z) {this._getSeries(z)},
         _getSeries: function(z) {if(!this._chart){return this._returnDummySeries()};z=typeof z != "number"?0:z;var s=this._chart.series;if(!s.length){this._warn("Chart is empty [no series]");return this._returnDummySeries()};if (z<s.length){return s[(z||0)]}else{this._warn("Index z out of bounds");return this._returnDummySeries()}},
+        _dataUpdate: function(d) {this.setData(d.slice?d.slice(0):d)},
         _warn: function(err,c) {console.warn("%c[highcharts-chart"+(c?"::"+c:'')+"]","font-weight:bold;background-color:yellow",err)},
         _creditsUpdate: function(c) {if(!this._chart){return};this._chart.update({credits: {enabled: c}})},
         _legendUpdate: function(s) {if(!this._chart){return};this._chart.legend.update({enabled: s})},
