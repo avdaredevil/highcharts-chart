@@ -77,7 +77,7 @@ Attribute  | Options     | Default              | Description
 `legendOptions` | *object* | `{}` | Override/Add Options to your legend
 `tooltipOptions` | *object* | `{}` | Override/Add Options to your tooltip
 `highchartOptions` | *object* | `{}` | Override/Add Options to the chart initalization code [useful for custom charts]
-`height-responsive` | *boolean* | `false` | Make chart height responsive [*define container height for this to work*]
+`height-responsive` | *Attribute* | `NA` | Make chart height responsive [*define container height for this to work*]
 `_chart` | *object `[readonly]`* | `{}` | HighCharts exposed object
 
 **Note:** 
