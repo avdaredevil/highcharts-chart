@@ -74,12 +74,10 @@ Attribute  | Options     | Default              | Description
 `legend`   | *boolean*     | `false` | Display the legend
 `colorByPoint`__\*__ | *boolean* | `false` | Every point treated/colored uniquely
 `credits`  | *boolean*     | `false` | Wish to thank/credit HighCharts?
-`legendHorizAlign` | *string*     | `right` | Horizontal Alignment of Legend
-`legendVertAlign`  | *string*     | `top`   | Vertical Alignment of Legend
-`legendPos`  | *object*     | `{x:-40, y: 80}` | Legend Offset
 `legendOptions` | *object* | `{}` | Override/Add Options to your legend
 `tooltipOptions` | *object* | `{}` | Override/Add Options to your tooltip
 `highchartOptions` | *object* | `{}` | Override/Add Options to the chart initalization code [useful for custom charts]
+`height-responsive` | *boolean* | `false` | Make chart height responsive [*define container height for this to work*]
 `_chart` | *object `[readonly]`* | `{}` | HighCharts exposed object
 
 **Note:** 
@@ -95,12 +93,14 @@ Method       | Parameters           | Description
 `pushData(x,y,z)` | `x`,`y`,`index` | Shifts and adds to data [*efficient*]
 `addSeries(name,data,colorByPoint,otherOptions)` | `String`,`Array`,`boolean`,`{}`  | Adds a new Series to Plot
 `addDrillSeries(point,data,name)` | `point`,`Array`,`String`   | Adds a series that is viewable when an Element is clicked into
+`getSeries(z)` | `index=0`   | Fetch a series [given by `z`], else return a dummy object
 `updateSeries(k,v,z)` | `String`,`Mixed`,`0`   | Modifies an option by Key Value for series [given by `z`]
 `updateSeries(options,z)` | `{}`,`0`   | Modifies the options for series [given by `z`]
 `removeSeries(z,redraw)` | `index`,`true`  | Removes Series denoted by index [should redraw after remove]
 `showLoading(t)`__\*__ | `t [Text]` | Sets `Loading-Message` equal to `t` then turns on loading screen
 `resizeChart()` | `none`   | Efficient reflow of the chart to parent [*can be attached to a parent resize*]
 `resizeChartFixed()` | `none`   | Fixed Adjustment of chart [*use if chart should not fluctuate over minor size changes*]
+`zoomOut()` | `none`   | Zoom out the chart
 `reRender()` | `none`   | Will force a complete re-render of the Highchart [*use it when binding is not possible*]
 `downloadAs(name,options)` | `chart`,`{}` | Download/Export the chart as a file
 `destroy()` | `none`   | Free's up the memory used by the chart [*prevents __memory leaks__*]

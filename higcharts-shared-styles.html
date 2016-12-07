@@ -1,0 +1,10 @@
+<dom-module id="highcharts-shared-styles">
+    <template>
+        <style>
+            :host {width: 100%;display: inline-block;min-height: var(--highcharts-min-height, 26em)}
+            :host[height-responsive] {min-height: initial}
+            :host[height-responsive] #Chart {height: 100%}
+            #Chart {@apply(--highcharts-container)}
+        </style>
+    </template>
+</dom-module>

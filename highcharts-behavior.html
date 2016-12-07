@@ -18,9 +18,9 @@
         properties: {
             type: {type: String, observer: '_updateType'},
             title: {type: String, observer: "_titleUpdate"},
-            subtitle: {type: String, value: "", observer: "_subtitleUpdate"},
-            colorByPoint: {type: Boolean, value: false, reflectToAttribute:true},
-            credits: {type: Boolean, value: false, reflectToAttribute:true},
+            subtitle: {type: String, observer: "_subtitleUpdate"},
+            colorByPoint: {type: Boolean, value: false, reflectToAttribute:true, observer: "_cbpUpdate"},
+            credits: {type: Boolean, value: false, reflectToAttribute:true, observer: "_creditsUpdate"},
             legend: {type: Boolean, value: false, reflectToAttribute:true, observer: "_legendUpdate"},
             chartOptions: {type: Object, value: function(){return {}}, observer: "_chartUpdate"},
             plotOptions: {type: Object, value: function(){return {}}, observer: "_plotUpdate"},
@@ -31,17 +31,14 @@
             label: {type: String, value: "", observer: "_labelUpdate"},
             data: {type: Array, value: function(){return []}, observer:"setData"},
             export: {type: Boolean, value: false, reflectToAttribute: true, observer: "_exportingUpdate"},
-            xZoom: {type: Boolean, value: false, reflectToAttribute: true, observer: "_xZoomUpdate"},
-            yZoom: {type: Boolean, value: false, reflectToAttribute: true, observer: "_yZoomUpdate"},
+            xZoom: {type: Boolean, value: false, reflectToAttribute: true, observer: "_zoomUpdate"},
+            yZoom: {type: Boolean, value: false, reflectToAttribute: true, observer: "_zoomUpdate"},
             loading: {type: Boolean, value: false, observer: "_loadingUpdate", reflectToAttribute:true},
             loadingMessage: {type: String, value: ""},
             //Custom Chart Declarations
-            legendHorizAlign: {type: String, value: "right"},
-            legendVertAlign: {type: String, value: "top"},
-            legendPos: {type: Object, value: function(){return {x: -40,y: 80}}},
-            legendOptions: {type: Object, value: function(){return {}}},
-            tooltipOptions: {type: Object, value: function(){return {}}},
-            highchartOptions: {type: Object, value: function(){return {}}},
+            legendOptions: {type: Object, value: function(){return {}}, observer: "_legendOptionsUpdate"},
+            tooltipOptions: {type: Object, value: function(){return {}}, observer: "_tooltipOptionsUpdate"},
+            highchartOptions: {type: Object, value: function(){return {}}, observer: "_hcUpdate"},
             _chart: {type: Object, readOnly: true},
             __microTaskDelaySetData: {type: Number, value: 25}},
         created: function() {this.__lateBindCallbacks = $.extend({}, this.__lateBindCallbacks, {_updateType:1,_loadingUpdate:1})},
@@ -66,13 +63,13 @@
                         drillup: function(e){__app.fire("drill-up",{e: e,chart: this,component:__app})},
                         selection: function(e){__app.fire("selection",{e: e,chart: this,component:__app})},
                     }
-                },this.xZoom||this.yZoom?{zoomType: (this.xZoom&&"x")+(this.yZoom&&"y")}:{}),
+                },this.xZoom||this.yZoom?{zoomType: (this.xZoom&&"x")+(this.yZoom&&"y")}:{},this.chartOptions),
                 //Properties
                 title: {text: this.title},
                 subtitle: {text: this.subtitle},
                 xAxis: xAxis,
                 yAxis: yAxis,
-                credits: this.credits,
+                credits: {enabled: this.credits},
                 plotOptions: $.extend({
                     pie: {
                         allowPointSelect: true,
@@ -83,13 +80,13 @@
                             style: {color: (Highcharts.theme||[]).contrastTextColor||'black'}
                         }
                     }
-                }, this.chartOptions),
+                }, this.plotOptions),
                 tooltip: $.extend(this.vsTime?{formatter: function () {
-                        return '<b>' + this.series.name + '</b><br/>' +
-                            Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                        return '<b>'+this.series.name+'</b><br>' +
+                            Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br>' +
                             Highcharts.numberFormat(this.y, 2);
                     }}:{},this.tooltipOptions),
-                legend: $.extend({enabled: this.legend, layout: "vertical", verticalAlign: this.legendVertAlign, align: this.legendHorizAlign, x: this.legendPos.x, y: this.legendPos.y, backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'), shadow: true},this.legendOptions),
+                legend: $.extend({enabled: this.legend},this.legendOptions),
                 exporting: {enabled: this.export},
                 series: Series,
                 drilldown: {series: []}
@@ -98,10 +95,11 @@
             this.async(this.__lateBinders,50)
         },
         setData: function(x,z,ign) {if (!z && this.data!=x){this.data=x.slice();return}
-            var __app = this
+            var __app = this, isArr = x instanceof Array;
+            if (isArr) {x = $.extend({type: this.type},x)}
             if (x && x.length && x[0].data instanceof Array) {
                 __app.async(function(){while (__app._chart.series.length) {__app.removeSeries(0,false)};x.forEach(function(d){__app._chart.addSeries(d)})},__app.__microTaskDelaySetData)
-            } else {__app._getSeries(z).setData(x)}
+            } else {__app._getSeries(z)[isArr?"setData":"update"](x)}
         },
         addData: function(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)},
         pushData: function(x,y,z,append,drillable) {
@@ -118,23 +116,30 @@
         downloadAs: function(name,otherOptions) {if(!this._chart){return}this._chart.exportChart($.extend({filename: name},otherOptions))},
         destroy: function() {if(!this._chart){return}this._chart.destroy()},
         showLoading: function(d) {this.loadingMessage=d;this.loading=true},
+        zoomOut: function() {if(!this._chart){return};this._chart.zoomOut()},
+        getSeries: function(z) {this._getSeries(z)},
         _getSeries: function(z) {if(!this._chart){return this._returnDummySeries()};z=typeof z != "number"?0:z;var s=this._chart.series;if(!s.length){this._warn("Chart is empty [no series]");return this._returnDummySeries()};if (z<s.length){return s[(z||0)]}else{this._warn("Index z out of bounds");return this._returnDummySeries()}},
         _warn: function(err,c) {console.warn("%c[highcharts-chart"+(c?"::"+c:'')+"]","font-weight:bold;background-color:yellow",err)},
-        _legendUpdate: function(s) {if(!this._chart){return};this._chart.options.legend.enabled = s;this.reRender()},
-        _plotUpdate: function(o) {if(!this._chart){return};this._chart.options = $.extend(this._chart.options,o);this.reRender()},
-        _chartUpdate: function(o) {this._warn("This property is now deprecated, please use plotOptions","chartOptions");this.plotOptions = this.chartOptions},
-        _exportingUpdate: function(x) {if(!this._chart){return};this._chart.options.exporting.enabled=x;this.reRender()},
+        _creditsUpdate: function(c) {if(!this._chart){return};this._chart.update({credits: {enabled: c}})},
+        _legendUpdate: function(s) {if(!this._chart){return};this._chart.legend.update({enabled: s})},
+        _legendOptionsUpdate: function(o) {if(!this._chart){return};this._chart.legend.update(o)},
+        _tooltipOptionsUpdate: function(o) {if(!this._chart){return};this._chart.tooltip.update(o)},
+        _plotUpdate: function(o) {if(!this._chart){return};this._chart.update({plotOptions: o})},
+        _chartUpdate: function(o) {if(!this._chart){return};Object.keys(o||{}).length && this._warn("Not doing what you wanted, maybe you meant plotOptions?","chartOptions");this._chart.update({chart: o})},
+        _exportingUpdate: function(x) {if(!this._chart){return};this._chart.update({exporting: {enabled: x}})},
         _updateType: function() {if(!this.type){return};this.updateSeries("type",this.type)},
+        _cbpUpdate: function() {this.updateSeries("colorByPoint",this.colorByPoint)},
         _xAxisUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update(this.xAxis)},
         _yAxisUpdate: function() {if(!this._chart){return};this._chart.yAxis[0].update(this.yAxis)},
-        _xZoomUpdate: function() {if(!this._chart){return};var pt=this._chart.pointer;pt.zoomX=pt.zoomHor=this.xZoom},
-        _yZoomUpdate: function() {if(!this._chart){return};var pt=this._chart.pointer;pt.zoomY=pt.zoomVert=this.yZoom},
+        _zoomUpdate: function() {if(!this._chart){return};this._chart.update({chart: {zoomType: ""+(this.xZoom?"x":'')+(this.yZoom?"y":'')}})},
         _xAxisTitleUpdate: function() {if(!this._chart){return};this._chart.xAxis[0].update({title: {text: this._getAxisLabel('X')}})},
         _yAxisTitleUpdate: function() {if(!this._chart){return};this._chart.yAxis[0].update({title: {text: this._getAxisLabel('Y')}})},
         _labelUpdate: function() {if(!this._chart){return};this._xAxisTitleUpdate();this._yAxisTitleUpdate()},
         _titleUpdate: function() {if(!this._chart){return};this._chart.setTitle({text: this.title})},
         _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
         _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})},
+        _hcUpdate: function(o) {if(!this._chart){return};this._chart.update(o)},
+        //Other Bindings
         _getAxisLabel: function(dim) {var l = dim.toLowerCase(),u = dim.toUpperCase(),lab = this[l+"Label"]||this.label;if(lab==u+"-Axis"){lab=this.label||lab};return lab.trim()},
         _returnDummySeries: function(){var f=function(){};return {isDummy: true, setData: f, addPoint: f, update: f,remove: f}},
         __lateBinders: function(){var me = this;Object.keys(this.__lateBindCallbacks||{}).forEach(function(cb){me[cb]()})},
