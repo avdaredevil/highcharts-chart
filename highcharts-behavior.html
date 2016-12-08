@@ -94,7 +94,7 @@
             this.async(this.resizeChart,50)
             this.async(this.__lateBinders,50)
         },
-        setData: function(x,z) {if (!z && this.data!=x){this.data=x;return}
+        setData: function(x,z) {
             var __app = this, isArr = x instanceof Array;
             if (!isArr) {x = $.extend({name: (this.label||this.yLabel||this.xLabel),colorByPoint: this.colorByPoint},x)}
             if (x && x.length && x[0].data instanceof Array) {
@@ -117,7 +117,7 @@
         destroy: function() {if(!this._chart){return}this._chart.destroy()},
         showLoading: function(d) {this.loadingMessage=d;this.loading=true},
         zoomOut: function() {if(!this._chart){return};this._chart.zoomOut()},
-        getSeries: function(z) {this._getSeries(z)},
+        getSeries: function(z) {return this._getSeries(z)},
         _getSeries: function(z) {if(!this._chart){return this._returnDummySeries()};z=typeof z != "number"?0:z;var s=this._chart.series;if(!s.length){this._warn("Chart is empty [no series]");return this._returnDummySeries()};if (z<s.length){return s[(z||0)]}else{this._warn("Index z out of bounds");return this._returnDummySeries()}},
         _dataUpdate: function(d) {this.setData(d.slice?d.slice(0):d)},
         _warn: function(err,c) {console.warn("%c[highcharts-chart"+(c?"::"+c:'')+"]","font-weight:bold;background-color:yellow",err)},
