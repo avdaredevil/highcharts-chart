@@ -1,16 +1,6 @@
 # &lt;highcharts-chart&gt; [![Bower version](https://badge.fury.io/bo/highcharts-chart.svg)](http://badge.fury.io/bo/highcharts-chart) [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/avdaredevil/highcharts-chart)
 
 > Web Component wrapper to the [Highcharts Graphing Library](http://www.highcharts.com/), to create a multitude of graphs/maps (spline, pie, and more) using [Polymer 1.0](http://www.polymer-project.org/1.0/).
-<!--
-```
-<custom-element-demo>
-  <template>
-    <link rel="import" href="highcharts-chart.html">
-    <highcharts-chart type="spline" data='[[0,0],[1,7],[2,1],[3,6],[4,8],[5,6]]' title='Test-Spline Chart' x-zoom x-label="Iterations" y-label="Awesomeness Index"></highcharts-chart>
-  </template>
-</custom-element-demo>
-```
--->
 
 ## Demo
 
@@ -45,9 +35,24 @@ Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/mas
     ```
 
 3. Start using it!
+    <!--
+    ```
+    <custom-element-demo>
+      <template>
+        <link rel="import" href="highcharts-chart.html">
+        <next-code-block></next-code-block>
+
+      </template>
+    </custom-element-demo>
+    ```
+    -->
 
     ```html
-    <highcharts-chart type="spline"></highcharts-chart>
+    <highcharts-chart type="spline" data='[[0,0],[1,7],[2,1],[3,6],[4,8],[5,6]]' title='Test-Spline Chart' x-zoom x-label="Iterations" y-label="Awesomeness Index"></highcharts-chart>
+    ```
+
+    #### Other Examples
+    ```html
     <highcharts-chart type="pie"></highcharts-chart>
     <highcharts-chart type="column"></highcharts-chart>
     <highcharts-map></highcharts-map>
