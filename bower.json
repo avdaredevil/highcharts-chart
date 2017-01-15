@@ -13,6 +13,8 @@
     "polymer-1.0",
     "highcharts",
     "graphing",
+    "graphs",
+    "visualize",
     "pie",
     "web-components",
     "spline",
