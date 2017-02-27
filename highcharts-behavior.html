@@ -61,7 +61,10 @@
                         addSeries: function(e){__app.fire("series-added",{e: e,chart: this,component:__app})},
                         drilldown: function(e){__app.fire("drill-down",{e: e,chart: this,component:__app})},
                         drillup: function(e){__app.fire("drill-up",{e: e,chart: this,component:__app})},
+                        drillupall: function(e){__app.fire("drill-up-all",{e: e,chart: this,component:__app})},
                         selection: function(e){__app.fire("selection",{e: e,chart: this,component:__app})},
+                        redraw: function(e){__app.fire("redraw",{e: e,chart: this,component:__app})},
+                        render: function(e){__app.fire("render",{e: e,chart: this,component:__app})},
                     }
                 },this.xZoom||this.yZoom?{zoomType: (this.xZoom&&"x")+(this.yZoom&&"y")}:{},this.chartOptions),
                 //Properties
