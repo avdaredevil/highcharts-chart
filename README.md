@@ -133,7 +133,7 @@ Event      | Description             | Payload [*`e.detail`*]
 `series-added` | Fired when series added | `e`, `chart`, `component`
 `drill-down` | Fired when drill down is triggered | `e`, `chart`, `component`
 `drill-up` | Fired when drill up is triggered | `e`, `chart`, `component`
-`drill-selection` | Fired when a range of points are selected | `e`, `chart`, `component`
+`selection` | Fired when a range of points are selected | `e`, `chart`, `component`
 `redraw` | Fires when the chart is redrawn | `e`, `chart`, `component`
 `render` | Fires after initial load of the chart, and after each redraw | `e`, `chart`, `component`
 
