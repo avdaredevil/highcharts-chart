@@ -35,7 +35,7 @@
             yZoom: {type: Boolean, value: false, reflectToAttribute: true, observer: "_zoomUpdate"},
             loading: {type: Boolean, value: false, observer: "_loadingUpdate", reflectToAttribute:true},
             loadingMessage: {type: String, value: ""},
-            renderer: {type: Object, computed: "_renderer(_chart)"},
+            renderer: {type: Object, computed: "_renderer(_chart.renderer)"},
             //Custom Chart Declarations
             legendOptions: {type: Object, value: function(){return {}}, observer: "_legendOptionsUpdate"},
             tooltipOptions: {type: Object, value: function(){return {}}, observer: "_tooltipOptionsUpdate"},
