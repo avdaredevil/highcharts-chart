@@ -35,6 +35,7 @@
             yZoom: {type: Boolean, value: false, reflectToAttribute: true, observer: "_zoomUpdate"},
             loading: {type: Boolean, value: false, observer: "_loadingUpdate", reflectToAttribute:true},
             loadingMessage: {type: String, value: ""},
+            renderer: {type: Object, computed: "_getRenderer(_chart.renderer)"},
             //Custom Chart Declarations
             legendOptions: {type: Object, value: function(){return {}}, observer: "_legendOptionsUpdate"},
             tooltipOptions: {type: Object, value: function(){return {}}, observer: "_tooltipOptionsUpdate"},
@@ -143,6 +144,7 @@
         _loadingUpdate: function() {if(!this._chart){return};this._chart[(this.loading?"show":"hide")+"Loading"](this.loadingMessage)},
         _subtitleUpdate: function() {if(!this._chart){return};this._chart.setTitle(null,{text: this.subtitle})},
         _hcUpdate: function(o) {if(!this._chart){return};this._chart.update(o)},
+        _getRenderer: function() {if(!this._chart){return};return this._chart.renderer},
         //Other Bindings
         _getAxisLabel: function(dim) {var l = dim.toLowerCase(),u = dim.toUpperCase(),lab = this[l+"Label"]||this.label;if(lab==u+"-Axis"){lab=this.label||lab};return lab.trim()},
         _returnDummySeries: function(){var f=function(){};return {isDummy: true, setData: f, addPoint: f, update: f,remove: f}},
