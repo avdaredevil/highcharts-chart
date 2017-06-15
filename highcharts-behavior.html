@@ -41,7 +41,12 @@
             tooltipOptions: {type: Object, value: function(){return {}}, observer: "_tooltipOptionsUpdate"},
             highchartOptions: {type: Object, value: function(){return {}}, observer: "_hcUpdate"},
             _chart: {type: Object, readOnly: true},
-            __microTaskDelaySetData: {type: Number, value: 25}},
+            __microTaskDelaySetData: {type: Number, value: 25},
+            global: {type: Object, value: function(){return {}}, observer: "_optionsUpdate" },
+            lang: {type: Object, value: function(){return {}}, observer: "_langUpdate" }},
+        ready:function () {
+          Highcharts.setOptions({global: $.extend(true, this.global, {useUTC: false}), lang: this.lang || {}});
+        },
         created: function() {this.__lateBindCallbacks = $.extend({}, this.__lateBindCallbacks, {_updateType:1,_loadingUpdate:1})},
         __createChart: function(namespace) {
             var xAxis = $.extend(true, this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis, {title: {text: this._getAxisLabel('X')}});
@@ -150,6 +155,8 @@
         _returnDummySeries: function(){var f=function(){};return {isDummy: true, setData: f, addPoint: f, update: f,remove: f}},
         __lateBinders: function(){var me = this;Object.keys(this.__lateBindCallbacks||{}).forEach(function(cb){me[cb]()})},
         __addLateBinder: function(cb){if (!(cb instanceof Array)){cb = [cb]};if(!this.__lateBindCallbacks){this.__lateBindCallbacks={}};var me = this;cb.forEach(function(c){me.__lateBindCallbacks[c]=1})},
+        _langUpdate:function (lang) { Highcharts.setOptions({lang: lang });},
+        _optionsUpdate:function (global) {Highcharts.setOptions({global: global });}
     };
     Highcharts.Polymer_ChartBehavior = {
         properties: {
