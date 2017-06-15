@@ -44,8 +44,8 @@
             __microTaskDelaySetData: {type: Number, value: 25}},
         created: function() {this.__lateBindCallbacks = $.extend({}, this.__lateBindCallbacks, {_updateType:1,_loadingUpdate:1})},
         __createChart: function(namespace) {
-            var xAxis = $.extend(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis, {title: {text: this._getAxisLabel('X')}});
-            var yAxis = $.extend(this.yAxis, {title: {text: this._getAxisLabel('Y')}});
+            var xAxis = $.extend(true, this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis, {title: {text: this._getAxisLabel('X')}});
+            var yAxis = $.extend(true, this.yAxis, {title: {text: this._getAxisLabel('Y')}});
             var Series = this.data.length && this.data[0].data instanceof Array?this.data:[{name: (this.label||this.yLabel||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}]
             var __app = this
             this._set_chart(new Highcharts[namespace||"Chart"]($.extend(true,{},{
