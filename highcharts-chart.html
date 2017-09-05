@@ -5,15 +5,17 @@
     <template>
         <style include="highcharts-shared-styles"></style>
         <div id="Chart" width="100%" on-click="_checkSelected"></div>
-        <content></content>
+        <slot></slot>
     </template>
     <script>
         'use strict';
-        Polymer({
-            is: "highcharts-chart",
-            behaviors: [Highcharts.Polymer_BaseBehavior, Highcharts.Polymer_ChartBehavior],
-            properties: {type: {type: String, value: 'spline', observer: '_updateType'}},
-            ready: function() {this.__createChart()},
-        });
+        class HighchartsChart extends Highcharts.Polymer_ChartBehavior(Highcharts.Polymer_BaseBehavior(Polymer.Element)) {
+            static get is() {return 'highcharts-chart'}
+            static get properties() {return {
+                type: {type: String, value: 'spline', observer: '_updateType'}
+            }}
+            ready() {super.ready();this.__createChart()}
+        }
+        customElements.define(HighchartsChart.is, HighchartsChart);
     </script>
 </dom-module>

@@ -7,17 +7,17 @@
     <template>
         <style include="highcharts-shared-styles"></style>
         <div id="Chart" width="100%"></div>
-        <content></content>
+        <slot></slot>
     </template>
     <script>
         'use strict';
-        Polymer({
-            is: "highcharts-map",
-            behaviors: [Highcharts.Polymer_BaseBehavior],
-            properties: {
+        class HighchartsMap extends Highcharts.Polymer_BaseBehavior(Polymer.Element) {
+            static get is() {return 'highcharts-map'}
+            static get properties() {return {
                 type: {type: String, value: 'map', observer: '_updateType'},
-                title: {type: String, value: "", observer: "_titleUpdate"}},
-            ready: function() {this.__createChart("Map")},
-        });
+            }}
+            ready() {super.ready();this.__createChart("Map")}
+        }
+        customElements.define(HighchartsMap.is, HighchartsMap);
     </script>
 </dom-module>

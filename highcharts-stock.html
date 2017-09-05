@@ -5,16 +5,15 @@
     <template>
         <style include="highcharts-shared-styles"></style>
         <div id="Chart" width="100%" on-click="_checkSelected"></div>
-        <content></content>
+        <slot></slot>
     </template>
     <script>
         'use strict';
-        Polymer({
-            is: "highcharts-stock",
-            behaviors: [Highcharts.Polymer_BaseBehavior, Highcharts.Polymer_ChartBehavior],
-            properties: {
-                title: {type: String, observer: "_titleUpdate"}},
-            ready: function() {this.__createChart("StockChart")}
-        });
+        class HighchartsStock extends Highcharts.Polymer_ChartBehavior(Highcharts.Polymer_BaseBehavior(Polymer.Element)) {
+            static get is() {return 'highcharts-stock'}
+            static get properties() {return {}}
+            ready() {super.ready();this.__createChart("StockChart")}
+        }
+        customElements.define(HighchartsStock.is, HighchartsStock);
     </script>
 </dom-module>
