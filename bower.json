@@ -1,6 +1,6 @@
 {
   "name": "highcharts-chart",
-  "version": "v1.1.8",
+  "version": "v2.0.1",
   "authors": [
     "Apoorv Verma [AP] <avdaredevil@gmail.com>"
   ],
@@ -10,17 +10,25 @@
   "moduleType": [],
   "keywords": [
     "polymer",
-    "polymer-1.0",
-    "highcharts",
-    "graphing",
+    "graph",
     "graphs",
+    "graphing",
+    "chart",
+    "charts",
+    "charting",
+    "plot",
+    "plots",
+    "plotting",
+    "highcharts",
     "visualize",
-    "pie",
+    "visualization",
+    "web-component",
     "web-components",
+    "canvas",
+    "SVG",
     "spline",
     "pie",
-    "donut",
-    "charts"
+    "donut"
   ],
   "repository": {
     "type": "git",
