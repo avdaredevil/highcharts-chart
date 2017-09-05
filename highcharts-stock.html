@@ -10,16 +10,9 @@
     <script>
         'use strict';
         class HighchartsStock extends Highcharts.Polymer_ChartBehavior(Highcharts.Polymer_BaseBehavior(Polymer.Element)) {
-            static get is() { return 'highcharts-stock' }
-            static get properties() {
-                return {
-                    title: {type: String, observer: "_titleUpdate"}
-                };
-            }
-            ready() {
-                super.ready();
-                this.__createChart("StockChart");
-            }
+            static get is() {return 'highcharts-stock'}
+            static get properties() {return {}}
+            ready() {super.ready();this.__createChart("StockChart")}
         }
         customElements.define(HighchartsStock.is, HighchartsStock);
     </script>
