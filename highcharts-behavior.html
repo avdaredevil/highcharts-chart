@@ -22,8 +22,8 @@
                 this.__lateBindCallbacks = $.extend({}, this.__lateBindCallbacks, {_updateType:1,_loadingUpdate:1})
             }
             static get properties() {return {
-                type: {type: String, observer: '_updateType'},
-                title: {type: String, observer: "_titleUpdate"},
+                type: {type: String, observer: "_updateType"},
+                title: {type: String, value: "", observer: "_titleUpdate"},
                 subtitle: {type: String, observer: "_subtitleUpdate"},
                 colorByPoint: {type: Boolean, value: false, reflectToAttribute:true, observer: "_cbpUpdate"},
                 credits: {type: Boolean, value: false, reflectToAttribute:true, observer: "_creditsUpdate"},
