@@ -16,6 +16,8 @@ $ bower install highcharts-chart --save
 
 Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/master.zip).
 
+***Note:** Polymer 2.0 version of this component is now available under the branch `polymer-2.0` thanks to @varletconst.*
+
 ## Usage
 
 1. Import Web Components' polyfill, on older browsers:
