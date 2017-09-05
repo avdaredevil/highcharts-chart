@@ -12,17 +12,12 @@
     <script>
         'use strict';
         class HighchartsMap extends Highcharts.Polymer_BaseBehavior(Polymer.Element) {
-            static get is() { return 'highcharts-map' }
-            static get properties() {
-                return {
-                    type: {type: String, value: 'map', observer: '_updateType'},
-                    title: {type: String, value: "", observer: "_titleUpdate"}
-                };
-            }
-            ready() {
-                super.ready();
-                this.__createChart("Map");
-            }
+            static get is() {return 'highcharts-map'}
+            static get properties() {return {
+                type: {type: String, value: 'map', observer: '_updateType'},
+                title: {type: String, value: "", observer: "_titleUpdate"},
+            }}
+            ready() {super.ready();this.__createChart("Map")}
         }
         customElements.define(HighchartsMap.is, HighchartsMap);
     </script>
