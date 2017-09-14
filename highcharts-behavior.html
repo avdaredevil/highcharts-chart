@@ -120,7 +120,7 @@
             addSeries(name,data,colorByPoint,otherOptions) {this._chart.addSeries($.extend({name: name, data: (data||[]), colorByPoint: typeof colorByPoint=="undefined"?this.colorByPoint:colorByPoint},typeof otherOptions == "object"?otherOptions:{}),true)}
             addDrillSeries(point,data,name) {this._chart.addSeriesAsDrilldown(point, {name: name, data: data})}
             removeSeries(z,redraw) {const s = this._getSeries(z);s.remove(redraw);return s}
-            updateSeries(k,v,z) {const NewEl = {};if(typeof k=="object"){NewEl = k;z=v||z}else{NewEl[k]=v};this._getSeries(z).update(NewEl)}
+            updateSeries(k,v,z) {let NewEl = {};if(typeof k=="object"){NewEl = k;z=v||z}else{NewEl[k]=v};this._getSeries(z).update(NewEl)}
             resizeChart() {if(!this._chart){return}this._chart.reflow()}
             resizeChartFixed() {if(!this._chart){return}this._chart.setSize(this.$.Chart.offsetWidth,this.offsetHeight)}
             reRender() {if(!this._chart){return}this._set_chart(new Highcharts.Chart(this._chart.options));this.setData(this.data);this.__lateBinders()}
@@ -153,7 +153,7 @@
             _hcUpdate(o) {if(!this._chart){return};this._chart.update(o)}
             _getRenderer() {if(!this._chart){return};return this._chart.renderer}
             //Other Bindings
-            _getAxisLabel(dim) {const l = dim.toLowerCase(),u = dim.toUpperCase(),lab = this[l+"Label"]||this.label;if(lab==u+"-Axis"){lab=this.label||lab};return lab.trim()}
+            _getAxisLabel(dim) {let l = dim.toLowerCase(),u = dim.toUpperCase(),lab = this[l+"Label"]||this.label;if(lab==u+"-Axis"){lab=this.label||lab};return lab.trim()}
             _returnDummySeries(){const f=function(){};return {isDummy: true, setData: f, addPoint: f, update: f,remove: f}}
             __lateBinders(){const me = this;Object.keys(this.__lateBindCallbacks||{}).forEach(function(cb){me[cb]()})}
             __addLateBinder(cb){if (!(cb instanceof Array)){cb = [cb]};if(!this.__lateBindCallbacks){this.__lateBindCallbacks={}};const me = this;cb.forEach(function(c){me.__lateBindCallbacks[c]=1})}
