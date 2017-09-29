@@ -6,6 +6,7 @@
     LinkedIn: https://www.linkedin.com/in/apoorvverma
 |======================================================================*/</script>
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/utils/async.html">
 <script src="../jquery/dist/jquery.min.js"></script>
 <script src="../highcharts/highstock.js"></script>
 <script src="../highcharts/modules/exporting.js"></script>
@@ -109,7 +110,14 @@
                 const __app = this, isArr = x instanceof Array
                 if (!isArr) {x = $.extend({name: (this.label||this.yLabel||this.xLabel),colorByPoint: this.colorByPoint},x)}
                 if (x && x.length && x[0].data instanceof Array) {
-                    __app.async(function(){while (__app._chart.series.length) {__app.removeSeries(0,false)};x.forEach(function(d){__app._chart.addSeries(d)})},__app.__microTaskDelaySetData)
+                    Polymer.Async.microTask.run(function(){
+                        while (__app._chart.series.length) {
+                            __app.removeSeries(0,false)
+                        };
+                        x.forEach(function(d){
+                            __app._chart.addSeries(d)
+                        })},
+                    __app.__microTaskDelaySetData); 
                 } else {__app._getSeries(z)[isArr?"setData":"update"](x)}
             }
             addData(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)}
