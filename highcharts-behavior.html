@@ -15,6 +15,10 @@
 <script>
     'use strict';
     Highcharts.setOptions({global: {useUTC: false}})
+    /**
+    @polymer
+    @mixinFunction
+    */
     Highcharts.Polymer_BaseBehavior = function(superClass) {
         const newObj = _ => ({}), newArr = _ => []
         return class extends superClass {
@@ -172,6 +176,10 @@
     }
 
 
+    /**
+    @polymer
+    @mixinFunction
+    */
     Highcharts.Polymer_ChartBehavior = function(superClass) {
         return class extends superClass {
             constructor() {super();this.__addLateBinder("_vsTimeUpdate")}
