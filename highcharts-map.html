@@ -11,6 +11,11 @@
     </template>
     <script>
         'use strict';
+        /**
+        @polymer
+        @customElement
+        @appliesMixin Highcharts.Polymer_BaseBehavior
+        */
         class HighchartsMap extends Highcharts.Polymer_BaseBehavior(Polymer.Element) {
             static get is() {return 'highcharts-map'}
             static get properties() {return {

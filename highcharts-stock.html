@@ -9,6 +9,12 @@
     </template>
     <script>
         'use strict';
+        /**
+        @polymer
+        @customElement
+        @appliesMixin Highcharts.Polymer_ChartBehavior
+        @appliesMixin Highcharts.Polymer_BaseBehavior
+        */
         class HighchartsStock extends Highcharts.Polymer_ChartBehavior(Highcharts.Polymer_BaseBehavior(Polymer.Element)) {
             static get is() {return 'highcharts-stock'}
             static get properties() {return {}}
