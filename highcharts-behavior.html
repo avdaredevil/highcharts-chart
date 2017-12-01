@@ -171,7 +171,7 @@
             __addLateBinder(cb){if (!(cb instanceof Array)){cb = [cb]};if(!this.__lateBindCallbacks){this.__lateBindCallbacks={}};const me = this;cb.forEach(function(c){me.__lateBindCallbacks[c]=1})}
 
             /* Need to define a local fire method here as it is not present in Polymer 2 */
-            _fire(eventName, options) {this.dispatchEvent(new CustomEvent(eventName, $.extend({bubbles: true,composed: true},options)))}
+            _fire(eventName, detail) {this.dispatchEvent(new CustomEvent(eventName, {bubbles: true,composed: true, detail: detail}))}
         }
     }
 
