@@ -90,7 +90,7 @@ function _extends() {
 	}
 
 	return target;
-};
+const _extend = (...a) => Object.assign({}, ...a)
 
 export const HighchartsPolymer = {
 /* @polymerMixin */
