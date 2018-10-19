@@ -22,11 +22,9 @@ class HighchartsStock extends HighchartsPolymer.ChartBehavior(HighchartsPolymer.
             <slot></slot>
         `
     }
-    static get properties() {
-        return {
-           type: {type: String, value: 'line', observer: '_updateType'}
-        }
-    }
+    static get properties() {return {
+       type: {type: String, value: 'line', observer: '_updateType'}
+    }}
     ready() {super.ready();this.__createChart('StockChart')}
 }
 
