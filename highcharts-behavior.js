@@ -7,7 +7,6 @@ Highcharts.setOptions({global: {useUTC: false}});
 
 // from jQuery
 const isFunction = o => typeof obj === "function" && typeof obj.nodeType !== "number"
-}
 
 // from jQuery
 function isPlainObject(obj) {
