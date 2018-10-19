@@ -1,7 +1,7 @@
-import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
-import 'highcharts/modules/map.js';
-import 'highcharts/modules/data.js';
-import { HighchartsPolymer } from './highcharts-behavior.js';
+import {PolymerElement, html} from '@polymer/polymer/polymer-element.js'
+import 'highcharts/modules/map.js'
+import 'highcharts/modules/data.js'
+import {HighchartsPolymer} from './highcharts-behavior.js'
 
 /**
 * @polymer
@@ -23,11 +23,9 @@ class HighchartsMap extends HighchartsPolymer.BaseBehavior(PolymerElement) {
             <slot></slot>
         `
     }
-    static get properties() {
-        return {
-           type: {type: String, value: 'line', observer: '_updateType'}
-        }
-    }
+    static get properties() {return {
+       type: {type: String, value: 'line', observer: '_updateType'}
+    }}
     ready() {super.ready();this.__createChart("Map")}
 }
 
