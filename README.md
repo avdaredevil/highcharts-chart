@@ -32,7 +32,7 @@ Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/mas
     </script>
         OR
     <script>
-    import('node_modules/highcharts-chart/highcharts-chart.js');
+        import('node_modules/highcharts-chart/highcharts-chart.js');
     </script>
     ```
 
