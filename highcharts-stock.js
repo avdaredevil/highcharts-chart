@@ -19,6 +19,7 @@ class HighchartsStock extends HighchartsPolymer.ChartBehavior(HighchartsPolymer.
                 #Chart {@apply --highcharts-container}
             </style>
             <div id="Chart" width="100%" on-click="_checkSelected"></div>
+            <slot></slot>
         `
     }
     static get properties() {
