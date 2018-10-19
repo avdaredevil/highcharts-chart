@@ -27,7 +27,7 @@ Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/mas
     ```html
     <script type="module" src="node_modules/highcharts-chart/highcharts-chart.js" crossorigin></script>
         OR
-    <script type="module" crossorigin>
+    <script type="module">
     import 'node_modules/highcharts-chart/highcharts-chart.js';
     </script>
         OR
