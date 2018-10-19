@@ -1,10 +1,6 @@
-# &lt;highcharts-chart&gt; [![Bower version](https://badge.fury.io/bo/highcharts-chart.svg)](http://badge.fury.io/bo/highcharts-chart) [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/avdaredevil/highcharts-chart)
+# \<highcharts-chart\>
 
-> Web Component wrapper to the [Highcharts Graphing Library](http://www.highcharts.com/), to create a multitude of graphs/maps (spline, pie, and more) using [Polymer 1.0](http://www.polymer-project.org/1.0/).
-
-## Demo
-
-You can see a [Realtime/Resonsive demo live](http://avdaredevil.github.io/highcharts-chart)! With a Tutorial Icon in the top right.
+Highcharts for Polymer 3.0
 
 ## Install
 
@@ -29,25 +25,18 @@ Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/mas
 2. Import Custom Element:
 
     ```html
-    <link rel="import" href="bower_components/highcharts-chart/highcharts-chart.html">
+    <script type="module" src="node_modules/highcharts-chart/highcharts-chart.js" crossorigin></script>
         OR
-    <link rel="import" href="bower_components/highcharts-chart/highcharts-map.html">
+    <script type="module" crossorigin>
+    import 'node_modules/highcharts-chart/highcharts-chart.js';
+    </script>
         OR
-    <link rel="import" href="bower_components/highcharts-chart/highcharts-stock.html">
+    <script>
+    import('node_modules/highcharts-chart/highcharts-chart.js');
+    </script>
     ```
 
 3. Start using it!
-    <!--
-    ```
-    <custom-element-demo>
-      <template>
-        <link rel="import" href="highcharts-chart.html">
-        <next-code-block></next-code-block>
-
-      </template>
-    </custom-element-demo>
-    ```
-    -->
 
     ```html
     <highcharts-chart type="spline" data='[[0,0],[1,7],[2,1],[3,6],[4,8],[5,6]]' title='Test-Spline Chart' x-zoom x-label="Iterations" y-label="Awesomeness Index"></highcharts-chart>
@@ -156,10 +145,30 @@ Mixin       | Description
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request
 
+
+## Install the Polymer-CLI
+
+First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) and npm (packaged with [Node.js](https://nodejs.org)) installed. Run `npm install` to install your element's dependencies, then run `polymer serve` to serve your element locally.
+
+## Viewing Your Element
+
+```
+$ polymer serve
+```
+
+## Running Tests
+
+```
+$ polymer test
+```
+
+Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
+
+
+-- @mindon at ShenZhen China, 2018.10.19
+
 ## License
 
 [MIT License](http://avdaredevil.mit-license.org/) © Apoorv Verma
 
 [![LinkedIn](https://cloud.githubusercontent.com/assets/5303018/22671513/a17b9946-ec9c-11e6-8700-5d6b709c4aee.png)](https://www.linkedin.com/in/apoorvverma)
-
-<!--- Was: https://img.shields.io/badge/Linked-In-blue.svg -->

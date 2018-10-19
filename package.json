@@ -1,0 +1,14 @@
+{
+  "name": "highcharts-chart",
+  "description": "Highcharts for Polymer 3.0",
+  "main": "highcharts-chart.js",
+  "dependencies": {
+    "@polymer/polymer": "^3.0.0",
+    "highcharts": "^6.2.0"
+  },
+  "devDependencies": {
+    "@polymer/iron-demo-helpers": "^3.0.0-pre.19",
+    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "wct-browser-legacy": "^1.0.0"
+  }
+}
