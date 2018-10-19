@@ -6,7 +6,7 @@ import 'highcharts/highcharts-more.js';
 Highcharts.setOptions({global: {useUTC: false}});
 
 // from jQuery
-function isFunction(obj) {
+const isFunction = o => typeof obj === "function" && typeof obj.nodeType !== "number"
 	typeof obj === "function" && typeof obj.nodeType !== "number"
 }
 
