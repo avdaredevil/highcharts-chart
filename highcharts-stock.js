@@ -23,7 +23,7 @@ class HighchartsStock extends HighchartsPolymer.ChartBehavior(HighchartsPolymer.
         `
     }
     static get properties() {return {
-       type: {type: String, value: 'line', observer: '_updateType'}
+        type: {type: String, value: 'line', observer: '_updateType'}
     }}
     ready() {super.ready();this.__createChart('StockChart')}
 }
