@@ -1,18 +1,23 @@
-# \<highcharts-chart\>
+# &lt;highcharts-chart&gt; [![Bower version](https://badge.fury.io/bo/highcharts-chart.svg)](http://badge.fury.io/bo/highcharts-chart) [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/avdaredevil/highcharts-chart)
 
-Highcharts for Polymer 3.0
+> Web Component wrapper to the [Highcharts Graphing Library](http://www.highcharts.com/), to create a multitude of graphs/maps (spline, pie, and more) using [Polymer 3.0](http://www.polymer-project.org/3.0/).
+
+
+## Demo
+
+You can see a [Realtime/Resonsive demo live](http://avdaredevil.github.io/highcharts-chart)! With a Tutorial Icon in the top right.
 
 ## Install
 
-Install the component using [Bower](http://bower.io/):
+Install the component using [npm](https://www.npmjs.com/):
 
 ```sh
-$ bower install highcharts-chart --save
+$ npm install highcharts-chart --save
 ```
 
 Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/master.zip).
 
-***Note:** Polymer 2.0 version of this component is now available under the branch `polymer-2.0` thanks to @varletconst.*
+***Note:** Polymer 3.0 version of this component is now available under the branch `polymer-3.0` thanks to @varletconst.*
 
 ## Usage
 
@@ -25,14 +30,14 @@ Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/mas
 2. Import Custom Element:
 
     ```html
-    <script type="module" src="node_modules/highcharts-chart/highcharts-chart.js" crossorigin></script>
+    <script type="module" src="node_modules/highcharts-chart/highcharts-chart.js"></script>
         OR
-    <script type="module" crossorigin>
-    import 'node_modules/highcharts-chart/highcharts-chart.js';
+    <script type="module">
+        import 'node_modules/highcharts-chart/highcharts-chart.js';
     </script>
         OR
     <script>
-    import('node_modules/highcharts-chart/highcharts-chart.js');
+        import('node_modules/highcharts-chart/highcharts-chart.js');
     </script>
     ```
 
@@ -148,7 +153,7 @@ Mixin       | Description
 
 ## Install the Polymer-CLI
 
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) and npm (packaged with [Node.js](https://nodejs.org)) installed. Run `npm install` to install your element's dependencies, then run `polymer serve` to serve your element locally.
+First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) and npm (_packaged with [Node.js](https://nodejs.org)_) installed. Run `npm install` to install your element's dependencies, then run `polymer serve` to serve your element locally.
 
 ## Viewing Your Element
 
@@ -172,3 +177,5 @@ Your application is already set up to be tested via [web-component-tester](https
 [MIT License](http://avdaredevil.mit-license.org/) © Apoorv Verma
 
 [![LinkedIn](https://cloud.githubusercontent.com/assets/5303018/22671513/a17b9946-ec9c-11e6-8700-5d6b709c4aee.png)](https://www.linkedin.com/in/apoorvverma)
+
+<!--- Was: https://img.shields.io/badge/Linked-In-blue.svg -->
