@@ -1,14 +1,13 @@
 import * as async from '@polymer/polymer/lib/utils/async.js'
+import 'highcharts/highcharts.js'
+import 'highcharts/highcharts-more.js'
 
-import 'highcharts/highcharts.js';
-import 'highcharts/highcharts-more.js';
-
-Highcharts.setOptions({global: {useUTC: false}});
+Highcharts.setOptions({global: {useUTC: false}})
 const _extends = (...a) => Object.assign({}, ...a)
 
 export const HighchartsPolymer = {
     /* @polymerMixin */
-    BaseBehavior: function(superClass) {
+    BaseBehavior: superClass => {
         const newObj = _ => ({}), newArr = _ => []
         return class extends superClass {
             constructor() {
@@ -41,7 +40,7 @@ export const HighchartsPolymer = {
                 tooltipOptions: {type: Object, value: newObj, observer: "_tooltipOptionsUpdate"},
                 highchartOptions: {type: Object, value: newObj, observer: "_hcUpdate"},
                 _chart: {type: Object, readOnly: true},
-                __microTaskDelaySetData: {type: Number, value: 25}
+                __microTaskDelaySetData: {type: Number, value: 25},
             }}
             __createChart(namespace) {
                 var xAxis = _extends(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis, {title: {text: this._getAxisLabel('X')}});
@@ -81,15 +80,15 @@ export const HighchartsPolymer = {
                             dataLabels: {
                                 enabled: true,
                                 format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                                style: {color: (Highcharts.theme||[]).contrastTextColor||'black'}
+                                style: {color: (Highcharts.theme||[]).contrastTextColor||'black'},
                             }
                         }
                     }, this.plotOptions),
-                    tooltip: _extends(this.vsTime?{formatter: function () {
-                            return '<b>'+this.series.name+'</b><br>' +
-                                Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br>' +
-                                Highcharts.numberFormat(this.y, 2)
-                        }}:{},this.tooltipOptions),
+                    tooltip: _extends(this.vsTime?{formatter: _ => 
+                        `<b>${this.series.name}</b><br>` +
+                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br>' +
+                        Highcharts.numberFormat(this.y, 2)
+                    }:{},this.tooltipOptions),
                     legend: _extends({enabled: this.legend},this.legendOptions),
                     exporting: {enabled: this.export},
                     series: Series,
@@ -102,14 +101,12 @@ export const HighchartsPolymer = {
                 const __app = this, isArr = x instanceof Array
                 if (!isArr) {x = _extends({name: (this.label||this.yLabel||this.xLabel),colorByPoint: this.colorByPoint},x)}
                 if (x && x.length && x[0].data instanceof Array) {
-                    async.microTask.run(function(){
+                    async.microTask.run(_ => {
                         while (__app._chart.series.length) {
                             __app.removeSeries(0,false)
-                        };
-                        x.forEach(function(d){
-                            __app._chart.addSeries(d)
-                        })},
-                    __app.__microTaskDelaySetData); 
+                        }
+                        x.forEach(d => __app._chart.addSeries(d))
+                    }, __app.__microTaskDelaySetData); 
                 } else {__app._getSeries(z)[isArr?"setData":"update"](x)}
             }
             addData(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)}
@@ -162,17 +159,17 @@ export const HighchartsPolymer = {
         }
     },
     /* @polymerMixin */
-    ChartBehavior: function(superClass) {
+    ChartBehavior: superClass => {
         return class extends superClass {
             constructor() {super();this.__addLateBinder("_vsTimeUpdate")}
             static get properties() {return {
                 vsTime: {type: Boolean, value: false, reflectToAttribute: true, observer: "_vsTimeUpdate"},
                 selected: {type: Boolean, value: false, readOnly: true, notify: true, reflectToAttribute: true},
-                selectedPoints: {type: Array, readOnly: true, notify: true}
+                selectedPoints: {type: Array, readOnly: true, notify: true},
             }}
 
             _vsTimeUpdate(a) {if(!this._chart || typeof a == "undefined"){return};this.destroy();this.ready()}
             _checkSelected() {if(!this._chart){return};var points = this._chart.getSelectedPoints();this._setSelected(!!points.length);this._setSelectedPoints(points)}
         }
     }
-};
+}
