@@ -1,5 +1,5 @@
 // Shared styles of highcharts-chart for polymer 3.0
-import { html } from '@polymer/lit-element';
+import { html } from '@polymer/polymer/polymer-element.js';
 
 export const SharedStyles = html`
 <style>
