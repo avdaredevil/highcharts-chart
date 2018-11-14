@@ -1,6 +1,6 @@
 # &lt;highcharts-chart&gt; [![Bower version](https://badge.fury.io/bo/highcharts-chart.svg)](http://badge.fury.io/bo/highcharts-chart) [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/avdaredevil/highcharts-chart)
 
-> Web Component wrapper to the [Highcharts Graphing Library](http://www.highcharts.com/), to create a multitude of graphs/maps (spline, pie, and more) using [Polymer 1.0](http://www.polymer-project.org/1.0/).
+> Web Component wrapper to the [Highcharts Graphing Library](http://www.highcharts.com/), to create a multitude of graphs/maps (spline, pie, and more) using [Polymer 2.0](http://www.polymer-project.org/2.0/).
 
 ## Demo
 
@@ -15,8 +15,6 @@ $ bower install highcharts-chart --save
 ```
 
 Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/master.zip).
-
-***Note:** Polymer 2.0 version of this component is now available under the branch `polymer-2.0` thanks to @varletconst.*
 
 ## Usage
 
