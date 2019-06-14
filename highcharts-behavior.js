@@ -1,5 +1,5 @@
 import * as async from '@polymer/polymer/lib/utils/async.js'
-import 'highcharts/highcharts.js'
+import 'highcharts/highstock.js'
 import 'highcharts/highcharts-more.js'
 
 Highcharts.setOptions({global: {useUTC: false}})
