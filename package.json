@@ -2,6 +2,7 @@
   "name": "highcharts-chart",
   "description": "Highcharts for Polymer 3.0",
   "main": "highcharts-chart.js",
+  "version": "v3.0.0",
   "repository": "https://github.com/avdaredevil/highcharts-chart",
   "license": "MIT",
   "dependencies": {
