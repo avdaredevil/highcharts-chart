@@ -1,6 +1,6 @@
 # &lt;highcharts-chart&gt; [![Bower version](https://badge.fury.io/bo/highcharts-chart.svg)](http://badge.fury.io/bo/highcharts-chart) [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/avdaredevil/highcharts-chart)
 
-> Web Component wrapper to the [Highcharts Graphing Library](http://www.highcharts.com/), to create a multitude of graphs/maps (spline, pie, and more) using [Polymer 2.0](http://www.polymer-project.org/2.0/).
+> Web Component wrapper to the [Highcharts Graphing Library](http://www.highcharts.com/), to create a multitude of graphs/maps (spline, pie, and more) using [Polymer 3.0](http://www.polymer-project.org/3.0/).
 
 ## Demo
 
@@ -8,10 +8,10 @@ You can see a [Realtime/Resonsive demo live](http://avdaredevil.github.io/highch
 
 ## Install
 
-Install the component using [Bower](http://bower.io/):
+Install the component using [npm](https://www.npmjs.com/):
 
 ```sh
-$ bower install highcharts-chart --save
+$ npm install highcharts-chart --save
 ```
 
 Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/master.zip).
@@ -27,11 +27,15 @@ Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/mas
 2. Import Custom Element:
 
     ```html
-    <link rel="import" href="bower_components/highcharts-chart/highcharts-chart.html">
+    <script type="module" src="node_modules/highcharts-chart/highcharts-chart.js"></script>
         OR
-    <link rel="import" href="bower_components/highcharts-chart/highcharts-map.html">
+    <script type="module">
+        import 'node_modules/highcharts-chart/highcharts-chart.js';
+    </script>
         OR
-    <link rel="import" href="bower_components/highcharts-chart/highcharts-stock.html">
+    <script>
+        import('node_modules/highcharts-chart/highcharts-chart.js');
+    </script>
     ```
 
 3. Start using it!
@@ -39,7 +43,7 @@ Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/mas
     ```
     <custom-element-demo>
       <template>
-        <link rel="import" href="highcharts-chart.html">
+        <script type="module" src="highcharts-chart.js">
         <next-code-block></next-code-block>
 
       </template>
@@ -153,6 +157,28 @@ Mixin       | Description
 3. Commit your changes: `git commit -m 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request
+
+
+## Install the Polymer-CLI
+
+First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) and npm (_packaged with [Node.js](https://nodejs.org)_) installed. Run `npm install` to install your element's dependencies, then run `polymer serve` to serve your element locally.
+
+## Viewing Your Element
+
+```
+$ polymer serve
+```
+
+## Running Tests
+
+```
+$ polymer test
+```
+
+Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
+
+
+***Note:** Polymer 3 docs and migration done by: @mindon 2018-10-19*
 
 ## License
 
