@@ -2,7 +2,6 @@
 
 > Web Component wrapper to the [Highcharts Graphing Library](http://www.highcharts.com/), to create a multitude of graphs/maps (spline, pie, and more) using [Polymer 3.0](http://www.polymer-project.org/3.0/).
 
-
 ## Demo
 
 You can see a [Realtime/Resonsive demo live](http://avdaredevil.github.io/highcharts-chart)! With a Tutorial Icon in the top right.
@@ -16,8 +15,6 @@ $ npm install highcharts-chart --save
 ```
 
 Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/master.zip).
-
-***Note:** Polymer 3.0 version of this component is now available under the branch `polymer-3.0` thanks to @varletconst.*
 
 ## Usage
 
