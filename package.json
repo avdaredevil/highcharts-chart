@@ -6,11 +6,11 @@
   "repository": "https://github.com/avdaredevil/highcharts-chart",
   "license": "MIT",
   "dependencies": {
-    "@polymer/polymer": "^3.2.0",
-    "highcharts": "^7.1.2"
+    "@polymer/polymer": "^3.4.1",
+    "highcharts": "^7.2.2"
   },
   "devDependencies": {
     "@polymer/iron-demo-helpers": "^3.1.0",
-    "@webcomponents/webcomponentsjs": "^2.2.10"
+    "@webcomponents/webcomponentsjs": "^2.4.4"
   }
 }

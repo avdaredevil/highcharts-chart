@@ -1,11 +1,13 @@
 import * as async from '@polymer/polymer/lib/utils/async.js'
-import 'highcharts/highstock.js'
-import 'highcharts/highcharts-more.js'
+import Highcharts from 'highcharts/highstock.js'
+import HCMore from 'highcharts/highcharts-more.js'
 
+HCMore(Highcharts)
 Highcharts.setOptions({global: {useUTC: false}})
 const _extends = (...a) => Object.assign({}, ...a)
 
 export const HighchartsPolymer = {
+    Highcharts,
     /* @polymerMixin */
     BaseBehavior: superClass => {
         const newObj = _ => ({}), newArr = _ => []
@@ -84,11 +86,13 @@ export const HighchartsPolymer = {
                             }
                         }
                     }, this.plotOptions),
-                    tooltip: _extends(this.vsTime?{formatter: _ => 
-                        `<b>${this.series.name}</b><br>` +
-                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br>' +
-                        Highcharts.numberFormat(this.y, 2)
-                    }:{},this.tooltipOptions),
+                    tooltip: _extends(this.vsTime?{formatter: function(_) { 
+                        return [
+                            `<b>${this.points ? this.points[0].series.name : this.series.name}</b>`,
+                            Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x),
+                            Highcharts.numberFormat(this.y, 2),
+                        ].join('<br>')
+                    }}:{},this.tooltipOptions),
                     legend: _extends({enabled: this.legend},this.legendOptions),
                     exporting: {enabled: this.export},
                     series: Series,
