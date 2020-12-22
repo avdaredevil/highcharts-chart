@@ -43,16 +43,18 @@ Or [download as ZIP](https://github.com/avdaredevil/highcharts-chart/archive/mas
     ```
     <custom-element-demo>
       <template>
-        <script type="module" src="highcharts-chart.js">
+        <script type="module" src="highcharts-chart.js"></script>
         <next-code-block></next-code-block>
-
       </template>
     </custom-element-demo>
     ```
     -->
 
     ```html
-    <highcharts-chart type="spline" data='[[0,0],[1,7],[2,1],[3,6],[4,8],[5,6]]' title='Test-Spline Chart' x-zoom x-label="Iterations" y-label="Awesomeness Index"></highcharts-chart>
+    <highcharts-chart x-zoom type="spline"
+                      title="Test-Spline Chart"
+                      data='[[0,0],[1,7],[2,1],[3,6],[4,8],[5,6]]'
+                      x-label="Iterations" y-label="Awesomeness Index"></highcharts-chart>
     ```
 
     #### Other Examples
