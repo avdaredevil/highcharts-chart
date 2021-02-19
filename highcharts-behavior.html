@@ -11,6 +11,7 @@
 <script src="../highcharts/highstock.js"></script>
 <script src="../highcharts/modules/exporting.js"></script>
 <script src="../highcharts/modules/drilldown.js"></script>
+<script src="../highcharts/modules/annotations.js"></script>
 
 <script>
     'use strict';
@@ -50,6 +51,7 @@
                 //Custom Chart Declarations
                 legendOptions: {type: Object, value: newObj, observer: "_legendOptionsUpdate"},
                 tooltipOptions: {type: Object, value: newObj, observer: "_tooltipOptionsUpdate"},
+                annotations: {type: Object, value: newObj, observer: "_annotationsUpdate"},
                 highchartOptions: {type: Object, value: newObj, observer: "_hcUpdate"},
                 _chart: {type: Object, readOnly: true},
                 __microTaskDelaySetData: {type: Number, value: 25}
@@ -97,6 +99,7 @@
                             }
                         }
                     }, this.plotOptions),
+                    annotations: this.annotations,
                     tooltip: $.extend(this.vsTime?{formatter: function () {
                             return '<b>'+this.series.name+'</b><br>' +
                                 Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br>' +
@@ -148,6 +151,7 @@
             _legendUpdate(s) {if(!this._chart){return};this._chart.legend.update({enabled: s})}
             _legendOptionsUpdate(o) {if(!this._chart){return};this._chart.legend.update(o)}
             _tooltipOptionsUpdate(o) {if(!this._chart){return};this._chart.tooltip.update(o)}
+            _annotationsUpdate(o) {if(!this._chart){return};this._chart.annotations.update(o)}
             _plotUpdate(o) {if(!this._chart){return};this._chart.update({plotOptions: o})}
             _chartUpdate(o) {if(!this._chart){return};Object.keys(o||{}).length && this._warn("Not doing what you wanted, maybe you meant plotOptions?","chartOptions");this._chart.update({chart: o})}
             _exportingUpdate(x) {if(!this._chart){return};this._chart.update({exporting: {enabled: x}})}
