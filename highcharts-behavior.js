@@ -1,8 +1,14 @@
 import * as async from '@polymer/polymer/lib/utils/async.js'
 import Highcharts from 'highcharts/highstock.js'
 import HCMore from 'highcharts/highcharts-more.js'
+import HCExport from 'highcharts/modules/exporting'
+import HCDrill from 'highcharts/modules/drilldown'
+import HCAnnot from 'highcharts/modules/annotations'
 
-HCMore(Highcharts)
+// Add all modules and plugins to Highcharts
+;[HCMore, HCExport, HCDrill, HCAnnot].forEach(ext => ext(Highcharts))
+
+// Global options and settings added
 Highcharts.setOptions({global: {useUTC: false}})
 const _extends = (...a) => Object.assign({}, ...a)
 
@@ -40,6 +46,7 @@ export const HighchartsPolymer = {
                 //Custom Chart Declarations
                 legendOptions: {type: Object, value: newObj, observer: "_legendOptionsUpdate"},
                 tooltipOptions: {type: Object, value: newObj, observer: "_tooltipOptionsUpdate"},
+                annotations: {type: Object, value: newObj, observer: "_annotationsUpdate"},
                 highchartOptions: {type: Object, value: newObj, observer: "_hcUpdate"},
                 _chart: {type: Object, readOnly: true},
                 __microTaskDelaySetData: {type: Number, value: 25},
@@ -86,6 +93,7 @@ export const HighchartsPolymer = {
                             }
                         }
                     }, this.plotOptions),
+                    annotations: this.annotations,
                     tooltip: _extends(this.vsTime?{formatter: function(_) { 
                         return [
                             `<b>${this.points ? this.points[0].series.name : this.series.name}</b>`,
@@ -137,6 +145,7 @@ export const HighchartsPolymer = {
             _legendUpdate(s) {if(!this._chart){return};this._chart.legend.update({enabled: s})}
             _legendOptionsUpdate(o) {if(!this._chart){return};this._chart.legend.update(o)}
             _tooltipOptionsUpdate(o) {if(!this._chart){return};this._chart.tooltip.update(o)}
+            _annotationsUpdate(o) {if(!this._chart){return};this._chart.annotations.update(o)}
             _plotUpdate(o) {if(!this._chart){return};this._chart.update({plotOptions: o})}
             _chartUpdate(o) {if(!this._chart){return};Object.keys(o||{}).length && this._warn("Not doing what you wanted, maybe you meant plotOptions?","chartOptions");this._chart.update({chart: o})}
             _exportingUpdate(x) {if(!this._chart){return};this._chart.update({exporting: {enabled: x}})}
