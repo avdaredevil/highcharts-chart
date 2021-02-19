@@ -1,22 +1,27 @@
 <!doctype html>
 <html lang="en">
   <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
-  <title>Highcharts-Chart Demo - Polymer 3.0</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <title>Highcharts-Chart Demo - Polymer 3.0</title>
 
-  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
-  <script type="module">
-    import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
-    import '@polymer/iron-demo-helpers/demo-snippet';
-  </script>
+    <script type="module">
+      import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
+      import '@polymer/iron-demo-helpers/demo-snippet';
+    </script>
 
-  <script type="module" src="../highcharts-chart.js"></script>
+    <script type="module">
+      import '../highcharts-chart';
+      import '../highcharts-stock';
+    </script>
 
-  <custom-style>
-    <style is="custom-style" include="demo-pages-shared-styles"></style>
-  </custom-style>
+    <script defer src="https://code.highcharts.com/mapdata/custom/antarctica.js"></script>
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles"></style>
+    </custom-style>
   </head>
   <body>
     <div class="vertical-section-container centered">
@@ -29,6 +34,30 @@
             x-zoom x-label="Iterations"
             y-label="Awesomeness Index">
           </highcharts-chart>
+        </template>
+      </demo-snippet>
+      <h3>Pie Chart</h3>
+      <demo-snippet>
+        <template>
+          <highcharts-chart type="pie"
+            data='[["Foo",3],["Bar",5],["Different",7],["Test",6]]'
+            title='Pie Chart'
+            subtitle='Interactable Chart'
+            x-zoom x-label="Iterations"
+            color-by-point
+            y-label="Awesomeness Index">
+          </highcharts-chart>
+        </template>
+      </demo-snippet>
+      <h3>Basic highcharts-stock demo</h3>
+      <demo-snippet>
+        <template>
+          <highcharts-stock
+            data='[[0,0],[1,7],[2,1],[3,6],[4,8],[5,6]]'
+            title='Sample Stock'
+            x-zoom
+            y-label="Price">
+          </highcharts-map>
         </template>
       </demo-snippet>
     </div>

@@ -1,12 +1,9 @@
 import * as async from '@polymer/polymer/lib/utils/async.js'
-import Highcharts from 'highcharts/highstock.js'
-import HCMore from 'highcharts/highcharts-more.js'
-import HCExport from 'highcharts/modules/exporting'
-import HCDrill from 'highcharts/modules/drilldown'
-import HCAnnot from 'highcharts/modules/annotations'
-
-// Add all modules and plugins to Highcharts
-;[HCMore, HCExport, HCDrill, HCAnnot].forEach(ext => ext(Highcharts))
+import 'highcharts/highstock.js'
+import 'highcharts/highcharts-more.js'
+import 'highcharts/modules/exporting'
+import 'highcharts/modules/drilldown'
+import 'highcharts/modules/annotations'
 
 // Global options and settings added
 Highcharts.setOptions({global: {useUTC: false}})
@@ -46,7 +43,7 @@ export const HighchartsPolymer = {
                 //Custom Chart Declarations
                 legendOptions: {type: Object, value: newObj, observer: "_legendOptionsUpdate"},
                 tooltipOptions: {type: Object, value: newObj, observer: "_tooltipOptionsUpdate"},
-                annotations: {type: Object, value: newObj, observer: "_annotationsUpdate"},
+                annotations: {type: Object, value: newArr, observer: "_annotationsUpdate"},
                 highchartOptions: {type: Object, value: newObj, observer: "_hcUpdate"},
                 _chart: {type: Object, readOnly: true},
                 __microTaskDelaySetData: {type: Number, value: 25},
@@ -94,7 +91,7 @@ export const HighchartsPolymer = {
                         }
                     }, this.plotOptions),
                     annotations: this.annotations,
-                    tooltip: _extends(this.vsTime?{formatter: function(_) { 
+                    tooltip: _extends(this.vsTime?{formatter: function(_) {
                         return [
                             `<b>${this.points ? this.points[0].series.name : this.series.name}</b>`,
                             Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x),
@@ -118,7 +115,7 @@ export const HighchartsPolymer = {
                             __app.removeSeries(0,false)
                         }
                         x.forEach(d => __app._chart.addSeries(d))
-                    }, __app.__microTaskDelaySetData); 
+                    }, __app.__microTaskDelaySetData);
                 } else {__app._getSeries(z)[isArr?"setData":"update"](x)}
             }
             addData(x,y,z,drillable) {this.pushData(x,y,z,true,drillable)}

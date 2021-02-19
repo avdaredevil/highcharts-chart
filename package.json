@@ -5,6 +5,9 @@
   "version": "v3.0.2",
   "repository": "https://github.com/avdaredevil/highcharts-chart",
   "license": "MIT",
+  "scripts": {
+    "dev": "polymer serve"
+  },
   "dependencies": {
     "@polymer/polymer": "^3.4.1",
     "highcharts": "^7.2.2"
