@@ -49,8 +49,16 @@ export const HighchartsPolymer = {
                 __microTaskDelaySetData: {type: Number, value: 25},
             }}
             __createChart(namespace) {
-                var xAxis = _extends(this.vsTime?{type: 'datetime',tickPixelInterval: 150}:{},this.xAxis, {title: {text: this._getAxisLabel('X')}});
-                var yAxis = _extends(this.yAxis, {title: {text: this._getAxisLabel('Y')}});
+                const getFirstOrAxisConfig = axis => axis instanceof Array
+                    ? axis[0] || (axis.push({}), axis[0])
+                    : axis
+                let tempX_Axis = _extends(this.vsTime ? {type: 'datetime', tickPixelInterval: 150} : {}, getFirstOrAxisConfig(this.xAxis), {title: {text: this._getAxisLabel('X')}});
+                if (this.xAxis instanceof Array) {
+                    this.xAxis[0] = tempX_Axis
+                } else {
+                    this.xAxis = tempX_Axis
+                }
+                Object.assign(getFirstOrAxisConfig(this.yAxis), {title: {text: this._getAxisLabel('Y')}});
                 var Series = this.data.length && this.data[0].data instanceof Array?this.data:[{name: (this.label||this.yLabel||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}];
                 var __app = this;
                 this._set_chart(new Highcharts[namespace||"Chart"](_extends(true,{},{
@@ -76,8 +84,8 @@ export const HighchartsPolymer = {
                     //Properties
                     title: {text: this.title},
                     subtitle: {text: this.subtitle},
-                    xAxis: xAxis,
-                    yAxis: yAxis,
+                    xAxis: this.xAxis,
+                    yAxis: this.yAxis,
                     credits: {enabled: this.credits},
                     plotOptions: _extends({
                         pie: {
