@@ -52,13 +52,14 @@ export const HighchartsPolymer = {
                 const getFirstOrAxisConfig = axis => axis instanceof Array
                     ? axis[0] || (axis.push({}), axis[0])
                     : axis
-                let tempX_Axis = _extends(this.vsTime ? {type: 'datetime', tickPixelInterval: 150} : {}, getFirstOrAxisConfig(this.xAxis), {title: {text: this._getAxisLabel('X')}});
+                let tempX_Axis = _extends(this.vsTime ? {type: 'datetime', tickPixelInterval: 150} : {}, getFirstOrAxisConfig(this.xAxis));
                 if (this.xAxis instanceof Array) {
                     this.xAxis[0] = tempX_Axis
                 } else {
                     this.xAxis = tempX_Axis
                 }
-                Object.assign(getFirstOrAxisConfig(this.yAxis), {title: {text: this._getAxisLabel('Y')}});
+                ;(titleConfig => {titleConfig.text = titleConfig.text || this._getAxisLabel('X')})(getFirstOrAxisConfig(this.xAxis).title||{});
+                ;(titleConfig => {titleConfig.text = titleConfig.text || this._getAxisLabel('Y')})(getFirstOrAxisConfig(this.yAxis).title||{});
                 var Series = this.data.length && this.data[0].data instanceof Array?this.data:[{name: (this.label||this.yLabel||this.xLabel),colorByPoint: this.colorByPoint, data: this.data}];
                 var __app = this;
                 this._set_chart(new Highcharts[namespace||"Chart"](_extends(true,{},{
